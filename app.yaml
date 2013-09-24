@@ -1,0 +1,89 @@
+application: addictingwordgames
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+default_expiration: "300d 5h"
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+- url: /css
+  static_dir: css
+  http_headers:
+    Vary: Accept-Encoding
+- url: /js
+  static_dir: js
+  http_headers:
+    Vary: Accept-Encoding
+- url: /jplayerskin
+  static_dir: jplayerskin
+  http_headers:
+    Vary: Accept-Encoding
+- url: /music
+  static_dir: music
+  http_headers:
+    Vary: Accept-Encoding
+- url: /img
+  static_dir: img
+  http_headers:
+    Vary: Accept-Encoding
+- url: /bootstrap/*
+  static_dir: bootstrap
+- url: /channel.html
+  static_files: channel.html
+  upload: channel.html
+  expiration: "300d"
+# - url: /(.*)html
+  # static_files: \1html
+  # upload: \1html
+- url: /BingSiteAuth.xml
+  static_files: BingSiteAuth.xml
+  upload: BingSiteAuth.xml
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+- url: /leecole
+  static_files: leecole.html
+  upload: leecole.html
+  expiration: "0d 1h"
+- url: /mochi.html
+  static_files: mochi.html
+  upload: mochi.html
+- url: /achievement-hard.html
+  static_files: achievement-hard.html
+  upload: achievement-hard.html
+  expiration: "0d 1h"
+- url: /achievement-medium.html
+  static_files: achievement-medium.html
+  upload: achievement-medium.html
+  expiration: "0d 1h"
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: "2.6"
+builtins:
+- deferred: on
+
+pagespeed:
+  # url_blacklist:
+  # - http://www.wordsmashing.com/music/*
+  # - http://www.wordsmashing.com/manifest.webapp
+  # - https://wordsmashing.appspot.com/buy
+  enabled_rewriters:
+  # - CollapseWhitespace
+  # - CombineHeads
+  # - ElideAttributes
+  # - RemoveComments
+  - MinifyCss
+  # - InlineJs
+  # - LeftTrimUrls
+
+inbound_services:
+- warmup

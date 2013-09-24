@@ -1,0 +1,71 @@
+{% import "macros.html" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Addicting Word Games - Addicting &amp; Fun Word Puzzle Games</title>
+    <meta name="description"
+          content="Only the Most Addicting Word Puzzles and Word Games! Play Addicting New Word Puzzles Free!">
+
+    <meta name="keywords" content="puzzle games, addicting games, word games, puzzle games, addicting word games">
+    <meta property="og:title" content="Addicting Word Games - Addicting &amp; Fun Word Puzzle Games">
+    <meta property="og:url" content="http://www.addictingwordgames.com">
+    <meta property="og:image" content="http://www.addictingwordgames.com/img/addicting-word-games-icon200.png">
+    <meta property="og:description"
+          content="Only the Most Addicting Word Puzzles and Word Games! Play Addicting New Word Puzzles Free!">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Addicting Word Games">
+    <meta property="fb:admins" content="337972272904903">
+
+
+    {{ macros.headers(ws, highscores, achievements) }}
+
+</head>
+<body>
+<div id="pagebody">
+    {{ macros.topbar() }}
+
+    <div id="searchbox">
+    <form role="form" class="form-inline" style="display:none">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-8"><input type="text" class="search-box form-control" id="exampleInputEmail1" placeholder="Search"></div>
+          <div class="col-xs-6 col-sm-6 col-md-4"><button type="submit" class="btn btn-large btn-primary">Search</button></div>
+        </div>
+      </div>
+    </form>
+    <a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>
+    </div>
+      {{ macros.showgames() }}
+
+    <div class="clear"></div>
+    <div id="btm">
+        <script type="text/javascript"><!--
+        google_ad_client = "ca-pub-7026363262140448";
+        /* big h default */
+        google_ad_slot = "3155331752";
+        google_ad_width = 728;
+        google_ad_height = 90;
+        //-->
+        </script>
+        <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        </script>
+        
+
+    </div>
+    <div class="clear">
+    </div>
+    <div>
+		{{ macros.loadmorebutton() }}
+	</div>
+		
+    <div class="clear">
+    </div>
+	{{ macros.footer() }}
+  	<div class="clear">
+  	</div>
+</div>
+
+</body>
+</html>
