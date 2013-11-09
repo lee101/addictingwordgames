@@ -277,11 +277,12 @@ class TermsHandler(BaseHandler):
 
     def post(self):
         self.render('terms.html')
-class SitemapHandler(BaseHandler):
+class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
-
-        self.render('sitemap.xml', {'titles': titles})
+        self.response.headers.add_header('content-type', 'text/xml')
+        template = JINJA_ENVIRONMENT.get_template("sitemap.xml")
+        self.response.write(template.render({'titles': titles}))
 
 class LoadGamesHandler(BaseHandler):
     def get(self):
