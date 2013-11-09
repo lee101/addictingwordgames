@@ -73,7 +73,7 @@ builtins:
 
 pagespeed:
   # url_blacklist:
-  # - http://www.wordsmashing.com/music/*
+  - http://www.addictingwordgames.com/sitemap
   # - http://www.wordsmashing.com/manifest.webapp
   # - https://wordsmashing.appspot.com/buy
   enabled_rewriters:
