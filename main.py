@@ -280,7 +280,7 @@ class TermsHandler(BaseHandler):
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
-        self.response.headers.add_header('content-type', 'text/xml')
+        self.response.headers['Content-Type'] = 'text/xml'
         template = JINJA_ENVIRONMENT.get_template("sitemap.xml")
         self.response.write(template.render({'titles': titles}))
 
