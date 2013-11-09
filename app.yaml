@@ -72,7 +72,7 @@ builtins:
 - deferred: on
 
 pagespeed:
-  # url_blacklist:
+  url_blacklist:
   - http://www.addictingwordgames.com/sitemap
   # - http://www.wordsmashing.com/manifest.webapp
   # - https://wordsmashing.appspot.com/buy
