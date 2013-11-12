@@ -6,7 +6,7 @@
 	</url>
 	{% for title in titles %}
 	<url>
-		<loc>http://www.addictingwordgames.com/games/{{ title }}</loc>
+		<loc>http://www.addictingwordgames.com/game/{{ title }}</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0.6</priority>
 	</url>
