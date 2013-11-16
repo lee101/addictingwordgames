@@ -14,7 +14,7 @@ from Models import *
 from awgutils import *
 from bs4 import BeautifulSoup
 
-import ws
+from ws import ws
 
 import cloudstorage as gcs
 
