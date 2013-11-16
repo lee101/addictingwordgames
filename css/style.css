@@ -75,7 +75,7 @@ body {
     font-size: 26px;
 }
 #games {
-	margin: 20px -16px 20px 20px;
+	margin: 0 auto;
 }
 .game { 
     /*width: 20%;*/
@@ -139,42 +139,6 @@ body {
 	width: 200px;
 }
 
-#score{
-	margin: 40px 0 30px 10px;
-}
-#newgame{
-	margin: 40px 0 30px 10px;
-}
-#difficulty{
-	margin: 40px 0 30px 10px;
-}
-#bannerAdd {
-    float: left;
-    width: 165px;
-    height: 650px;
-    margin-top: 45px;
-}
-#share {
-    display: inline;
-    float: right;
-    margin-top: 35px;
-}
-#gameoptions{
-    float: left;
-    width: 220px;
-    margin-top: 66px;
-}
-#instructions{
-    float: left;
-    max-width: 754px;
-    margin-top: 5px;
-    position: relative;
-}
-#btm{
-    float: left;
-    height: 150px;
-    position: relative;
-}
 #footer {
 	display: inline;
 	margin-top: 20px;
@@ -192,50 +156,4 @@ body {
 }
 .clear{
 	clear:both;
-}
-#fb-gameoptions{
-	float: left;
-}
-#fb-logo{
-	float: left;
-}
-#fb-gameoptions div {
-margin: 10px 0 10px 10px;
-}
-#changedifficulty{
-	background-color: #FFFFFF;
-	width:512px;
-	text-align: center;
-	padding:20px 10px;
-}
-#changedifficulty button{
-	margin:0px 20px;
-}
-#fbbtm {
-	float: left;
-	height: 280px;
-	position: relative;
-	text-align:center;
-}
-#login{
-	float: right;
-}
-.winadd{
-    width: 336px;
-    height: 280px;
-    margin: 20px;
-}
-.time{
-    text-align: center;
-}
-#instructions .lead {
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: 200;
-    line-height: 36px;
-}
-.icon-volume-off,
-.icon-volume-on,
-.icon-volume-up {
-    margin-top: 5px !important;
 }

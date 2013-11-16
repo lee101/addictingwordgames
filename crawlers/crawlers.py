@@ -1,11 +1,4 @@
-import cgi
-import os
-
-from google.appengine.api import users
 import webapp2
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext import db
-from google.appengine.ext.webapp import template
 from google.appengine.api import urlfetch
 
 from google.appengine.api import images
@@ -124,18 +117,39 @@ class Crawler(webapp2.RequestHandler):
     def getTitle(self, soup):
         return soup.title.name
 
-class WordGamesCrawler(Crawler):
-    site_url = "http://wordgames.com"
 
-    def isItem(self, soup, url):
-        return soup.find('meta', attrs={'property' : "og:type", 'content' : "article"})
+class MochiGamesCrawler(Crawler):
+    '''
+    does everything manually doesnt do much using crawler
+    '''
+    def get(self):
+        # deferred.defer(self.go)
+        self.go()
 
-    def SaveItem(self, soup, url):
-        newGame = Game()
-        newGame.title = self.getTitle(soup)
-        newGame.description = self.getDescription(soup)
-        newGame.url = url
-        #newGame.
+    def go(self):
+        url = "http://feedmonger.mochimedia.com/feeds/query/?q=search%3Aword&partner_id=1e74098ab3d64da0&limit=1000"
+        #self.getUrl(url, self.callback)
+        self.callback(urlfetch.fetch(url))
+
+    def callback(self, result):
+        ndb.delete_multi(Game.query().fetch(999999, keys_only=True))
+        
+        data = json.loads(result.content)
+        games = data['games']
+        for game in games:
+            g = Game()
+            g.title = game['name'][:500]
+            g.urltitle = urlEncode(g.title)
+            g.description = game['description']
+            g.tags = game['tags']
+            g.instructions = game['instructions']
+            g.width = int(game['width'])
+            g.height = int(game['height'])
+            ##get image from url
+            g.put()
+            # deferred.defer(uploadGameThumbTask, game['thumbnail_url'], g.urltitle)
+            # deferred.defer(uploadGameSWFTask, game['swf_url'], g.urltitle)
+         
 
 def getContentType(image):
     if image.format == images.JPEG:
@@ -164,6 +178,7 @@ def saveImage(url, title):
         gcs_file.close()
         return image.width, image.height
     return (0, 0)
+
 def saveUrl(url, title):
     '''
     saves object at url in cloud storage
@@ -186,39 +201,9 @@ def uploadGameThumbTask(url, title):
     g = Game.oneByUrlTitle(title)
     g.imgwidth, g.imgheight = saveImage(url, IMG_BUCKET + title)
     g.put()
+
 def uploadGameSWFTask(url, title):
     saveUrl(url, WORD_GAMES_SWF_BUCKET + title)
-
-
-class MochiGamesCrawler(Crawler):
-    '''
-    does everything manually doesnt do much using crawler
-    '''
-    def get(self):
-        # deferred.defer(self.go)
-        self.go()
-    def go(self):
-        url = "http://feedmonger.mochimedia.com/feeds/query/?q=search%3Aword&partner_id=1e74098ab3d64da0&limit=1000"
-        #self.getUrl(url, self.callback)
-        self.callback(urlfetch.fetch(url))
-    def callback(self, result):
-        ndb.delete_multi(Game.query().fetch(999999, keys_only=True))
-        
-        data = json.loads(result.content)
-        games = data['games']
-        for game in games:
-            g = Game()
-            g.title = game['name'][:500]
-            g.urltitle = urlEncode(g.title)
-            g.description = game['description']
-            g.tags = game['tags']
-            g.instructions = game['instructions']
-            g.width = int(game['width'])
-            g.height = int(game['height'])
-            ##get image from url
-            g.put()
-            deferred.defer(uploadGameThumbTask, game['thumbnail_url'], g.urltitle)
-            deferred.defer(uploadGameSWFTask, game['swf_url'], g.urltitle)
-            
+   
 
 

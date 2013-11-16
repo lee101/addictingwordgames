@@ -1,7 +1,7 @@
 import urllib
 import re
 
-def removeNonAscii(s): 
+def removeNonAscii(s):
     return "".join(i for i in s if ord(i)<128)
 
 def urlEncode(s):
@@ -11,9 +11,11 @@ def urlEncode(s):
     return urllib.quote_plus(s)
 
 def getImgUrl(title):
-    return 'http://commondatastorage.googleapis.com/wordgames%2F'+title
+    return 'http://commondatastorage.googleapis.com/wordgames%2F' + title
+
 def getSWFUrl(title):
-    return 'http://games.addictingwordgames.com/'+title
+    return 'http://games.addictingwordgames.com/' + title
+
 def shouldShowAddBefore(game):
     if hash(game.title) % 7 == 0:
         return True
