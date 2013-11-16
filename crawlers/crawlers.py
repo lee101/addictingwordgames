@@ -14,6 +14,8 @@ from Models import *
 from awgutils import *
 from bs4 import BeautifulSoup
 
+import ws
+
 import cloudstorage as gcs
 
 
@@ -147,8 +149,9 @@ class MochiGamesCrawler(Crawler):
             g.height = int(game['height'])
             ##get image from url
             g.put()
-            # deferred.defer(uploadGameThumbTask, game['thumbnail_url'], g.urltitle)
-            # deferred.defer(uploadGameSWFTask, game['swf_url'], g.urltitle)
+            if not ws.debug:
+                deferred.defer(uploadGameThumbTask, game['thumbnail_url'], g.urltitle)
+                deferred.defer(uploadGameSWFTask, game['swf_url'], g.urltitle)
          
 
 def getContentType(image):
