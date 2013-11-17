@@ -1,38 +1,38 @@
 
 #overlay {
-	position:fixed; 
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-	background:#000;
-	opacity:0.5;
-	filter:alpha(opacity=50);
+    position:fixed; 
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    opacity:0.5;
+    filter:alpha(opacity=50);
 }
 
 #modal {
-	position:absolute;
-	/*background:url(tint20.png) 0 0 repeat;*/
-	background:rgba(0,0,0,0.2);
-	border-radius:14px;
-	padding:8px;
+    position:absolute;
+    /*background:url(tint20.png) 0 0 repeat;*/
+    background:rgba(0,0,0,0.2);
+    border-radius:14px;
+    padding:8px;
 }
 
 #content {
-	border-radius:8px;
-	background:#fff;
-	padding:20px;
+    border-radius:8px;
+    background:#fff;
+    padding:20px;
 }
 
 #close {
-	position:absolute;
-	background:url('/img/close.png') 0 0 no-repeat;
-	width:24px;
-	height:27px;
-	display:block;
-	text-indent:-9999px;
-	top:-7px;
-	right:-7px;
+    position:absolute;
+    background:url('/img/close.png') 0 0 no-repeat;
+    width:24px;
+    height:27px;
+    display:block;
+    text-indent:-9999px;
+    top:-7px;
+    right:-7px;
 }
 
 
@@ -75,7 +75,7 @@ body {
     font-size: 26px;
 }
 #games {
-	margin: 0 auto;
+    margin: 0 auto;
 }
 .game { 
     /*width: 20%;*/
@@ -92,34 +92,34 @@ body {
     border-color: #fadf98;
 }
 .game-link {
-	display:block;
-	margin: 10px;
+    display:block;
+    margin: 10px;
 }
 .games-bar {
-	width:330px;
-	float: left;
+    width:330px;
+    float: left;
 }
 .game-tag {
-	font-size: 18px;
-	margin: 7px;
+    font-size: 18px;
+    margin: 7px;
 }
 .game-panel {
 }
 .game-panel-description {
-	margin:10px;
+    margin:10px;
 }
 .game-panel-instructions-header {
-	font-weight:bold;
+    font-weight:bold;
 }
 .game-panel-instructions {
-	margin:10px;
+    margin:10px;
 }
 .small-description-text {
-	height: 63px;
-	text-overflow: clip;
-	text-overflow: ellipsis;
-	text-overflow: "...";
-	overflow: hidden;
+    height: 63px;
+    text-overflow: clip;
+    text-overflow: ellipsis;
+    text-overflow: "...";
+    overflow: hidden;
 }
 .small-description-text {
     margin: 10px;
@@ -140,24 +140,24 @@ body {
     position: relative;
 }
 .load-more {
-	width: 200px;
+    width: 200px;
 }
 
 #footer {
-	display: inline;
-	margin-top: 20px;
-	margin-bottom: 30px;
-	float: left;
-	width: 100%;
+    display: inline;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    float: left;
+    width: 100%;
 }
 #footer {
-	text-align: center;
+    text-align: center;
 }
 #footer a {
-	font-size: small;
-	margin: 0 11px;
-	color: Gray;
+    font-size: small;
+    margin: 0 11px;
+    color: Gray;
 }
 .clear{
-	clear:both;
+    clear:both;
 }
