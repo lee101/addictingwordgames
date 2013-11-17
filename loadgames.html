@@ -10,7 +10,7 @@
 	{{ macros.showmaingame() }}
 	{{ macros.showwordsmashing() }}
     {% for game in games %}
-    	{% if shouldShowAddBefore(game) %}
+    	{% if awgutils.shouldShowAddBefore(game) %}
 			{{ showadd() }}
     	{% endif %}
         {{ macros.showgame(game) }}

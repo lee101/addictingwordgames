@@ -1,10 +1,20 @@
 {% macro showgame(game) -%}
     <div class="game">
-        <a class="game-link" href="/game/{{ game.urltitle }}" title="{{ game.title }}"><img src="{{ getImgUrl(game.urltitle) }}" alt="{{ game.title }}" width="{{ game.imgwidth }}" height="{{ game.imgheight }}"/></a>
+        <a class="game-link" href="/game/{{ game.urltitle }}" title="{{ game.title }}"><img src="{{ awgutils.getImgUrl(game.urltitle) }}" alt="{{ game.title }}" width="{{ game.imgwidth }}" height="{{ game.imgheight }}"/></a>
         <a href="/game/{{ game.urltitle }}" title="{{ game.title }}">{{ game.title }}</a>
         <p class="small-description-text">{{ game.description }}</p>
+
     </div>
 {%- endmacro %}
+
+{% macro tagsFor(game) -%}
+    <p class="game-tags">
+        {% for tag in game.tags %}
+            <a class="game-tag" href="/games/{{ tag }}" title="{{ awgutils.titleDecode(tag) }}">{{ awgutils.titleDecode(tag) }}</a>
+        {% endfor %}
+    </p>
+{%- endmacro %}
+
 
 {% macro showwordsmashing() -%}
     <div class="game game-featured">
@@ -15,33 +25,34 @@
 {%- endmacro %}
 
 {% macro showmaingame() -%}
-	{% if game %}
-    <div class="game game-panel" style="width:{{ game.width+40 }}px;">
-    	<h2>{{ game.title }}</h2>
-    	<div>
-      	{{ renderswf() }}
-     	</div>
-     	{{ shareBtnsHorizontal(url) }}
-     	{% if game.description %}
-     	<div class="game-panel-description">
-     		<p>{{ game.description }}</p>
-     	</div>
-     	{% endif %}
-     	{% if game.instructions %}
-		<div class="game-panel-instructions">
-			<p class="game-panel-instructions-header">Instructions:</p>
-			<p>{{ game.instructions }}</p>
-		</div>
-		{% endif %}
-	</div>
-	{% endif %}
+  {% if game %}
+      <div class="game game-panel" style="width:{{ game.width+40 }}px;">
+          <h2>{{ game.title }}</h2>
+          <div>
+              {{ renderswf() }}
+          </div>
+          {{ shareBtnsHorizontal(url) }}
+          {% if game.description %}
+          <div class="game-panel-description">
+              <p>{{ game.description }}</p>
+          </div>
+          {% endif %}
+          {% if game.instructions %}
+              <div class="game-panel-instructions">
+                  <p class="game-panel-instructions-header">Instructions:</p>
+                  <p>{{ game.instructions }}</p>
+              </div>
+          {% endif %}
+          {{ tagsFor(game) }}
+      </div>
+  {% endif %}
 {%- endmacro %}
 
 {% macro showadd(num_adds_shown) -%}
-	{% if num_adds_shown > 3 %}
-	<div class="game" style="height:260px">
-	<script id="mNCC" language="javascript">  medianet_width='300';  medianet_height= '250';  medianet_crid='682942442';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script> 
-	</div>
+  {% if num_adds_shown > 3 %}
+  <div class="game" style="height:260px">
+  <script id="mNCC" language="javascript">  medianet_width='300';  medianet_height= '250';  medianet_crid='682942442';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script> 
+  </div>
   {% elif num_adds_shown == 3 %}
   <div class="game" style="height: 610px">
   <script id="mNCC" language="javascript">  medianet_width='160';  medianet_height= '600';  medianet_crid='151754842';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script> 
@@ -58,29 +69,29 @@
   (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
   </div>
-	{% else %}
-	<div class="game">
-		<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<!-- AWG BOX -->
-		<ins class="adsbygoogle"
-		     style="display:inline-block;width:300px;height:250px"
-		     data-ad-client="ca-pub-7026363262140448"
-		     data-ad-slot="9106168954"></ins>
-		<script>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
-	</div>
-	{% endif %}
+  {% else %}
+  <div class="game">
+    <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- AWG BOX -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:300px;height:250px"
+         data-ad-client="ca-pub-7026363262140448"
+         data-ad-slot="9106168954"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  {% endif %}
 {%- endmacro %}
 
 {% macro showgames() -%}
 <div id="games">
-	{{ showmaingame() }}
-	{{ showwordsmashing() }}
+  {{ showmaingame() }}
+  {{ showwordsmashing() }}
   {% set num_adds_shown = 0 %}
     {% for game in games %}
-    	{% if shouldShowAddBefore(game) %}
-			{{ showadd(num_adds_shown) }}
+      {% if awgutils.shouldShowAddBefore(game) %}
+      {{ showadd(num_adds_shown) }}
       {% set num_adds_shown = num_adds_shown + 1 %}
       {% endif %}
         {{ showgame(game) }}
@@ -89,18 +100,18 @@
 {%- endmacro %}
 
 {% macro renderswf() -%}
-<object type="application/x-shockwave-flash" data="{{ getSWFUrl(game.urltitle) }}" 
+<object type="application/x-shockwave-flash" data="{{ awgutils.getSWFUrl(game.urltitle) }}" 
 id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;">
 </object>
 {%- endmacro %}
 
 {% macro topbar() -%}
     <div id="main">
-      	<div id="logo">
+        <div id="logo">
               <h1 class="header"><a href="/" title="Addicting Word Games">Addicting <span style="color:gray;display:inline-block;">Word Games</span></a></h1>
         </div>
         <!-- <div id="login">
-        	<fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>
+          <fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>
         </div> -->
     </div>
 {%- endmacro %}
@@ -111,7 +122,7 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
 
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="/css/style.css"/>
-	<link rel="stylesheet" href="/css/social-likes.css">
+  <link rel="stylesheet" href="/css/social-likes.css">
     <!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" type="text/css" /><![endif]-->
     <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
 
@@ -119,7 +130,7 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
     <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
-	
+  
     <script src="/js/social-likes.min.js"></script>
     <script>
     $(function(){
@@ -137,28 +148,35 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
     var isfetching=false;
     var curr_cursor = '{{ next_page_cursor }}';
     function loadmore() {
-    	isfetching=true;
-      $('.load-more').attr('disabled', 'disabled');
-    	$.ajax({
-    		'url': '/loadgames?cursor=' + curr_cursor + '{% if urltitle %}&title={{ urltitle }}{% endif %}',
-    		success: function(data) {
-          $('.load-more').removeAttr('disabled');
-	    		a = $('<div></div>');
-  				a.html(data);
-  				curr_cursor = a.find('#cursor').attr('data-cursor');
-  				items = a.find('.game');
-  				$('#games').append(items);
-	    		// $('#games').masonry( 'addItems', items );
-	    		$('#games').masonry( 'appended', items );
-	    		
-	    		isfetching=false;
-    		},
-    		cache: false
-    	});
-    	return false;
+      if(!isfetching) {
+        
+          isfetching=true;
+          $('.load-more').attr('disabled', 'disabled');
+          $.ajax({
+              'url': '/loadgames?cursor=' + curr_cursor + '{% if urltitle %}&title={{ urltitle }}{% endif %}',
+              'success': function(data) {
+                  $('.load-more').removeAttr('disabled');
+                  a = $('<div></div>');
+                  a.html(data);
+                  curr_cursor = a.find('#cursor').attr('data-cursor');
+                  items = a.find('.game');
+                  $('#games').append(items);
+                  // $('#games').masonry( 'addItems', items );
+                  $('#games').masonry( 'appended', items );
+                  
+                  isfetching=false;
+              },
+              'error': function(data) {
+                  $('.load-more').removeAttr('disabled');
+                  $('.load-more').html('No More Results');
+              },
+              cache: false
+          });
+      }
+      return false;
     }
     </script>
-	<script>
+  <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -187,42 +205,42 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
 
 {% macro footer() -%}
 <div id="footer">
-		<p>
-			{% if '/contact' in url %}
-			<span>Contact</span>
-			{% else %}
-			<a href="/contact" title="Contact Us">Contact</a>
-			{% endif %}
-			
-			{% if '/about' in url %}
-			<span>About Us</span>
-			{% else %}
-			<a href="/about" title="About Addicting Word Games">About Us</a>
-			{% endif %}
-			
-			{% if '/terms' in url %}
-			<span>Terms &amp; Conditions</span>
-			{% else %}
-			<a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
-			{% endif %}
-			
-			{% if '/privacy-policy' in url %}
-			<span>Privacy Policy</span>
-			{% else %}
-		    <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
-			{% endif %}
-			
-		    <span>© 2013 Addicting Word Games</span>
+    <p>
+      {% if '/contact' in url %}
+      <span>Contact</span>
+      {% else %}
+      <a href="/contact" title="Contact Us">Contact</a>
+      {% endif %}
+      
+      {% if '/about' in url %}
+      <span>About Us</span>
+      {% else %}
+      <a href="/about" title="About Addicting Word Games">About Us</a>
+      {% endif %}
+      
+      {% if '/terms' in url %}
+      <span>Terms &amp; Conditions</span>
+      {% else %}
+      <a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
+      {% endif %}
+      
+      {% if '/privacy-policy' in url %}
+      <span>Privacy Policy</span>
+      {% else %}
+        <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
+      {% endif %}
+      
+        <span>© 2013 Addicting Word Games</span>
             <!-- <a href="http://www.facebook.com/addictingwordgames" title="Addicting Word Games on Facebook" target="_blank">
-		        <img src="/img/facebook.jpg" alt="Addicting Word Games on Facebook" width="144px" height="44px">
-		    </a> -->
-		</p>
-	  </div>
+            <img src="/img/facebook.jpg" alt="Addicting Word Games on Facebook" width="144px" height="44px">
+        </a> -->
+    </p>
+    </div>
 {%- endmacro %}
 
 {%- macro shareBtnsHorizontal(url) %}
 <div style="height:25px">
-	<span class="fb-like" data-href="{{ url }}" data-send="true" data-width="380" data-show-faces="true"></span>
+  <span class="fb-like" data-href="{{ url }}" data-send="true" data-width="380" data-show-faces="true"></span>
 </div>
 <ul class="social-likes">
   <li class="facebook" title="Share link on Facebook">Facebook</li>

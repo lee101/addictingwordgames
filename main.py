@@ -15,7 +15,7 @@ from crawlers.crawlers import *
 from cgi import escape
 import time
 from google.appengine.datastore.datastore_query import Cursor
-from awgutils import *
+import awgutils
 import random
 
 from google.appengine.api import images
@@ -174,9 +174,7 @@ class BaseHandler(webapp2.RequestHandler):
                 # 'highscores':highscores,
                 'glogin_url': users.create_login_url(self.request.uri),
                 'glogout_url': users.create_logout_url(self.request.uri),
-                'getImgUrl':getImgUrl,
-                'getSWFUrl':getSWFUrl,
-                'shouldShowAddBefore':shouldShowAddBefore,
+                'awgutils': awgutils,
                 'url': self.request.uri,
                 'random_game_url': random_game_url
             }
@@ -329,6 +327,24 @@ class GameHandler(BaseHandler):
     def post(self, title):
         self.render('game.html')
 
+class TagHandler(BaseHandler):
+    def get(self, tag):
+        curs = Cursor(urlsafe=self.request.get('cursor'))
+        games, next_curs, more = Game.byTag(tag).fetch_page(40, start_cursor=curs)
+
+        if more and next_curs:
+            next_page_cursor = next_curs.urlsafe()
+        else:
+            next_page_cursor = None
+        logging.error("asdf")
+        extraParams = {
+                       'games': games,
+                       'next_page_cursor': next_page_cursor,
+                       'tag': tag,
+                       'tagtitle': awgutils.titleDecode(tag),
+                       }
+        self.render('templates/tag.html', extraParams)
+
 class LogoutHandler(BaseHandler):
     def get(self):
         if self.current_user is not None:
@@ -367,6 +383,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
     ('/game/(.*)', GameHandler),
+    ('/games/(.*)', TagHandler),
     ('/gomochi', MochiGamesCrawler),
     ('/loadgames', LoadGamesHandler),
     ('/sitemap', SitemapHandler),

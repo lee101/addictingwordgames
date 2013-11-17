@@ -20,3 +20,6 @@ def shouldShowAddBefore(game):
     if hash(game.title) % 7 == 0:
         return True
     return False
+
+def titleDecode(title):
+    return title.replace("-", " ").title()

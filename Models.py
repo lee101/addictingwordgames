@@ -112,6 +112,7 @@ class Game(ndb.Model):
     imgwidth = ndb.IntegerProperty()
     imgheight = ndb.IntegerProperty()
     tags = ndb.StringProperty(repeated=True)
+
     @classmethod
     def oneByTitle(cls, title):
         game = cls.query(cls.title == title).get()#.all()?
@@ -143,6 +144,11 @@ class Game(ndb.Model):
         if len(all_titles) <= 0:
              all_titles = map(lambda x: x.urltitle, cls.query().fetch(5000, projection=[cls.urltitle]))
         return all_titles
+
+    @classmethod
+    def byTag(cls, tag):
+        return cls.query(cls.tags == tag)
+
 class Photo(ndb.Model):
     title = ndb.StringProperty()
     full_size_image = ndb.BlobProperty()

@@ -11,7 +11,7 @@ import json
 import logging
 
 from Models import *
-from awgutils import *
+import awgutils
 from bs4 import BeautifulSoup
 
 from ws import ws
@@ -141,9 +141,9 @@ class MochiGamesCrawler(Crawler):
         for game in games:
             g = Game()
             g.title = game['name'][:500]
-            g.urltitle = urlEncode(g.title)
+            g.urltitle = awgutils.urlEncode(g.title)
             g.description = game['description']
-            g.tags = game['tags']
+            g.tags = map(awgutils.urlEncode, game['tags'])
             g.instructions = game['instructions']
             g.width = int(game['width'])
             g.height = int(game['height'])
