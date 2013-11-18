@@ -134,24 +134,28 @@ class MochiGamesCrawler(Crawler):
         self.callback(urlfetch.fetch(url))
 
     def callback(self, result):
-        ndb.delete_multi(Game.query().fetch(999999, keys_only=True))
+        # ndb.delete_multi(Game.query().fetch(999999, keys_only=True))
         
         data = json.loads(result.content)
         games = data['games']
+        gamesmodels = []
         for game in games:
             g = Game()
             g.title = game['name'][:500]
             g.urltitle = awgutils.urlEncode(g.title)
+            if Game.oneByUrlTitle(g.urltitle):
+                continue;
             g.description = game['description']
             g.tags = map(awgutils.urlEncode, game['tags'])
             g.instructions = game['instructions']
             g.width = int(game['width'])
             g.height = int(game['height'])
-            ##get image from url
-            g.put()
+            ##get image from
+            gamesmodels.append(g)
             if not ws.debug:
                 deferred.defer(uploadGameThumbTask, game['thumbnail_url'], g.urltitle)
                 deferred.defer(uploadGameSWFTask, game['swf_url'], g.urltitle)
+        ndb.put(gamesmodels)
          
 
 def getContentType(image):
