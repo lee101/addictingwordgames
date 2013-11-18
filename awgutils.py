@@ -7,7 +7,7 @@ def removeNonAscii(s):
 def urlEncode(s):
     s = removeNonAscii(s.replace(" ", "-").lower())
     # s = s.translate(string.maketrans("", "", ), '!@#;:\',./<>?')
-    s = re.sub("[\.\t\,\:;\(\)'@!\\\?#/<>]", "", s, 0, 0)
+    s = re.sub("[\.\t\,\:;\(\)'@!\\\?#/<>\s]", "", s, 0, 0)
     return urllib.quote_plus(s)
 
 def getImgUrl(title):

@@ -145,7 +145,7 @@ class BaseHandler(webapp2.RequestHandler):
         return self.session_store.get_session()
 
 
-    def getRandomGameUrl(self, user):
+    def getRandomGameUrl(self):
         '''
         todo implement user played/notplayed
         '''
@@ -158,13 +158,13 @@ class BaseHandler(webapp2.RequestHandler):
         # achievements = Acheivement.all().filter("user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         # if len(achievements) == 0:
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
-        currentUser = self.current_user
+        # currentUser = self.current_user
         try:
-            random_game_url = self.getRandomGameUrl(currentUser)
+            random_game_url = self.getRandomGameUrl()
             template_values = {
                 'ws': ws,
                 'facebook_app_id': FACEBOOK_APP_ID,
-                'current_user': currentUser,
+                # 'current_user': currentUser,
                 # 'achievements': achievements,
                 # 'UNLOCKED_MEDIUM':UNLOCKED_MEDIUM,
                 # 'UNLOCKED_HARD':UNLOCKED_HARD,
@@ -172,8 +172,8 @@ class BaseHandler(webapp2.RequestHandler):
                 # 'EASY':EASY,
                 # 'HARD':HARD,
                 # 'highscores':highscores,
-                'glogin_url': users.create_login_url(self.request.uri),
-                'glogout_url': users.create_logout_url(self.request.uri),
+                # 'glogin_url': users.create_login_url(self.request.uri),
+                # 'glogout_url': users.create_logout_url(self.request.uri),
                 'awgutils': awgutils,
                 'url': self.request.uri,
                 'random_game_url': random_game_url
