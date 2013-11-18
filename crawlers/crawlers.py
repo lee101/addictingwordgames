@@ -155,7 +155,7 @@ class MochiGamesCrawler(Crawler):
             if not ws.debug:
                 deferred.defer(uploadGameThumbTask, game['thumbnail_url'], g.urltitle)
                 deferred.defer(uploadGameSWFTask, game['swf_url'], g.urltitle)
-        ndb.put(gamesmodels)
+        ndb.put_multi(gamesmodels)
          
 
 def getContentType(image):
