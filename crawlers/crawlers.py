@@ -139,6 +139,8 @@ class MochiGamesCrawler(Crawler):
         data = json.loads(result.content)
         games = data['games']
         gamesmodels = []
+        thumbnail_urls = []
+        swf_urls = []
         for game in games:
             g = Game()
             g.title = game['name'][:500]
@@ -152,10 +154,14 @@ class MochiGamesCrawler(Crawler):
             g.height = int(game['height'])
             ##get image from
             gamesmodels.append(g)
-            if not ws.debug:
-                deferred.defer(uploadGameThumbTask, game['thumbnail_url'], g.urltitle)
-                deferred.defer(uploadGameSWFTask, game['swf_url'], g.urltitle)
+            thumbnail_urls.append(game['thumbnail_url'])
+            swf_urls.append(game['swf_url'])
         ndb.put_multi(gamesmodels)
+        if not ws.debug:
+            for i in range(len(thumbnail_urls)):
+                deferred.defer(uploadGameThumbTask, thumbnail_urls[i], gamesmodels[i].urltitle)
+                deferred.defer(uploadGameSWFTask, swf_urls[i], gamesmodels[i].urltitle)
+            
          
 
 def getContentType(image):

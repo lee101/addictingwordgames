@@ -101,7 +101,7 @@
 
 {% macro renderswf() -%}
 <object type="application/x-shockwave-flash" data="{{ awgutils.getSWFUrl(game.urltitle) }}" 
-id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;">
+id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;" wmode="direct">
 </object>
 {%- endmacro %}
 
@@ -149,7 +149,7 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
     var curr_cursor = '{{ next_page_cursor }}';
     function loadmore() {
       if(!isfetching) {
-        
+
           isfetching=true;
           $('.load-more').attr('disabled', 'disabled');
           $.ajax({
