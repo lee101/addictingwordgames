@@ -51,11 +51,11 @@
 {% macro showadd(num_adds_shown) -%}
   {% if num_adds_shown > 3 %}
   <div class="game" style="height:260px">
-  <script id="mNCC" language="javascript">  medianet_width='300';  medianet_height= '250';  medianet_crid='682942442';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script> 
+  <script id="mNCC" language="javascript">  medianet_width='300';  medianet_height= '250';  medianet_crid='682942442';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script>
   </div>
   {% elif num_adds_shown == 3 %}
   <div class="game" style="height: 610px">
-  <script id="mNCC" language="javascript">  medianet_width='160';  medianet_height= '600';  medianet_crid='151754842';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script> 
+  <script id="mNCC" language="javascript">  medianet_width='160';  medianet_height= '600';  medianet_crid='151754842';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script>
   </div>
   {% elif num_adds_shown == 2 %}
   <div class="game" style="height:605px">
@@ -100,7 +100,7 @@
 {%- endmacro %}
 
 {% macro renderswf() -%}
-<object type="application/x-shockwave-flash" data="{{ awgutils.getSWFUrl(game.urltitle) }}" 
+<object type="application/x-shockwave-flash" data="{{ awgutils.getSWFUrl(game.urltitle) }}"
 id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;" wmode="direct">
 </object>
 {%- endmacro %}
@@ -130,7 +130,7 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
     <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
-  
+
     <script src="/js/social-likes.min.js"></script>
     <script>
     $(function(){
@@ -160,15 +160,17 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
                   a.html(data);
                   curr_cursor = a.find('#cursor').attr('data-cursor');
                   items = a.find('.game');
-                  $('#games').append(items);
+                  var $games = $('#games');
+                  $games.append(items);
                   // $('#games').masonry( 'addItems', items );
-                  $('#games').masonry( 'appended', items );
-                  
+                  $games.masonry( 'appended', items );
+
                   isfetching=false;
               },
               'error': function(data) {
-                  $('.load-more').removeAttr('disabled');
-                  $('.load-more').html('No More Results');
+                  var $load = $('.load-more');
+                  $load.removeAttr('disabled');
+                  $load.html('No More Results');
               },
               cache: false
           });
@@ -199,6 +201,17 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
 }(document, 'script', 'facebook-jssdk'));</script>
 {%- endmacro %}
 
+{% macro templates() -%}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=138831849632195";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{%- endmacro %}
+
 {% macro loadmorebutton() -%}
 <a class="btn btn-large btn-primary load-more" href="#" onclick="loadmore();return false;" title="Load Addicting Word Games!">Load More...</a>
 {%- endmacro %}
@@ -211,25 +224,25 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
       {% else %}
       <a href="/contact" title="Contact Us">Contact</a>
       {% endif %}
-      
+
       {% if '/about' in url %}
       <span>About Us</span>
       {% else %}
       <a href="/about" title="About Addicting Word Games">About Us</a>
       {% endif %}
-      
+
       {% if '/terms' in url %}
       <span>Terms &amp; Conditions</span>
       {% else %}
       <a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
       {% endif %}
-      
+
       {% if '/privacy-policy' in url %}
       <span>Privacy Policy</span>
       {% else %}
-        <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a> 
+        <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a>
       {% endif %}
-      
+
         <span>© 2013 Addicting Word Games</span>
             <!-- <a href="http://www.facebook.com/addictingwordgames" title="Addicting Word Games on Facebook" target="_blank">
             <img src="/img/facebook.jpg" alt="Addicting Word Games on Facebook" width="144px" height="44px">
