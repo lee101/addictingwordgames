@@ -77,12 +77,12 @@ pagespeed:
   # - http://www.wordsmashing.com/manifest.webapp
   # - https://wordsmashing.appspot.com/buy
   enabled_rewriters:
-  # - CollapseWhitespace
-  # - CombineHeads
+  - CollapseWhitespace
+  - CombineHeads
   # - ElideAttributes
-  # - RemoveComments
+  - RemoveComments
   - MinifyCss
-  # - InlineJs
+#  - InlineJs
   # - LeftTrimUrls
 
 inbound_services:
