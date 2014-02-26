@@ -139,10 +139,12 @@ body {
     text-overflow: "...";
     overflow: hidden;
 }
+.small-description-text-featured {
+    height: auto;
+}
 
 .small-description-text {
     margin: 10px;
-    font-size:
 }
 
 #searchbox {
