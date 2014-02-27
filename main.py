@@ -42,6 +42,7 @@ class BaseHandler(webapp2.RequestHandler):
     user. See http://developers.facebook.com/docs/authentication/ for
     more information.
     """
+
     @property
     def current_user(self):
         #===== Google Auth
@@ -51,7 +52,7 @@ class BaseHandler(webapp2.RequestHandler):
             if dbUser:
                 return dbUser
             else:
-                
+
                 dbUser = User()
                 dbUser.id = user.user_id()
                 dbUser.name = user.nickname()
@@ -67,8 +68,8 @@ class BaseHandler(webapp2.RequestHandler):
             # Either used just logged in or just saw the first page
             # We'll see here
             fbcookie = facebook.get_user_from_cookie(self.request.cookies,
-                                                   FACEBOOK_APP_ID,
-                                                   FACEBOOK_APP_SECRET)
+                                                     FACEBOOK_APP_ID,
+                                                     FACEBOOK_APP_SECRET)
             if fbcookie:
                 # Okay so user logged in.
                 # Now, check to see if existing user
@@ -100,9 +101,9 @@ class BaseHandler(webapp2.RequestHandler):
         anonymous_cookie = self.request.cookies.get('wsuser', None)
         if anonymous_cookie is None:
             cookie_value = utils.random_string()
-            self.response.set_cookie('wsuser', cookie_value, max_age = 15724800)
+            self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
             anon_user = User()
-            anon_user.cookie_user=1
+            anon_user.cookie_user = 1
             anon_user.id = cookie_value
             anon_user.put()
             return anon_user
@@ -111,9 +112,9 @@ class BaseHandler(webapp2.RequestHandler):
             if anon_user:
                 return anon_user
             cookie_value = utils.random_string()
-            self.response.set_cookie('wsuser', cookie_value, max_age = 15724800)
+            self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
             anon_user = User()
-            anon_user.cookie_user=1
+            anon_user.cookie_user = 1
             anon_user.id = cookie_value
             anon_user.put()
             return anon_user
@@ -151,9 +152,9 @@ class BaseHandler(webapp2.RequestHandler):
         '''
         titles = Game.getAllTitles()
         choice = random.choice(titles)
-        return '/game/'+choice
-    
-    def render(self, view_name, extraParams = {}):
+        return '/game/' + choice
+
+    def render(self, view_name, extraParams={}):
 
         # achievements = Acheivement.all().filter("user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
         # if len(achievements) == 0:
@@ -186,13 +187,16 @@ class BaseHandler(webapp2.RequestHandler):
             logging.error(Exception)
             logging.error(err)
             import traceback
+
             traceback.print_exc()
             self.response.write(err)
+
+
 #             self.response.write(traceback.print_exc())
 #             raise err
-            
 
-            
+
+
 
 
 class ScoresHandler(BaseHandler):
@@ -205,13 +209,14 @@ class ScoresHandler(BaseHandler):
         if userscore.difficulty not in DIFFICULTIES:
             raise Exception("unknown difficulty: " + userscore.difficulty)
 
-
         if self.current_user:
             userscore.user = self.current_user.key
         userscore.put()
         HighScore.updateHighScoreFor(self.current_user, userscore.score, userscore.difficulty, userscore.timedMode)
 
         self.response.out.write('success')
+
+
 class AchievementsHandler(BaseHandler):
     def get(self):
         acheive = Achievement()
@@ -219,11 +224,11 @@ class AchievementsHandler(BaseHandler):
         if acheive.type not in ACHEIVEMENTS:
             raise Exception("unknown achievement: " + acheive.type)
         if self.current_user:
-
             acheive.user = self.current_user.key
         acheive.put()
         #graph = facebook.GraphAPI(self.current_user['access_token'])
         self.response.out.write('success')
+
 
 class MainHandler(BaseHandler):
     def get(self):
@@ -236,51 +241,41 @@ class MainHandler(BaseHandler):
             next_page_cursor = None
         extraParams = {'games': games,
                        'next_page_cursor': next_page_cursor}
-        self.render('index.html', extraParams)
-        
-    def post(self):
-        self.render('index.html')
+        self.render('/templates/index.jinja2', extraParams)
+
 
 class FbHandler(BaseHandler):
     def get(self):
-        self.render('facebook.html')
+        self.render('/templates/facebook.html')
 
-    def post(self):
-        self.render('facebook.html')
 
 class ContactHandler(BaseHandler):
     def get(self):
-        self.render('contact.html')
+        self.render('/templates/contact.jinja2')
 
-    def post(self):
-        self.render('contact.html')
 
 class AboutHandler(BaseHandler):
     def get(self):
-        self.render('about.html')
+        self.render('/templates/about.jinja2')
 
-    def post(self):
-        self.render('about.html')
 
 class PrivacyHandler(BaseHandler):
     def get(self):
-        self.render('privacy-policy.html')
+        self.render('/templates/privacy-policy.jinja2')
 
-    def post(self):
-        self.render('privacy-policy.html')
 
 class TermsHandler(BaseHandler):
     def get(self):
-        self.render('terms.html')
+        self.render('/templates/terms.jinja2')
 
-    def post(self):
-        self.render('terms.html')
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
         self.response.headers['Content-Type'] = 'text/xml'
-        template = JINJA_ENVIRONMENT.get_template("sitemap.xml")
+        template = JINJA_ENVIRONMENT.get_template("/templates/sitemap.xml")
         self.response.write(template.render({'titles': titles}))
+
 
 class LoadGamesHandler(BaseHandler):
     def get(self):
@@ -288,11 +283,11 @@ class LoadGamesHandler(BaseHandler):
             urltitle = self.request.get('title')
             curs = Cursor(urlsafe=self.request.get('cursor'))
             if urltitle:
-                
+
                 games, next_curs, more = Game.randomOrder(urltitle).fetch_page(40, start_cursor=curs)
             else:
                 games, next_curs, more = Game.query().fetch_page(40, start_cursor=curs)
-                
+
             if more and next_curs:
                 next_page_cursor = next_curs.urlsafe()
             else:
@@ -303,9 +298,10 @@ class LoadGamesHandler(BaseHandler):
             logging.error(Exception)
             logging.error(err)
             import traceback
+
             traceback.print_exc()
             self.response.write(err)
-        self.render('loadgames.html', extraParams)
+        self.render('/templates/loadgames.jinja2', extraParams)
 
 
 class GameHandler(BaseHandler):
@@ -322,10 +318,8 @@ class GameHandler(BaseHandler):
                        'games': games,
                        'next_page_cursor': next_page_cursor,
                        'urltitle': urltitle}
-        self.render('game.html', extraParams)
+        self.render('/templates/game.jinja2', extraParams)
 
-    def post(self, title):
-        self.render('game.html')
 
 class TagHandler(BaseHandler):
     def get(self, tag):
@@ -338,12 +332,13 @@ class TagHandler(BaseHandler):
             next_page_cursor = None
         logging.error("asdf")
         extraParams = {
-                       'games': games,
-                       'next_page_cursor': next_page_cursor,
-                       'tag': tag,
-                       'tagtitle': awgutils.titleDecode(tag),
-                       }
-        self.render('templates/tag.html', extraParams)
+            'games': games,
+            'next_page_cursor': next_page_cursor,
+            'tag': tag,
+            'tagtitle': awgutils.titleDecode(tag),
+        }
+        self.render('/templates/tag.jinja2', extraParams)
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -356,37 +351,37 @@ class LogoutHandler(BaseHandler):
 #     def get(self, title):
 #         if self.request.get("id"):
 #             photo = Photo.get_by_id(int(self.request.get("id")))
-# 
+#
 #             if photo:
 #                 img = images.Image(photo.full_size_image)
 #                 img.resize(width=80, height=100)
 #                 #img.im_feeling_lucky()
 #                 thumbnail = img.execute_transforms(output_encoding=images.JPEG)
-# 
+#
 #                 self.response.headers['Content-Type'] = 'image/jpeg'
 #                 self.response.out.write(thumbnail)
 #                 return
-# 
+#
 #         # Either "id" wasn't provided, or there was no image with that ID
 #         # in the datastore.
 #         self.error(404)
 
 
 app = ndb.toplevel(webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/scores', ScoresHandler),
-    ('/achievements', AchievementsHandler),
-    ('/logout', LogoutHandler),
-    ('/privacy-policy', PrivacyHandler),
-    ('/terms', TermsHandler),
-    ('/facebook', FbHandler),
-    ('/about', AboutHandler),
-    ('/contact', ContactHandler),
-    ('/game/(.*)', GameHandler),
-    ('/games/(.*)', TagHandler),
-    ('/gomochi', MochiGamesCrawler),
-    ('/loadgames', LoadGamesHandler),
-    ('/sitemap', SitemapHandler),
+                                               ('/', MainHandler),
+                                               ('/scores', ScoresHandler),
+                                               ('/achievements', AchievementsHandler),
+                                               ('/logout', LogoutHandler),
+                                               ('/privacy-policy', PrivacyHandler),
+                                               ('/terms', TermsHandler),
+                                               ('/facebook', FbHandler),
+                                               ('/about', AboutHandler),
+                                               ('/contact', ContactHandler),
+                                               ('/game/(.*)', GameHandler),
+                                               ('/games/(.*)', TagHandler),
+                                               ('/gomochi', MochiGamesCrawler),
+                                               ('/loadgames', LoadGamesHandler),
+                                               ('/sitemap', SitemapHandler),
 
 
-], debug=ws.debug, config=config))
+                                           ], debug=ws.debug, config=config))

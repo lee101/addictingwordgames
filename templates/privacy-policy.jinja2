@@ -1,4 +1,4 @@
-{% import "macros.html" as macros %}
+{% import "/templates/macros.jinja2" as macros %}
 <!doctype html>
 <html>
 <head>
@@ -24,7 +24,7 @@
 <div id="pagebody">
     <div id="container">
         {{ macros.topbar() }}
-        
+
         <div id="bannerAdd">
             <script type="text/javascript"><!--
             google_ad_client = "ca-pub-7026363262140448";
@@ -39,7 +39,7 @@
             </script>
 
         </div>
-        
+
         <div id="instructions">
 
 				<h1>Privacy policy</h1>
@@ -148,14 +148,14 @@ This policy was last modified on 20/05/2013</p>
             <script type="text/javascript"
                     src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
             </script>
-            
+
 
         </div>
     </div>
-		
+
     <div class="clear">
     </div>
-	
+
 	{{ macros.footer() }}
 	<div class="clear">
 	</div>

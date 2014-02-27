@@ -1,18 +1,18 @@
-{% import "macros.html" as macros with context %}
+{% import "/templates/macros.jinja2" as macros with context %}
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{ game.title }} - Addicting Word Games</title>
+    <title>{{ tagtitle }} - Addicting Word Games</title>
     <meta name="description"
-          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+          content="Play {{ tagtitle }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
 
-    <meta name="keywords" content="puzzle games, addicting games, {{ game.title }}, puzzle games, addicting word games">
-    <meta property="og:title" content="{{ game.title }} - Addicting Word Games">
+    <meta name="keywords" content="puzzle games, addicting games, {{ tagtitle|lower }}, puzzle games, addicting word games">
+    <meta property="og:title" content="{{ tagtitle }} - Addicting Word Games">
     <meta property="og:url" content="{{ url }}">
-    <meta property="og:image" content="{{ awgutils.getImgUrl(game.urltitle) }}">
+    <meta property="og:image" content="http://www.addictingwordgames.com/img/addicting-word-games-icon200.png">
     <meta property="og:description"
-          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+          content="Play {{ tagtitle }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
     <meta property="og:type" content="game">
     <meta property="og:site_name" content="Addicting Word Games">
     <meta property="fb:admins" content="337972272904903">
