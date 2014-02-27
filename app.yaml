@@ -10,28 +10,10 @@ handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
-- url: /css
-  static_dir: css
+- url: /static
+  static_dir: static
   http_headers:
     Vary: Accept-Encoding
-- url: /js
-  static_dir: js
-  http_headers:
-    Vary: Accept-Encoding
-- url: /jplayerskin
-  static_dir: jplayerskin
-  http_headers:
-    Vary: Accept-Encoding
-- url: /music
-  static_dir: music
-  http_headers:
-    Vary: Accept-Encoding
-- url: /img
-  static_dir: img
-  http_headers:
-    Vary: Accept-Encoding
-- url: /bootstrap/*
-  static_dir: bootstrap
 - url: /channel.html
   static_files: channel.html
   upload: channel.html
@@ -45,10 +27,6 @@ handlers:
 - url: /robots.txt
   static_files: robots.txt
   upload: robots.txt
-- url: /leecole
-  static_files: leecole.html
-  upload: leecole.html
-  expiration: "0d 1h"
 - url: /mochi.html
   static_files: mochi.html
   upload: mochi.html

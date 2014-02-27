@@ -18,7 +18,7 @@
 
 {% macro showwordsmashing() -%}
     <div class="game game-featured">
-        <a class="game-link" href="http://www.wordsmashing.com" title="Word Smashing Puzzle" target="_blank"><img src="/img/word-smashing-logo.png" alt="Word Smashing, Addicting Word Puzzle Game" width="250" height="184"/></a>
+        <a class="game-link" href="http://www.wordsmashing.com" title="Word Smashing Puzzle" target="_blank"><img src="/static/img/word-smashing-logo.png" alt="Word Smashing, Addicting Word Puzzle Game" width="250" height="184"/></a>
         <a href="http://www.wordsmashing.com" title="Play Word Smashing!" target="_blank">Word Smashing!</a>
         <p class="small-description-text">Additively Fun Free Word Puzzle! Slide Letters Around Making Words! Making Words Will Clear Valuable Space!</p>
     </div>
@@ -26,7 +26,7 @@
 
 {% macro showmultiplicationmaster() -%}
     <div class="game game-featured">
-        <a class="game-link" href="http://www.multiplicationmaster.com" title="Multiplication Master Multiplication Game" target="_blank"><img src="/img/multiplication-master-promo-256.png" alt="Multiplication Master Maths Game" width="256" height="256"/></a>
+        <a class="game-link" href="http://www.multiplicationmaster.com" title="Multiplication Master Multiplication Game" target="_blank"><img src="/static/img/multiplication-master-promo-256.png" alt="Multiplication Master Maths Game" width="256" height="256"/></a>
         <a href="http://www.multiplicationmaster.com" title="Play 1multiplication Master!" target="_blank">Multiplication Master!</a>
         <p class="small-description-text small-description-text-featured">Find numbers which work! Multiplication Master makes math fun! Beat the clock in this battle of the brains or create crazy combos! Multiplication Master Means Maths Madness!</p>
     </div>
@@ -133,19 +133,20 @@ id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
 <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
-  <link rel="stylesheet" href="/css/social-likes.css">
+    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
+  <link rel="stylesheet" href="/static/css/social-likes.css">
     <!--[if lte IE 7]>
-    <link rel="stylesheet" href="../css/ie7.css" type="text/css"/><![endif]-->
-    <!--[if IE 8]><link rel="stylesheet" href="/css/ie8.css" type="text/css" /><![endif]-->
+    <link rel="stylesheet" href="/static/css/ie7.css" type="text/css"/><![endif]-->
+    <!--[if IE 8]>
+    <link rel="stylesheet" href="/static/css/ie8.css" type="text/css"/><![endif]-->
 
 
-    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="/static/js/masonry.pkgd.min.js"></script>
 
-    <script src="/js/social-likes.min.js"></script>
+    <script src="/static/js/social-likes.min.js"></script>
     <script>
     $(function(){
         var $container = $('#games');
