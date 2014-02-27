@@ -1,0 +1,202 @@
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+#modal {
+    position: absolute;
+    /*background:url(tint20.png) 0 0 repeat;*/
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 14px;
+    padding: 8px;
+}
+
+#content {
+    border-radius: 8px;
+    background: #fff;
+    padding: 20px;
+}
+
+#close {
+    position: absolute;
+    background: url('/static/img/close.png') 0 0 no-repeat;
+    width: 24px;
+    height: 27px;
+    display: block;
+    text-indent: -9999px;
+    top: -7px;
+    right: -7px;
+}
+
+body {
+    font-family: Verdana, Helvetica, sans-serif;
+    background-color: #DDDDDD;
+}
+
+table {
+    background-color: #343434;
+}
+
+tr {
+
+}
+
+td {
+    width: 57px;
+    height: 50px;
+    text-align: center;
+    padding: 3px;
+    border: 1px solid gray;
+}
+
+td div {
+    width: 10px;
+}
+
+body {
+    font-family: arial;
+    font-style: normal;
+    background-color: #F5F5F5;
+    height: 100%;
+    text-align: center;
+}
+
+.clear {
+    clear: both;
+}
+
+.header {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-weight: normal;
+    margin-top: 0px;
+}
+
+.header.visible-xs {
+    font-size: 26px;
+}
+
+#games {
+    margin: 0 auto;
+}
+
+.game {
+    /*width: 20%;*/
+    /*min-width: 220px; */
+    /*max-width: 340px; */
+    width: 300px;
+    background-color: white;
+    border-color: #C0BCBC;
+    border-width: 1px;
+    border-style: solid;
+    margin-bottom: 10px;
+}
+
+.game-featured {
+    border-color: #fadf98;
+}
+
+.game-link {
+    display: block;
+    margin: 10px;
+}
+
+.games-bar {
+    width: 330px;
+    float: left;
+}
+
+.game-tag {
+    font-size: 18px;
+    margin: 7px;
+}
+
+.game-panel {
+}
+
+.game-panel-description {
+    margin: 10px;
+}
+
+.game-panel-instructions-header {
+    font-weight: bold;
+}
+
+.game-panel-instructions {
+    margin: 10px;
+}
+
+.small-description-text {
+    height: 63px;
+    text-overflow: clip;
+    text-overflow: ellipsis;
+    text-overflow: "...";
+    overflow: hidden;
+}
+
+.small-description-text-featured {
+    height: auto;
+}
+
+.small-description-text {
+    margin: 10px;
+}
+
+#searchbox {
+    margin: 10px;
+}
+
+#main {
+    background-color: white;
+}
+
+#container {
+    margin: 0 30px;
+    position: relative;
+}
+
+.btn-large {
+    position: relative;
+}
+
+.load-more {
+    width: 200px;
+}
+
+#footer {
+    display: inline;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    float: left;
+    width: 100%;
+}
+
+#footer {
+    text-align: center;
+}
+
+#footer a {
+    font-size: small;
+    margin: 0 11px;
+    color: Gray;
+}
+
+.clear {
+    clear: both;
+}
+
+.header-share {
+    margin-right: 123px;
+}
+
+@media (max-width: 480px) {
+    .header-share {
+        display: none;
+    }
+}
