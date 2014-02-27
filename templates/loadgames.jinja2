@@ -1,21 +1,24 @@
 {% import "/templates/macros.jinja2" as macros with context %}
 <p id="cursor" data-cursor="{{ next_page_cursor }}"></p>
 {% macro showadd() -%}
-	<div class="game" style="height:255px">
-	<script id="mNCC" language="javascript">  medianet_width='300';  medianet_height= '250';  medianet_crid='682942442';  </script>  <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script>
-	</div>
+    <div class="game" style="height:255px">
+        <script id="mNCC" language="javascript">  medianet_width = '300';
+        medianet_height = '250';
+        medianet_crid = '682942442';  </script>
+        <script id="mNSC" src="http://contextual.media.net/nmedianet.js?cid=8CUV76NDB" language="javascript"></script>
+    </div>
 {%- endmacro %}
 {% macro showgames() -%}
-<div id="games">
-	{{ macros.showmaingame() }}
-	{{ macros.showwordsmashing() }}
-    {% for game in games %}
-    	{% if awgutils.shouldShowAddBefore(game) %}
-			{{ showadd() }}
-    	{% endif %}
-        {{ macros.showgame(game) }}
-    {% endfor %}
-</div>
+    <div id="games">
+        {{ macros.showmaingame() }}
+        {{ macros.showwordsmashing() }}
+        {% for game in games %}
+            {% if awgutils.shouldShowAddBefore(game) %}
+                {{ showadd() }}
+            {% endif %}
+            {{ macros.showgame(game) }}
+        {% endfor %}
+    </div>
 {%- endmacro %}
 
 {{ showgames() }}

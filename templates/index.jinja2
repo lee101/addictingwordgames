@@ -27,29 +27,32 @@
     {{ macros.topbar() }}
 
     <div id="searchbox">
-    <form role="form" class="form-inline" style="display:none">
-      <div class="form-group">
-        <div class="row">
-          <div class="col-xs-6 col-sm-6 col-md-8"><input type="text" class="search-box form-control" id="exampleInputEmail1" placeholder="Search"></div>
-          <div class="col-xs-6 col-sm-6 col-md-4"><button type="submit" class="btn btn-large btn-primary">Search</button></div>
-        </div>
-      </div>
-    </form>
-    <a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>
+        <form role="form" class="form-inline" style="display:none">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-8"><input type="text" class="search-box form-control"
+                                                                   id="exampleInputEmail1" placeholder="Search"></div>
+                    <div class="col-xs-6 col-sm-6 col-md-4">
+                        <button type="submit" class="btn btn-large btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>
     </div>
-      {{ macros.showgames() }}
+    {{ macros.showgames() }}
 
     <div class="clear">
     </div>
     <div>
-		{{ macros.loadmorebutton() }}
-	</div>
+        {{ macros.loadmorebutton() }}
+    </div>
 
     <div class="clear">
     </div>
-	{{ macros.footer() }}
-  	<div class="clear">
-  	</div>
+    {{ macros.footer() }}
+    <div class="clear">
+    </div>
 </div>
 
 </body>

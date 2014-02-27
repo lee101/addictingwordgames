@@ -7,7 +7,8 @@
     <meta name="description"
           content="Play {{ tagtitle }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
 
-    <meta name="keywords" content="puzzle games, addicting games, {{ tagtitle|lower }}, puzzle games, addicting word games">
+    <meta name="keywords"
+          content="puzzle games, addicting games, {{ tagtitle|lower }}, puzzle games, addicting word games">
     <meta property="og:title" content="{{ tagtitle }} - Addicting Word Games">
     <meta property="og:url" content="{{ url }}">
     <meta property="og:image" content="http://www.addictingwordgames.com/img/addicting-word-games-icon200.png">
@@ -22,12 +23,12 @@
 
 </head>
 <body>
-	{{ macros.templates() }}
+{{ macros.templates() }}
 <div id="pagebody">
     {{ macros.topbar() }}
     <div id="searchbox">
-    	<a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>
-	</div>
+        <a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>
+    </div>
     {{ macros.showgames() }}
 
 
@@ -49,14 +50,14 @@
     </div>
     <div class="clear">
     </div>
-	<div>
-		{{ macros.loadmorebutton() }}
-	</div>
+    <div>
+        {{ macros.loadmorebutton() }}
+    </div>
     <div class="clear">
     </div>
-	{{ macros.footer() }}
-  	<div class="clear">
-  	</div>
+    {{ macros.footer() }}
+    <div class="clear">
+    </div>
 </div>
 
 </body>
