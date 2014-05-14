@@ -330,7 +330,6 @@ class TagHandler(BaseHandler):
             next_page_cursor = next_curs.urlsafe()
         else:
             next_page_cursor = None
-        logging.error("asdf")
         extraParams = {
             'games': games,
             'next_page_cursor': next_page_cursor,
