@@ -1,12 +1,14 @@
-import os
-import datetime
-import logging
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import ndb
 from google.appengine.api import users
+
+import os
+import datetime
+import logging
 import random
+
 
 EASY = 2
 MEDIUM = 3
@@ -17,6 +19,7 @@ UNLOCKED_MEDIUM = 1
 UNLOCKED_HARD = 2
 ACHEIVEMENTS = set([UNLOCKED_MEDIUM, UNLOCKED_HARD])
 
+
 class User(ndb.Model):
     id = ndb.StringProperty(required=True)
 
@@ -26,11 +29,12 @@ class User(ndb.Model):
 
     name = ndb.StringProperty()
     profile_url = ndb.StringProperty()
-    access_token = ndb.StringProperty()    
-#     game_urltitles_played = ndb.IntegerProperty()
+    access_token = ndb.StringProperty()
+    #     game_urltitles_played = ndb.IntegerProperty()
     @classmethod
     def byId(cls, id):
         return cls.query(cls.id == id).get()
+
 
 class Score(ndb.Model):
     time = ndb.DateTimeProperty(auto_now_add=True)
@@ -39,6 +43,7 @@ class Score(ndb.Model):
     score = ndb.IntegerProperty(default=0)
     difficulty = ndb.IntegerProperty(default=2)
     timedMode = ndb.IntegerProperty(default=0)
+
 
 class HighScore(ndb.Model):
     '''
@@ -61,7 +66,7 @@ class HighScore(ndb.Model):
         hs = cls.query(cls.user == user.key,
                        cls.difficulty == difficulty,
                        cls.timedMode == timedMode).order(-cls.score).fetch(1)
-        if len(hs)>0 and hs[0].score < score:
+        if len(hs) > 0 and hs[0].score < score:
             hs = HighScore()
             hs.user = user.key
             hs.score = score
@@ -80,7 +85,8 @@ class HighScore(ndb.Model):
         return False
 
 
-    #title = ndb.StringProperty(required=True)
+        #title = ndb.StringProperty(required=True)
+
 
 class Achievement(ndb.Model):
     '''
@@ -95,12 +101,15 @@ class Achievement(ndb.Model):
         '''
         user a User object
         '''
-        achievements = cls.query(cls.user == user.key).fetch_async(10)#.all()?
+        achievements = cls.query(cls.user == user.key).fetch_async(10)  #.all()?
         # if len(achievements) == 0:
         #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
-        return achievements;
+        return achievements
+
 
 all_titles = []
+
+
 class Game(ndb.Model):
     title = ndb.StringProperty()
     urltitle = ndb.StringProperty()
@@ -115,15 +124,17 @@ class Game(ndb.Model):
 
     @classmethod
     def oneByTitle(cls, title):
-        game = cls.query(cls.title == title).get()#.all()?
-        return game;
+        game = cls.query(cls.title == title).get()  #.all()?
+        return game
+
     @classmethod
     def oneByUrlTitle(cls, urltitle):
-        game = cls.query(cls.urltitle == urltitle).get()#.all()?
-        return game;
+        game = cls.query(cls.urltitle == urltitle).get()  #.all()?
+        return game
+
     @classmethod
     def randomOrder(cls, title):
-        ordering = hash(title)%6
+        ordering = hash(title) % 6
         if ordering == 0:
             return cls.query().order(cls.urltitle)
         if ordering == 1:
@@ -137,17 +148,19 @@ class Game(ndb.Model):
         if ordering == 5:
             return cls.query().order(-cls.height)
         return cls.query()
+
     @classmethod
     def getAllTitles(cls):
         global all_titles
-        
+
         if len(all_titles) <= 0:
-             all_titles = map(lambda x: x.urltitle, cls.query().fetch(5000, projection=[cls.urltitle]))
+            all_titles = map(lambda x: x.urltitle, cls.query().fetch(5000, projection=[cls.urltitle]))
         return all_titles
 
     @classmethod
     def byTag(cls, tag):
         return cls.query(cls.tags == tag)
+
 
 class Photo(ndb.Model):
     title = ndb.StringProperty()
