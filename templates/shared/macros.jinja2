@@ -38,12 +38,24 @@
            title="Multiplication Master Multiplication Game" target="_blank"><img
                 src="/static/img/multiplication-master-promo-256.png" alt="Multiplication Master Maths Game" width="256"
                 height="256"/></a>
-        <a href="http://www.multiplicationmaster.com" title="Play 1multiplication Master!" target="_blank">Multiplication
+        <a href="http://www.multiplicationmaster.com" title="Play multiplication Master!" target="_blank">Multiplication
             Master!</a>
 
         <p class="small-description-text small-description-text-featured">Find numbers which work! Multiplication Master
             makes math fun! Beat the clock in this battle of the brains or create crazy combos! Multiplication Master
             Means Maths Madness!</p>
+    </div>
+{%- endmacro %}
+
+{% macro showbigmultiplayerchess() -%}
+    <div class="game game-featured">
+        <a class="game-link" href="http://bigmultiplayerchess.com"
+           title="Big Multiplayer Chess Game" target="_blank"><img
+                src="/static/img/big-multiplayer-chess-logo256.png" alt="Big Multiplayer Chess Game" width="256"
+                height="256"/></a>
+        <a href="http://bigmultiplayerchess.com" title="Play Big Multiplayer Chess!" target="_blank">Big Multiplayer Chess!</a>
+
+        <p class="small-description-text small-description-text-featured">Massive 6+ Player Chess Board! Pawns move in any direction! Invade and take over your enemies chess pieces by taking the king!</p>
     </div>
 {%- endmacro %}
 
@@ -122,6 +134,7 @@
         {{ showmaingame() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}
+        {{ showbigmultiplayerchess() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
             {% if awgutils.shouldShowAddBefore(game) %}

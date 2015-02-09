@@ -5,8 +5,7 @@ from google.appengine.api import images
 from google.appengine.ext import deferred
 from google.appengine.runtime import DeadlineExceededError
 
-import urllib2
-
+import urllib
 import json
 import logging
 
@@ -46,7 +45,7 @@ class Crawler(webapp2.RequestHandler):
             except Exception, err:
                 logging.error(Exception)
                 logging.error(err)
-                
+
         return f
 
     def getUrl(self, url, callback):
@@ -98,7 +97,7 @@ class Crawler(webapp2.RequestHandler):
         try:
             description = soup.find('meta', attrs={'property' : "og:description"}).get('content')
         except Exception, err:
-            pass   
+            pass
         if not description:
             description = soup.find('meta', attrs={'name' : "description"}).get('content')
         return description
@@ -107,14 +106,14 @@ class Crawler(webapp2.RequestHandler):
         try:
             image_url = soup.find('meta', attrs={'property' : "og:image"}).get('content')
         except Exception, err:
-            pass   
+            pass
         if not image_url:
             image_url = soup.find('img').get('src')
 
         # if image_url:
         #     #TODO save image
         # return image
-    
+
 
     def getTitle(self, soup):
         return soup.title.name
@@ -135,7 +134,7 @@ class MochiGamesCrawler(Crawler):
 
     def callback(self, result):
         # ndb.delete_multi(Game.query().fetch(999999, keys_only=True))
-        
+
         data = json.loads(result.content)
         games = data['games']
         gamesmodels = []
@@ -161,8 +160,8 @@ class MochiGamesCrawler(Crawler):
             for i in range(len(thumbnail_urls)):
                 deferred.defer(uploadGameThumbTask, thumbnail_urls[i], gamesmodels[i].urltitle)
                 deferred.defer(uploadGameSWFTask, swf_urls[i], gamesmodels[i].urltitle)
-            
-         
+
+
 
 def getContentType(image):
     if image.format == images.JPEG:
@@ -217,6 +216,6 @@ def uploadGameThumbTask(url, title):
 
 def uploadGameSWFTask(url, title):
     saveUrl(url, WORD_GAMES_SWF_BUCKET + title)
-   
+
 
 
