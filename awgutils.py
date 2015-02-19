@@ -1,3 +1,4 @@
+import random
 import urllib
 import re
 
@@ -23,3 +24,6 @@ def shouldShowAddBefore(game):
 
 def titleDecode(title):
     return title.replace("-", " ").title()
+
+def random_id():
+    return random.getrandbits(32)
