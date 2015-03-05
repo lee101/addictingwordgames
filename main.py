@@ -378,7 +378,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
                                                ('/contact', ContactHandler),
                                                ('/game/(.*)', GameHandler),
                                                ('/games/(.*)', TagHandler),
-                                               ('/gomochi', MochiGamesCrawler),
+                                               # ('/gomochi', MochiGamesCrawler),
                                                ('/loadgames', LoadGamesHandler),
                                                ('/sitemap', SitemapHandler),
 

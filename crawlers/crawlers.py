@@ -145,7 +145,7 @@ class MochiGamesCrawler(Crawler):
             g.title = game['name'][:500]
             g.urltitle = awgutils.urlEncode(g.title)
             if Game.oneByUrlTitle(g.urltitle):
-                continue;
+                continue
             g.description = game['description']
             g.tags = map(awgutils.urlEncode, game['tags'])
             g.instructions = game['instructions']
