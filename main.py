@@ -151,6 +151,8 @@ class BaseHandler(webapp2.RequestHandler):
         todo implement user played/notplayed
         '''
         titles = Game.getAllTitles()
+        if len(titles) == 0:
+            return '/'
         choice = random.choice(titles)
         return '/game/' + choice
 

@@ -32,6 +32,18 @@
     </div>
 {%- endmacro %}
 
+{% macro showrewordgame() -%}
+    <div class="game game-featured">
+        <a class="game-link" href="http://rewordgame.com" title="reWord Game Word Puzzle" target="_blank"><img
+                src="/static/img/reword-game-logo256.png" alt="reWord Game, Word Swapping Puzzle Game" width="256"
+                height="256"/></a>
+        <a href="http://rewordgame.com" title="Play reWord Game!" target="_blank">reWord Game!</a>
+
+        <p class="small-description-text">Swap Words to Make Sense of Strangeness in this new word puzzle game! Play
+            reWord Game Free Online!</p>
+    </div>
+{%- endmacro %}
+
 {% macro showmultiplicationmaster() -%}
     <div class="game game-featured">
         <a class="game-link" href="http://www.multiplicationmaster.com"
@@ -118,6 +130,7 @@
         {{ showmaingame() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}
+        {{ showrewordgame() }}
         {{ showbigmultiplayerchess() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
