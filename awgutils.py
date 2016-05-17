@@ -17,9 +17,7 @@ def getSWFUrl(title):
     return 'http://games.addictingwordgames.com/' + title
 
 def shouldShowAddBefore(game):
-    if hash(game.title) % 7 == 0:
-        return True
-    return False
+    return True
 
 def titleDecode(title):
     return title.replace("-", " ").title()
