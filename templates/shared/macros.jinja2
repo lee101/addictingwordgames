@@ -98,31 +98,18 @@
 {%- endmacro %}
 
 {% macro showadd(num_adds_shown) -%}
-    {% if num_adds_shown == 2 or num_adds_shown == 3 %}
-        <div class="game" style="height:605px">
-            <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- AWG big v -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:160px;height:600px"
-                 data-ad-client="ca-pub-7026363262140448"
-                 data-ad-slot="4293546152"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    {% else %}
-        <div class="game">
-            <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- AWG BOX -->
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:300px;height:250px"
-                 data-ad-client="ca-pub-7026363262140448"
-                 data-ad-slot="9106168954"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    {% endif %}
+    <div class="game" style="height:605px">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- AWG responsive ad -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7026363262140448"
+             data-ad-slot="3890552555"
+             data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
 {%- endmacro %}
 
 {% macro showgames() -%}
