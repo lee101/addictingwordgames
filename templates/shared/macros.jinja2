@@ -98,6 +98,8 @@
 {%- endmacro %}
 
 {% macro showadd(num_adds_shown) -%}
+    {% if num_adds_shown < 10 %}
+
     <div class="game" style="height:605px">
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <!-- AWG responsive ad -->
@@ -110,6 +112,8 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
+    {% endif %}
+
 {%- endmacro %}
 
 {% macro showgames() -%}
