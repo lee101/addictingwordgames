@@ -100,7 +100,7 @@
 {% macro showadd(num_adds_shown) -%}
     {% if num_adds_shown < 10 %}
 
-    <div class="game" style="height:605px">
+    <div class="game" style="height:605px;min-width:300px">
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <!-- AWG responsive ad -->
         <ins class="adsbygoogle"
@@ -109,7 +109,9 @@
              data-ad-slot="3890552555"
              data-ad-format="auto"></ins>
         <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
+            $(document).ready(function () {
+                (adsbygoogle = window.adsbygoogle || []).push({})
+            });
         </script>
     </div>
     {% endif %}
