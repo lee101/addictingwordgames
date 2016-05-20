@@ -1,0 +1,32 @@
+{
+  "name": "addictingwordgames",
+  "version": "1.0.0",
+  "description": "games site",
+  "main": "gruntfile.js",
+  "dependencies": {
+    "gaze": "1.0.0",
+    "grunt": "0.4.2",
+    "grunt-contrib-watch": "0.5.3",
+    "grunt-nunjucks": "0.1.3",
+    "nunjucks": "1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lee101/addictingwordgames.git"
+  },
+  "keywords": [
+    "addicting",
+    "word",
+    "games"
+  ],
+  "author": "lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lee101/addictingwordgames/issues"
+  },
+  "homepage": "https://github.com/lee101/addictingwordgames#readme"
+}
