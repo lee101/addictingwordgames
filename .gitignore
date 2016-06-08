@@ -30,6 +30,5 @@ nosetests.xml
 .DS_STORE
 .DS_Store
 sellerinfo.py
-.idea
 .pyc
 
