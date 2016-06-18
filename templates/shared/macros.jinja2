@@ -124,10 +124,10 @@
         {{ showbigmultiplayerchess() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
-            {% if awgutils.shouldShowAddBefore(game) %}
-                {{ showadd(num_adds_shown) }}
-                {% set num_adds_shown = num_adds_shown + 1 %}
-            {% endif %}
+{#            {% if awgutils.shouldShowAddBefore(game) %}#}
+{#                {{ showadd(num_adds_shown) }}#}
+{#                {% set num_adds_shown = num_adds_shown + 1 %}#}
+{#            {% endif %}#}
             {{ showgame(game) }}
         {% endfor %}
     </div>
