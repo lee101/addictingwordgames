@@ -98,17 +98,24 @@
 {%- endmacro %}
 
 {% macro showadd(num_adds_shown) -%}
-    {% if num_adds_shown < 10 %}
+    {% if num_adds_shown < 5 %}
 
     <div class="game" style="height:250px;min-width:300px">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- AWG BOX -->
-        <ins class="adsbygoogle"
-             style="display:inline-block;width:300px;height:250px"
-             data-ad-client="ca-pub-7026363262140448"
-             data-ad-slot="9106168954"></ins>
+{#        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>#}
+{#        <!-- AWG BOX -->#}
+{#        <ins class="adsbygoogle"#}
+{#             style="display:inline-block;width:300px;height:250px"#}
+{#             data-ad-client="ca-pub-7026363262140448"#}
+{#             data-ad-slot="9106168954"></ins>#}
+{#        <script>#}
+{#        (adsbygoogle = window.adsbygoogle || []).push({});#}
+{#        </script>#}
+           <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-8598649123553748",
+                enable_page_level_ads: true
+            });
         </script>
     </div>
     {% endif %}
@@ -122,12 +129,14 @@
         {{ showmultiplicationmaster() }}
         {{ showrewordgame() }}
         {{ showbigmultiplayerchess() }}
+
         {% set num_adds_shown = 0 %}
+        {{ showadd(num_adds_shown) }}
         {% for game in games %}
-{#            {% if awgutils.shouldShowAddBefore(game) %}#}
-{#                {{ showadd(num_adds_shown) }}#}
-{#                {% set num_adds_shown = num_adds_shown + 1 %}#}
-{#            {% endif %}#}
+            {% if awgutils.shouldShowAddBefore(game) %}
+                {{ showadd(num_adds_shown) }}
+                {% set num_adds_shown = num_adds_shown + 1 %}
+            {% endif %}
             {{ showgame(game) }}
         {% endfor %}
     </div>
