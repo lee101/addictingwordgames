@@ -13,9 +13,9 @@
         {{ macros.showmaingame() }}
         {{ macros.showwordsmashing() }}
         {% for game in games %}
-            {% if awgutils.shouldShowAddBefore(game) %}
-                {{ showadd() }}
-            {% endif %}
+{#            {% if awgutils.shouldShowAddBefore(game) %}#}
+{#                {{ showadd() }}#}
+{#            {% endif %}#}
             {{ macros.showgame(game) }}
         {% endfor %}
     </div>

@@ -11,13 +11,13 @@ frame = frame.push();
 kwargs = kwargs || {};
 frame.set("game", l_game);
 var output= "";
-output += "<div class=\"game\">\n        <a class=\"game-link\" href=\"/game/";
+output += "<div class=\"game mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/game/";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"urltitle", env.autoesc), env.autoesc);
-output += "\" title=\"";
+output += "\"\n           title=\"";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"title", env.autoesc), env.autoesc);
 output += "\"><img\n                src=\"";
-output += runtime.suppressValue((lineno = 3, colno = 40, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getImgUrl", env.autoesc), "awgutils[\"getImgUrl\"]", [runtime.memberLookup((l_game),"urltitle", env.autoesc)])), env.autoesc);
-output += "\" alt=\"";
+output += runtime.suppressValue((lineno = 4, colno = 40, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getImgUrl", env.autoesc), "awgutils[\"getImgUrl\"]", [runtime.memberLookup((l_game),"urltitle", env.autoesc)])), env.autoesc);
+output += "\"\n                alt=\"";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"title", env.autoesc), env.autoesc);
 output += "\" width=\"";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"imgwidth", env.autoesc), env.autoesc);
@@ -25,7 +25,7 @@ output += "\"\n                height=\"";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"imgheight", env.autoesc), env.autoesc);
 output += "\"/></a>\n        <a href=\"/game/";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"urltitle", env.autoesc), env.autoesc);
-output += "\" title=\"";
+output += "\"\n           title=\"";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"title", env.autoesc), env.autoesc);
 output += "\">";
 output += runtime.suppressValue(runtime.memberLookup((l_game),"title", env.autoesc), env.autoesc);
@@ -55,9 +55,9 @@ frame.set("tag", t_6);
 output += "\n            <a class=\"game-tag\" href=\"/games/";
 output += runtime.suppressValue(t_6, env.autoesc);
 output += "\"\n               title=\"";
-output += runtime.suppressValue((lineno = 16, colno = 43, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"titleDecode", env.autoesc), "awgutils[\"titleDecod\"]", [t_6])), env.autoesc);
+output += runtime.suppressValue((lineno = 19, colno = 43, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"titleDecode", env.autoesc), "awgutils[\"titleDecod\"]", [t_6])), env.autoesc);
 output += "\">";
-output += runtime.suppressValue((lineno = 16, colno = 72, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"titleDecode", env.autoesc), "awgutils[\"titleDecod\"]", [t_6])), env.autoesc);
+output += runtime.suppressValue((lineno = 19, colno = 72, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"titleDecode", env.autoesc), "awgutils[\"titleDecod\"]", [t_6])), env.autoesc);
 output += "</a>\n        ";
 ;
 }
@@ -77,7 +77,7 @@ function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
-output += "<div class=\"game game-featured\">\n        <a class=\"game-link\" href=\"http://www.wordsmashing.com\" title=\"Word Smashing Puzzle\" target=\"_blank\"><img\n                src=\"/static/img/word-smashing-logo.png\" alt=\"Word Smashing, Addicting Word Puzzle Game\" width=\"250\"\n                height=\"184\"/></a>\n        <a href=\"http://www.wordsmashing.com\" title=\"Play Word Smashing!\" target=\"_blank\">Word Smashing!</a>\n\n        <p class=\"small-description-text\">Additively Fun Free Word Puzzle! Slide Letters Around Making Words! Making\n            Words Will Clear Valuable Space!</p>\n    </div>";
+output += "<div class=\"game game-featured mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"http://www.wordsmashing.com\"\n           title=\"Word Smashing Puzzle\" target=\"_blank\"><img\n                src=\"/static/img/word-smashing-logo.png\"\n                alt=\"Word Smashing, Addicting Word Puzzle Game\" width=\"250\"\n                height=\"184\"/></a>\n        <a href=\"http://www.wordsmashing.com\" title=\"Play Word Smashing!\"\n           target=\"_blank\">Word Smashing!</a>\n\n        <p class=\"small-description-text\">Additively Fun Free Word Puzzle! Slide\n            Letters Around Making Words! Making\n            Words Will Clear Valuable Space!</p>\n    </div>";
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
@@ -91,14 +91,42 @@ function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
-output += "<div class=\"game game-featured\">\n        <a class=\"game-link\" href=\"http://www.multiplicationmaster.com\"\n           title=\"Multiplication Master Multiplication Game\" target=\"_blank\"><img\n                src=\"/static/img/multiplication-master-promo-256.png\" alt=\"Multiplication Master Maths Game\" width=\"256\"\n                height=\"256\"/></a>\n        <a href=\"http://www.multiplicationmaster.com\" title=\"Play 1multiplication Master!\" target=\"_blank\">Multiplication\n            Master!</a>\n\n        <p class=\"small-description-text small-description-text-featured\">Find numbers which work! Multiplication Master\n            makes math fun! Beat the clock in this battle of the brains or create crazy combos! Multiplication Master\n            Means Maths Madness!</p>\n    </div>";
+output += "<div class=\"game game-featured\">\n        <a class=\"game-link\" href=\"http://rewordgame.com\"\n           title=\"reWord Game Word Puzzle\" target=\"_blank\"><img\n                src=\"/static/img/reword-game-logo256.png\"\n                alt=\"reWord Game, Word Swapping Puzzle Game\" width=\"256\"\n                height=\"256\"/></a>\n        <a href=\"http://rewordgame.com\" title=\"Play reWord Game!\"\n           target=\"_blank\">reWord Game!</a>\n\n        <p class=\"small-description-text\">Swap Words to Make Sense of\n            Strangeness in this new word puzzle game! Play\n            reWord Game Free Online!</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showrewordgame");
+context.setVariable("showrewordgame", macro_t_8);
+output += "\n\n";
+var macro_t_9 = runtime.makeMacro(
+[], 
+[], 
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div class=\"game game-featured\">\n        <a class=\"game-link\" href=\"http://www.multiplicationmaster.com\"\n           title=\"Multiplication Master Multiplication Game\"\n           target=\"_blank\"><img\n                src=\"/static/img/multiplication-master-promo-256.png\"\n                alt=\"Multiplication Master Maths Game\" width=\"256\"\n                height=\"256\"/></a>\n        <a href=\"http://www.multiplicationmaster.com\"\n           title=\"Play multiplication Master!\" target=\"_blank\">Multiplication\n            Master!</a>\n\n        <p class=\"small-description-text small-description-text-featured\">Find\n            numbers which work! Multiplication Master\n            makes math fun! Beat the clock in this battle of the brains or\n            create crazy combos! Multiplication Master\n            Means Maths Madness!</p>\n    </div>";
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showmultiplicationmaster");
-context.setVariable("showmultiplicationmaster", macro_t_8);
+context.setVariable("showmultiplicationmaster", macro_t_9);
 output += "\n\n";
-var macro_t_9 = runtime.makeMacro(
+var macro_t_10 = runtime.makeMacro(
+[], 
+[], 
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div class=\"game game-featured\">\n        <a class=\"game-link\" href=\"http://bigmultiplayerchess.com\"\n           title=\"Big Multiplayer Chess Game\" target=\"_blank\"><img\n                src=\"/static/img/big-multiplayer-chess-logo256.png\"\n                alt=\"Big Multiplayer Chess Game\" width=\"256\"\n                height=\"256\"/></a>\n        <a href=\"http://bigmultiplayerchess.com\"\n           title=\"Play Big Multiplayer Chess!\" target=\"_blank\">Big Multiplayer\n            Chess!</a>\n\n        <p class=\"small-description-text small-description-text-featured\">\n            Massive 6+ Player Chess Board! Pawns move in any direction! Invade\n            and take over your enemies chess pieces by taking the king!</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showbigmultiplayerchess");
+context.setVariable("showbigmultiplayerchess", macro_t_10);
+output += "\n\n";
+var macro_t_11 = runtime.makeMacro(
 [], 
 [], 
 function (kwargs) {
@@ -111,9 +139,9 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "px;\">\n            <h2>";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"title", env.autoesc), env.autoesc);
 output += "</h2>\n\n            <div>\n                ";
-output += runtime.suppressValue((lineno = 55, colno = 26, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "renderswf"), "renderswf", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 100, colno = 26, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "renderswf"), "renderswf", [])), env.autoesc);
 output += "\n            </div>\n            ";
-output += runtime.suppressValue((lineno = 57, colno = 32, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "shareBtnsHorizontal"), "shareBtnsHorizontal", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += runtime.suppressValue((lineno = 102, colno = 32, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "shareBtnsHorizontal"), "shareBtnsHorizontal", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
 output += "\n            ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"description", env.autoesc)) {
 output += "\n                <div class=\"game-panel-description\">\n                    <p>";
@@ -129,7 +157,7 @@ output += "</p>\n                </div>\n            ";
 ;
 }
 output += "\n            ";
-output += runtime.suppressValue((lineno = 70, colno = 20, runtime.callWrap(macro_t_2, "tagsFor", [runtime.contextOrFrameLookup(context, frame, "game")])), env.autoesc);
+output += runtime.suppressValue((lineno = 115, colno = 20, runtime.callWrap(macro_t_2, "tagsFor", [runtime.contextOrFrameLookup(context, frame, "game")])), env.autoesc);
 output += "\n        </div>\n    ";
 ;
 }
@@ -137,9 +165,9 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showmaingame");
-context.setVariable("showmaingame", macro_t_9);
+context.setVariable("showmaingame", macro_t_11);
 output += "\n\n";
-var macro_t_10 = runtime.makeMacro(
+var macro_t_12 = runtime.makeMacro(
 ["num_adds_shown"], 
 [], 
 function (l_num_adds_shown, kwargs) {
@@ -147,35 +175,17 @@ frame = frame.push();
 kwargs = kwargs || {};
 frame.set("num_adds_shown", l_num_adds_shown);
 var output= "";
-if(l_num_adds_shown > 3) {
-output += "\n        <div class=\"game\" style=\"height:260px\">\n            <script id=\"mNCC\" language=\"javascript\">  medianet_width = '300';\n            medianet_height = '250';\n            medianet_crid = '682942442';  </script>\n            <script id=\"mNSC\" src=\"http://contextual.media.net/nmedianet.js?cid=8CUV76NDB\"\n                    language=\"javascript\"></script>\n        </div>\n    ";
-;
-}
-else {
-if(l_num_adds_shown == 3) {
-output += "\n        <div class=\"game\" style=\"height: 610px\">\n            <script id=\"mNCC\" language=\"javascript\">  medianet_width = '160';\n            medianet_height = '600';\n            medianet_crid = '151754842';  </script>\n            <script id=\"mNSC\" src=\"http://contextual.media.net/nmedianet.js?cid=8CUV76NDB\"\n                    language=\"javascript\"></script>\n        </div>\n    ";
-;
-}
-else {
-if(l_num_adds_shown == 2) {
-output += "\n        <div class=\"game\" style=\"height:605px\">\n            <script async src=\"http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script>\n            <!-- AWG big v -->\n            <ins class=\"adsbygoogle\"\n                 style=\"display:inline-block;width:160px;height:600px\"\n                 data-ad-client=\"ca-pub-7026363262140448\"\n                 data-ad-slot=\"4293546152\"></ins>\n            <script>\n                (adsbygoogle = window.adsbygoogle || []).push({});\n            </script>\n        </div>\n    ";
-;
-}
-else {
-output += "\n        <div class=\"game\">\n            <script async src=\"http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script>\n            <!-- AWG BOX -->\n            <ins class=\"adsbygoogle\"\n                 style=\"display:inline-block;width:300px;height:250px\"\n                 data-ad-client=\"ca-pub-7026363262140448\"\n                 data-ad-slot=\"9106168954\"></ins>\n            <script>\n                (adsbygoogle = window.adsbygoogle || []).push({});\n            </script>\n        </div>\n    ";
-;
-}
-;
-}
+if(l_num_adds_shown < 10) {
+output += "\n\n        <div class=\"game\" style=\"height:250px;min-width:300px\">\n            <script async\n                    src=\"//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script>\n            <!-- AWG BOX -->\n            <ins class=\"adsbygoogle\"\n                 style=\"display:inline-block;width:300px;height:250px\"\n                 data-ad-client=\"ca-pub-7026363262140448\"\n                 data-ad-slot=\"9106168954\"></ins>\n            <script>\n                (adsbygoogle = window.adsbygoogle || []).push({});\n            </script>\n        </div>\n    ";
 ;
 }
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showadd");
-context.setVariable("showadd", macro_t_10);
+context.setVariable("showadd", macro_t_12);
 output += "\n\n";
-var macro_t_11 = runtime.makeMacro(
+var macro_t_13 = runtime.makeMacro(
 [], 
 [], 
 function (kwargs) {
@@ -183,42 +193,35 @@ frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
 output += "<div id=\"games\">\n        ";
-output += runtime.suppressValue((lineno = 121, colno = 21, runtime.callWrap(macro_t_9, "showmaingame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 141, colno = 21, runtime.callWrap(macro_t_11, "showmaingame", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 122, colno = 25, runtime.callWrap(macro_t_7, "showwordsmashing", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 142, colno = 25, runtime.callWrap(macro_t_7, "showwordsmashing", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 123, colno = 33, runtime.callWrap(macro_t_8, "showmultiplicationmaster", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 143, colno = 33, runtime.callWrap(macro_t_9, "showmultiplicationmaster", [])), env.autoesc);
 output += "\n        ";
-var t_12;
-t_12 = 0;
-frame.set("num_adds_shown", t_12);
+output += runtime.suppressValue((lineno = 144, colno = 23, runtime.callWrap(macro_t_8, "showrewordgame", [])), env.autoesc);
+output += "\n        ";
+output += runtime.suppressValue((lineno = 145, colno = 32, runtime.callWrap(macro_t_10, "showbigmultiplayerchess", [])), env.autoesc);
+output += "\n        ";
+var t_14;
+t_14 = 0;
+frame.set("num_adds_shown", t_14);
 if(!frame.parent) {
-context.setVariable("num_adds_shown", t_12);
+context.setVariable("num_adds_shown", t_14);
 context.addExport("num_adds_shown");
 }
 output += "\n        ";
 frame = frame.push();
-var t_15 = runtime.contextOrFrameLookup(context, frame, "games");
-if(t_15) {for(var t_13=0; t_13 < t_15.length; t_13++) {
-var t_16 = t_15[t_13];
-frame.set("game", t_16);
+var t_17 = runtime.contextOrFrameLookup(context, frame, "games");
+if(t_17) {for(var t_15=0; t_15 < t_17.length; t_15++) {
+var t_18 = t_17[t_15];
+frame.set("game", t_18);
 output += "\n            ";
-if((lineno = 126, colno = 44, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"shouldShowAddBefore", env.autoesc), "awgutils[\"shouldShow\"]", [t_16]))) {
-output += "\n                ";
-output += runtime.suppressValue((lineno = 127, colno = 24, runtime.callWrap(macro_t_10, "showadd", [t_12])), env.autoesc);
-output += "\n                ";
-var t_17;
-t_17 = t_12 + 1;
-frame.set("num_adds_shown", t_17);
-if(!frame.parent) {
-context.setVariable("num_adds_shown", t_17);
-context.addExport("num_adds_shown");
-}
 output += "\n            ";
-;
-}
 output += "\n            ";
-output += runtime.suppressValue((lineno = 130, colno = 21, runtime.callWrap(macro_t_1, "showgame", [t_16])), env.autoesc);
+output += "\n            ";
+output += "\n            ";
+output += runtime.suppressValue((lineno = 152, colno = 21, runtime.callWrap(macro_t_1, "showgame", [t_18])), env.autoesc);
 output += "\n        ";
 ;
 }
@@ -229,27 +232,7 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showgames");
-context.setVariable("showgames", macro_t_11);
-output += "\n\n";
-var macro_t_18 = runtime.makeMacro(
-[], 
-[], 
-function (kwargs) {
-frame = frame.push();
-kwargs = kwargs || {};
-var output= "";
-output += "<object type=\"application/x-shockwave-flash\" data=\"";
-output += runtime.suppressValue((lineno = 136, colno = 74, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getSWFUrl", env.autoesc), "awgutils[\"getSWFUrl\"]", [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"urltitle", env.autoesc)])), env.autoesc);
-output += "\"\n            id=\"\" style=\"margin:0 10px;width:";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"width", env.autoesc), env.autoesc);
-output += "px;height:";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"height", env.autoesc), env.autoesc);
-output += "px;\" wmode=\"direct\">\n    </object>";
-frame = frame.pop();
-return new runtime.SafeString(output);
-});
-context.addExport("renderswf");
-context.setVariable("renderswf", macro_t_18);
+context.setVariable("showgames", macro_t_13);
 output += "\n\n";
 var macro_t_19 = runtime.makeMacro(
 [], 
@@ -258,14 +241,41 @@ function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
-output += "<div id=\"main\">\n        <div id=\"logo\">\n            <h1 class=\"header\"><a href=\"/\" title=\"Addicting Word Games\">Addicting <span\n                    style=\"color:gray;display:inline-block;\">Word Games</span></a></h1>\n\n            <div class=\"header-share\">\n                <div class=\"fb-like\" data-href=\"https://www.facebook.com/addictingwordgames\" data-width=\"400px\"\n                     data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"true\"></div>\n            </div>\n        </div>\n        <!-- <div id=\"login\">\n          <fb:login-button autologoutlink=\"true\" scope=\"publish_stream\" width=\"200\" max-rows=\"1\"></fb:login-button>\n        </div> -->\n    </div>";
+output += "<object type=\"application/x-shockwave-flash\"\n            data=\"";
+output += runtime.suppressValue((lineno = 159, colno = 37, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getSWFUrl", env.autoesc), "awgutils[\"getSWFUrl\"]", [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"urltitle", env.autoesc)])), env.autoesc);
+output += "\"\n            id=\"\"\n            style=\"margin:0 10px;width:";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"width", env.autoesc), env.autoesc);
+output += "px;height:";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"height", env.autoesc), env.autoesc);
+output += "px;\"\n            wmode=\"direct\">\n    </object>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("renderswf");
+context.setVariable("renderswf", macro_t_19);
+output += "\n\n";
+var macro_t_20 = runtime.makeMacro(
+[], 
+[], 
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div id=\"main\">\n        <div id=\"logo\">\n            <h1 class=\"header\"><a href=\"/\" title=\"Addicting Word Games\">Addicting\n                <span\n                        style=\"color:gray;display:inline-block;\">Word Games</span></a>\n            </h1>\n\n            ";
+output += "\n            ";
+output += "\n            ";
+output += "\n            ";
+output += "\n            <div class=\"right-nav\">\n                <a href=\"/login\">Login</a>\n                <a href=\"/sign-up\" class=\"btn btn-warning\">Sign Up</a>\n            </div>\n            <div class=\"clear\"></div>\n        </div>\n        ";
+output += "\n        ";
+output += "\n        ";
+output += "\n    </div>";
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("topbar");
-context.setVariable("topbar", macro_t_19);
+context.setVariable("topbar", macro_t_20);
 output += "\n\n";
-var macro_t_20 = runtime.makeMacro(
+var macro_t_21 = runtime.makeMacro(
 ["ws", "highscores", "achievements"], 
 [], 
 function (l_ws, l_highscores, l_achievements, kwargs) {
@@ -275,22 +285,22 @@ frame.set("ws", l_ws);
 frame.set("highscores", l_highscores);
 frame.set("achievements", l_achievements);
 var output= "";
-output += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">\n\n    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/css/bootstrap.css\"/>\n    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/css/style.css\"/>\n    <link rel=\"stylesheet\" href=\"/static/css/social-likes.css\">\n    <!--[if IE 8]>\n    <link rel=\"stylesheet\" href=\"/static/css/ie8.css\" type=\"text/css\"/><![endif]-->\n\n\n    <script type=\"text/javascript\" src=\"/static/js/jquery-1.9.1.min.js\"></script>\n    <script type=\"text/javascript\" src=\"/static/js/jquery.blockUI.js\"></script>\n    <script type=\"text/javascript\" src=\"/static/js/masonry.pkgd.min.js\"></script>\n\n    <script src=\"/static/js/social-likes.min.js\"></script>\n    <script>\n        $(function () {\n            var $container = $('#games');\n            // initialize\n            $container.masonry({\n                columnWidth: 300,\n                itemSelector: '.game',\n                \"isFitWidth\": true,\n                \"gutter\": 0\n            });\n\n            $('.search-box').focus();\n        });\n        var isfetching = false;\n        var curr_cursor = '";
+output += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">\n\n    <link rel=\"stylesheet\"\n          href=\"https://code.getmdl.io/1.3.0/material.cyan-pink.min.css\"/>\n    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/css/bootstrap.css\"/>\n    <link type=\"text/css\" rel=\"stylesheet\" href=\"/static/css/style.css\"/>\n    <!--[if IE 8]>\n    <link rel=\"stylesheet\" href=\"/static/css/ie8.css\"\n          type=\"text/css\"/><![endif]-->\n\n\n    <script type=\"text/javascript\"\n            src=\"/static/js/jquery-1.9.1.min.js\"></script>\n    <script type=\"text/javascript\" src=\"/static/js/jquery.blockUI.js\"></script>\n    <script type=\"text/javascript\"\n            src=\"/static/js/masonry.pkgd.min.js\"></script>\n\n    <script src=\"/static/js/social-likes.min.js\"></script>\n    <script>\n        $(function () {\n            var $container = $('#games');\n            // initialize\n            $container.masonry({\n                columnWidth: 300,\n                itemSelector: '.game',\n                \"isFitWidth\": true,\n                \"gutter\": 6\n            });\n\n            $('.search-box').focus();\n        });\n        var isfetching = false;\n        var curr_cursor = '";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "next_page_cursor"), env.autoesc);
-output += "';\n        function loadmore() {\n            if (!isfetching) {\n\n                isfetching = true;\n                $('.load-more').attr('disabled', 'disabled');\n                $.ajax({\n                    'url': '/loadgames?cursor=' + curr_cursor + '";
+output += "';\n\n        function loadmore() {\n            if (!isfetching) {\n\n                isfetching = true;\n                $('.load-more').attr('disabled', 'disabled');\n                $.ajax({\n                    'url': '/loadgames?cursor=' + curr_cursor + '";
 if(runtime.contextOrFrameLookup(context, frame, "urltitle")) {
 output += "&title=";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "urltitle"), env.autoesc);
 ;
 }
-output += "',\n                    'success': function (data) {\n                        $('.load-more').removeAttr('disabled');\n                        a = $('<div></div>');\n                        a.html(data);\n                        curr_cursor = a.find('#cursor').attr('data-cursor');\n                        items = a.find('.game');\n                        var $games = $('#games');\n                        $games.append(items);\n                        // $('#games').masonry( 'addItems', items );\n                        $games.masonry('appended', items);\n\n                        isfetching = false;\n                    },\n                    'error': function (data) {\n                        var $load = $('.load-more');\n                        $load.removeAttr('disabled');\n                        $load.html('No More Results');\n                    },\n                    cache: false\n                });\n            }\n            return false;\n        }\n    </script>\n    <script>\n        (function (i, s, o, g, r, a, m) {\n            i['GoogleAnalyticsObject'] = r;\n            i[r] = i[r] || function () {\n                (i[r].q = i[r].q || []).push(arguments)\n            }, i[r].l = 1 * new Date();\n            a = s.createElement(o),\n                    m = s.getElementsByTagName(o)[0];\n            a.async = 1;\n            a.src = g;\n            m.parentNode.insertBefore(a, m)\n        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');\n\n        ga('create', 'UA-43904545-1', 'addictingwordgames.com');\n        ga('send', 'pageview');\n\n    </script>";
+output += "',\n                    'success': function (data) {\n                        $('.load-more').removeAttr('disabled');\n                        a = $('<div></div>');\n                        a.html(data);\n                        curr_cursor = a.find('#cursor').attr('data-cursor');\n                        items = a.find('.game');\n                        var $games = $('#games');\n                        $games.append(items);\n                        // $('#games').masonry( 'addItems', items );\n                        $games.masonry('appended', items);\n\n                        isfetching = false;\n                    },\n                    'error': function (data) {\n                        var $load = $('.load-more');\n                        $load.removeAttr('disabled');\n                        $load.html('No More Results');\n                    },\n                    cache: false\n                });\n            }\n            return false;\n        }\n    </script>\n    <script>\n        (function (i, s, o, g, r, a, m) {\n            i['GoogleAnalyticsObject'] = r;\n            i[r] = i[r] || function () {\n                (i[r].q = i[r].q || []).push(arguments)\n            }, i[r].l = 1 * new Date();\n            a = s.createElement(o),\n                m = s.getElementsByTagName(o)[0];\n            a.async = 1;\n            a.src = g;\n            m.parentNode.insertBefore(a, m)\n        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');\n\n        ga('create', 'UA-43904545-1', 'addictingwordgames.com');\n        ga('send', 'pageview');\n\n    </script>\n\n\n    <script src=\"https://www.gstatic.com/firebasejs/5.9.1/firebase.js\"></script>\n    <script src=\"https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js\"></script>\n\n    <script>\n      // Initialize Firebase\n      var config = {\n        apiKey: \"AIzaSyBqfxiizjd4h5z_HOJ-3aCWy2_hgghfOWo\",\n        authDomain: \"addictingwordgames.firebaseapp.com\",\n        databaseURL: \"https://addictingwordgames.firebaseio.com\",\n        projectId: \"addictingwordgames\",\n        storageBucket: \"addictingwordgames.appspot.com\",\n        messagingSenderId: \"972112451973\"\n      };\n      firebase.initializeApp(config);\n      var db = firebase.firestore();\n\n    </script>\n\n    <script src=\"https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js\"></script>\n\n    <script defer src=\"https://code.getmdl.io/1.3.0/material.min.js\"></script>";
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("headers");
-context.setVariable("headers", macro_t_20);
+context.setVariable("headers", macro_t_21);
 output += "\n\n";
-var macro_t_21 = runtime.makeMacro(
+var macro_t_22 = runtime.makeMacro(
 [], 
 [], 
 function (kwargs) {
@@ -302,23 +312,23 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("templates");
-context.setVariable("templates", macro_t_21);
+context.setVariable("templates", macro_t_22);
 output += "\n\n";
-var macro_t_22 = runtime.makeMacro(
+var macro_t_23 = runtime.makeMacro(
 [], 
 [], 
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
-output += "<a class=\"btn btn-large btn-primary load-more\" href=\"#\" onclick=\"loadmore();return false;\"\n       title=\"Load Addicting Word Games!\">Load More...</a>";
+output += "<a class=\"btn btn-large btn-primary load-more\" href=\"#\"\n       onclick=\"loadmore();return false;\"\n       title=\"Load Addicting Word Games!\">Load More...</a>";
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("loadmorebutton");
-context.setVariable("loadmorebutton", macro_t_22);
+context.setVariable("loadmorebutton", macro_t_23);
 output += "\n\n";
-var macro_t_23 = runtime.makeMacro(
+var macro_t_24 = runtime.makeMacro(
 [], 
 [], 
 function (kwargs) {
@@ -349,7 +359,7 @@ output += "\n                <span>Terms &amp; Conditions</span>\n            ";
 ;
 }
 else {
-output += "\n                <a href=\"/terms\" title=\"Terms &amp; Conditions\">Terms &amp; Conditions</a>\n            ";
+output += "\n                <a href=\"/terms\" title=\"Terms &amp; Conditions\">Terms &amp;\n                    Conditions</a>\n            ";
 ;
 }
 output += "\n\n            ";
@@ -358,7 +368,7 @@ output += "\n                <span>Privacy Policy</span>\n            ";
 ;
 }
 else {
-output += "\n                <a href=\"/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>\n            ";
+output += "\n                <a href=\"/privacy-policy\" title=\"Privacy Policy\">Privacy\n                    Policy</a>\n            ";
 ;
 }
 output += "\n\n            <span>© 2013 Addicting Word Games</span>\n            <!-- <a href=\"http://www.facebook.com/addictingwordgames\" title=\"Addicting Word Games on Facebook\" target=\"_blank\">\n            <img src=\"/img/facebook.jpg\" alt=\"Addicting Word Games on Facebook\" width=\"144px\" height=\"44px\">\n        </a> -->\n        </p>\n    </div>";
@@ -366,8 +376,8 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("footer");
-context.setVariable("footer", macro_t_23);
-var macro_t_24 = runtime.makeMacro(
+context.setVariable("footer", macro_t_24);
+var macro_t_25 = runtime.makeMacro(
 ["url"], 
 [], 
 function (l_url, kwargs) {
@@ -377,14 +387,14 @@ frame.set("url", l_url);
 var output= "";
 output += "\n    <div style=\"height:25px\">\n        <span class=\"fb-like\" data-href=\"";
 output += runtime.suppressValue(l_url, env.autoesc);
-output += "\" data-send=\"true\" data-width=\"380\" data-show-faces=\"true\"></span>\n    </div>\n    <ul class=\"social-likes\">\n        <li class=\"facebook\" title=\"Share link on Facebook\">Facebook</li>\n        <li class=\"twitter\" title=\"Share link on Twitter\">Twitter</li>\n        <li class=\"plusone\" title=\"Share link on Google+\">Google+</li>\n        <li class=\"pinterest\" title=\"Share image on Pinterest\" data-media=\"";
+output += "\" data-send=\"true\"\n              data-width=\"380\" data-show-faces=\"true\"></span>\n    </div>\n    <ul class=\"social-likes\">\n        <li class=\"facebook\" title=\"Share link on Facebook\">Facebook</li>\n        <li class=\"twitter\" title=\"Share link on Twitter\">Twitter</li>\n        <li class=\"plusone\" title=\"Share link on Google+\">Google+</li>\n        <li class=\"pinterest\" title=\"Share image on Pinterest\"\n            data-media=\"";
 output += runtime.suppressValue(l_url, env.autoesc);
-output += "\">Pinterest</li>\n    </ul>";
+output += "\">Pinterest\n        </li>\n    </ul>";
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("shareBtnsHorizontal");
-context.setVariable("shareBtnsHorizontal", macro_t_24);
+context.setVariable("shareBtnsHorizontal", macro_t_25);
 output += "\n\n";
 cb(null, output);
 ;

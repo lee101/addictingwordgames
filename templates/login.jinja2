@@ -1,0 +1,56 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ game.title }} - Addicting Word Games</title>
+    <meta name="description"
+          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+
+    <meta name="keywords"
+          content="puzzle games, addicting games, {{ game.title }}, puzzle games, addicting word games">
+    <meta property="og:title" content="{{ game.title }} - Addicting Word Games">
+    <meta property="og:url" content="{{ url }}">
+    <meta property="og:image" content="{{ awgutils.getImgUrl(game.urltitle) }}">
+    <meta property="og:description"
+          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Addicting Word Games">
+    <meta property="fb:admins" content="337972272904903">
+
+
+    {{ macros.headers(ws, highscores, achievements) }}
+
+</head>
+<body>
+{{ macros.templates() }}
+<div id="pagebody">
+    {{ macros.topbar() }}
+    <script type="text/javascript">
+        // FirebaseUI config.
+        var uiConfig = {
+            signInSuccessUrl: '/coins',
+            signInOptions: [
+                // Leave the lines as is for the providers you want to offer your users.
+                {
+                    provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                    requireDisplayName: false
+                }
+            ],
+            credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+
+            // Terms of service url.
+            tosUrl: '/terms'
+        };
+
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig);
+    </script>
+    <div id="firebaseui-auth-container"></div>
+</div>
+
+
+</body>
+</html>

@@ -340,6 +340,13 @@ class TagHandler(BaseHandler):
         }
         self.render('/templates/tag.jinja2', extraParams)
 
+class LoginHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/login.jinja2', {})
+
+class SignUpHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/signup.jinja2', {})
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -372,6 +379,8 @@ app = ndb.toplevel(webapp2.WSGIApplication([
                                                ('/', MainHandler),
                                                ('/scores', ScoresHandler),
                                                ('/achievements', AchievementsHandler),
+                                               ('/login', LoginHandler),
+                                               ('/sign-up', SignUpHandler),
                                                ('/logout', LogoutHandler),
                                                ('/privacy-policy', PrivacyHandler),
                                                ('/terms', TermsHandler),

@@ -1,9 +1,12 @@
 {% macro showgame(game) -%}
-    <div class="game">
-        <a class="game-link" href="/game/{{ game.urltitle }}" title="{{ game.title }}"><img
-                src="{{ awgutils.getImgUrl(game.urltitle) }}" alt="{{ game.title }}" width="{{ game.imgwidth }}"
+    <div class="game mdl-shadow--4dp">
+        <a class="game-link" href="/game/{{ game.urltitle }}"
+           title="{{ game.title }}"><img
+                src="{{ awgutils.getImgUrl(game.urltitle) }}"
+                alt="{{ game.title }}" width="{{ game.imgwidth }}"
                 height="{{ game.imgheight }}"/></a>
-        <a href="/game/{{ game.urltitle }}" title="{{ game.title }}">{{ game.title }}</a>
+        <a href="/game/{{ game.urltitle }}"
+           title="{{ game.title }}">{{ game.title }}</a>
 
         <p class="small-description-text">{{ game.description }}</p>
 
@@ -21,25 +24,33 @@
 
 
 {% macro showwordsmashing() -%}
-    <div class="game game-featured">
-        <a class="game-link" href="http://www.wordsmashing.com" title="Word Smashing Puzzle" target="_blank"><img
-                src="/static/img/word-smashing-logo.png" alt="Word Smashing, Addicting Word Puzzle Game" width="250"
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="http://www.wordsmashing.com"
+           title="Word Smashing Puzzle" target="_blank"><img
+                src="/static/img/word-smashing-logo.png"
+                alt="Word Smashing, Addicting Word Puzzle Game" width="250"
                 height="184"/></a>
-        <a href="http://www.wordsmashing.com" title="Play Word Smashing!" target="_blank">Word Smashing!</a>
+        <a href="http://www.wordsmashing.com" title="Play Word Smashing!"
+           target="_blank">Word Smashing!</a>
 
-        <p class="small-description-text">Additively Fun Free Word Puzzle! Slide Letters Around Making Words! Making
+        <p class="small-description-text">Additively Fun Free Word Puzzle! Slide
+            Letters Around Making Words! Making
             Words Will Clear Valuable Space!</p>
     </div>
 {%- endmacro %}
 
 {% macro showrewordgame() -%}
     <div class="game game-featured">
-        <a class="game-link" href="http://rewordgame.com" title="reWord Game Word Puzzle" target="_blank"><img
-                src="/static/img/reword-game-logo256.png" alt="reWord Game, Word Swapping Puzzle Game" width="256"
+        <a class="game-link" href="http://rewordgame.com"
+           title="reWord Game Word Puzzle" target="_blank"><img
+                src="/static/img/reword-game-logo256.png"
+                alt="reWord Game, Word Swapping Puzzle Game" width="256"
                 height="256"/></a>
-        <a href="http://rewordgame.com" title="Play reWord Game!" target="_blank">reWord Game!</a>
+        <a href="http://rewordgame.com" title="Play reWord Game!"
+           target="_blank">reWord Game!</a>
 
-        <p class="small-description-text">Swap Words to Make Sense of Strangeness in this new word puzzle game! Play
+        <p class="small-description-text">Swap Words to Make Sense of
+            Strangeness in this new word puzzle game! Play
             reWord Game Free Online!</p>
     </div>
 {%- endmacro %}
@@ -47,14 +58,19 @@
 {% macro showmultiplicationmaster() -%}
     <div class="game game-featured">
         <a class="game-link" href="http://www.multiplicationmaster.com"
-           title="Multiplication Master Multiplication Game" target="_blank"><img
-                src="/static/img/multiplication-master-promo-256.png" alt="Multiplication Master Maths Game" width="256"
+           title="Multiplication Master Multiplication Game"
+           target="_blank"><img
+                src="/static/img/multiplication-master-promo-256.png"
+                alt="Multiplication Master Maths Game" width="256"
                 height="256"/></a>
-        <a href="http://www.multiplicationmaster.com" title="Play multiplication Master!" target="_blank">Multiplication
+        <a href="http://www.multiplicationmaster.com"
+           title="Play multiplication Master!" target="_blank">Multiplication
             Master!</a>
 
-        <p class="small-description-text small-description-text-featured">Find numbers which work! Multiplication Master
-            makes math fun! Beat the clock in this battle of the brains or create crazy combos! Multiplication Master
+        <p class="small-description-text small-description-text-featured">Find
+            numbers which work! Multiplication Master
+            makes math fun! Beat the clock in this battle of the brains or
+            create crazy combos! Multiplication Master
             Means Maths Madness!</p>
     </div>
 {%- endmacro %}
@@ -63,11 +79,16 @@
     <div class="game game-featured">
         <a class="game-link" href="http://bigmultiplayerchess.com"
            title="Big Multiplayer Chess Game" target="_blank"><img
-                src="/static/img/big-multiplayer-chess-logo256.png" alt="Big Multiplayer Chess Game" width="256"
+                src="/static/img/big-multiplayer-chess-logo256.png"
+                alt="Big Multiplayer Chess Game" width="256"
                 height="256"/></a>
-        <a href="http://bigmultiplayerchess.com" title="Play Big Multiplayer Chess!" target="_blank">Big Multiplayer Chess!</a>
+        <a href="http://bigmultiplayerchess.com"
+           title="Play Big Multiplayer Chess!" target="_blank">Big Multiplayer
+            Chess!</a>
 
-        <p class="small-description-text small-description-text-featured">Massive 6+ Player Chess Board! Pawns move in any direction! Invade and take over your enemies chess pieces by taking the king!</p>
+        <p class="small-description-text small-description-text-featured">
+            Massive 6+ Player Chess Board! Pawns move in any direction! Invade
+            and take over your enemies chess pieces by taking the king!</p>
     </div>
 {%- endmacro %}
 
@@ -100,17 +121,18 @@
 {% macro showadd(num_adds_shown) -%}
     {% if num_adds_shown < 10 %}
 
-    <div class="game" style="height:250px;min-width:300px">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- AWG BOX -->
-        <ins class="adsbygoogle"
-             style="display:inline-block;width:300px;height:250px"
-             data-ad-client="ca-pub-7026363262140448"
-             data-ad-slot="9106168954"></ins>
-        <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
+        <div class="game" style="height:250px;min-width:300px">
+            <script async
+                    src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- AWG BOX -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:300px;height:250px"
+                 data-ad-client="ca-pub-7026363262140448"
+                 data-ad-slot="9106168954"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
     {% endif %}
 
 {%- endmacro %}
@@ -124,35 +146,45 @@
         {{ showbigmultiplayerchess() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
-{#            {% if awgutils.shouldShowAddBefore(game) %}#}
-{#                {{ showadd(num_adds_shown) }}#}
-{#                {% set num_adds_shown = num_adds_shown + 1 %}#}
-{#            {% endif %}#}
+            {#            {% if awgutils.shouldShowAddBefore(game) %}#}
+            {#                {{ showadd(num_adds_shown) }}#}
+            {#                {% set num_adds_shown = num_adds_shown + 1 %}#}
+            {#            {% endif %}#}
             {{ showgame(game) }}
         {% endfor %}
     </div>
 {%- endmacro %}
 
 {% macro renderswf() -%}
-    <object type="application/x-shockwave-flash" data="{{ awgutils.getSWFUrl(game.urltitle) }}"
-            id="" style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;" wmode="direct">
+    <object type="application/x-shockwave-flash"
+            data="{{ awgutils.getSWFUrl(game.urltitle) }}"
+            id=""
+            style="margin:0 10px;width:{{ game.width }}px;height:{{ game.height }}px;"
+            wmode="direct">
     </object>
 {%- endmacro %}
 
 {% macro topbar() -%}
     <div id="main">
         <div id="logo">
-            <h1 class="header"><a href="/" title="Addicting Word Games">Addicting <span
-                    style="color:gray;display:inline-block;">Word Games</span></a></h1>
+            <h1 class="header"><a href="/" title="Addicting Word Games">Addicting
+                <span
+                        style="color:gray;display:inline-block;">Word Games</span></a>
+            </h1>
 
-{#            <div class="header-share">#}
-{#                <div class="fb-like" data-href="https://www.facebook.com/addictingwordgames" data-width="400px"#}
-{#                     data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>#}
-{#            </div>#}
+            {#            <div class="header-share">#}
+            {#                <div class="fb-like" data-href="https://www.facebook.com/addictingwordgames" data-width="400px"#}
+            {#                     data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>#}
+            {#            </div>#}
+            <div class="right-nav">
+                <a href="/login">Login</a>
+                <a href="/sign-up" class="btn btn-warning">Sign Up</a>
+            </div>
+            <div class="clear"></div>
         </div>
-        <!-- <div id="login">
-          <fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>
-        </div> -->
+        {#        <!-- <div id="login">#}
+        {#          <fb:login-button autologoutlink="true" scope="publish_stream" width="200" max-rows="1"></fb:login-button>#}
+        {#        </div> -->#}
     </div>
 {%- endmacro %}
 
@@ -160,16 +192,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
+    <link rel="stylesheet"
+          href="https://code.getmdl.io/1.3.0/material.cyan-pink.min.css"/>
     <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
-    <link rel="stylesheet" href="/static/css/social-likes.css">
     <!--[if IE 8]>
-    <link rel="stylesheet" href="/static/css/ie8.css" type="text/css"/><![endif]-->
+    <link rel="stylesheet" href="/static/css/ie8.css"
+          type="text/css"/><![endif]-->
 
 
-    <script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript"
+            src="/static/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/static/js/jquery.blockUI.js"></script>
-    <script type="text/javascript" src="/static/js/masonry.pkgd.min.js"></script>
+    <script type="text/javascript"
+            src="/static/js/masonry.pkgd.min.js"></script>
 
     <script src="/static/js/social-likes.min.js"></script>
     <script>
@@ -180,13 +216,14 @@
                 columnWidth: 300,
                 itemSelector: '.game',
                 "isFitWidth": true,
-                "gutter": 0
+                "gutter": 6
             });
 
             $('.search-box').focus();
         });
         var isfetching = false;
         var curr_cursor = '{{ next_page_cursor }}';
+
         function loadmore() {
             if (!isfetching) {
 
@@ -225,7 +262,7 @@
                 (i[r].q = i[r].q || []).push(arguments)
             }, i[r].l = 1 * new Date();
             a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0];
+                m = s.getElementsByTagName(o)[0];
             a.async = 1;
             a.src = g;
             m.parentNode.insertBefore(a, m)
@@ -235,6 +272,30 @@
         ga('send', 'pageview');
 
     </script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
+
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBqfxiizjd4h5z_HOJ-3aCWy2_hgghfOWo",
+        authDomain: "addictingwordgames.firebaseapp.com",
+        databaseURL: "https://addictingwordgames.firebaseio.com",
+        projectId: "addictingwordgames",
+        storageBucket: "addictingwordgames.appspot.com",
+        messagingSenderId: "972112451973"
+      };
+      firebase.initializeApp(config);
+      var db = firebase.firestore();
+
+    </script>
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js"></script>
+
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
 {%- endmacro %}
 
 {% macro templates() -%}
@@ -250,7 +311,8 @@
 {%- endmacro %}
 
 {% macro loadmorebutton() -%}
-    <a class="btn btn-large btn-primary load-more" href="#" onclick="loadmore();return false;"
+    <a class="btn btn-large btn-primary load-more" href="#"
+       onclick="loadmore();return false;"
        title="Load Addicting Word Games!">Load More...</a>
 {%- endmacro %}
 
@@ -272,13 +334,15 @@
             {% if '/terms' in url %}
                 <span>Terms &amp; Conditions</span>
             {% else %}
-                <a href="/terms" title="Terms &amp; Conditions">Terms &amp; Conditions</a>
+                <a href="/terms" title="Terms &amp; Conditions">Terms &amp;
+                    Conditions</a>
             {% endif %}
 
             {% if '/privacy-policy' in url %}
                 <span>Privacy Policy</span>
             {% else %}
-                <a href="/privacy-policy" title="Privacy Policy">Privacy Policy</a>
+                <a href="/privacy-policy" title="Privacy Policy">Privacy
+                    Policy</a>
             {% endif %}
 
             <span>© 2013 Addicting Word Games</span>
@@ -291,13 +355,16 @@
 
 {%- macro shareBtnsHorizontal(url) %}
     <div style="height:25px">
-        <span class="fb-like" data-href="{{ url }}" data-send="true" data-width="380" data-show-faces="true"></span>
+        <span class="fb-like" data-href="{{ url }}" data-send="true"
+              data-width="380" data-show-faces="true"></span>
     </div>
     <ul class="social-likes">
         <li class="facebook" title="Share link on Facebook">Facebook</li>
         <li class="twitter" title="Share link on Twitter">Twitter</li>
         <li class="plusone" title="Share link on Google+">Google+</li>
-        <li class="pinterest" title="Share image on Pinterest" data-media="{{ url }}">Pinterest</li>
+        <li class="pinterest" title="Share image on Pinterest"
+            data-media="{{ url }}">Pinterest
+        </li>
     </ul>
 {%- endmacro %}
 
