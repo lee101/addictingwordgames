@@ -209,6 +209,14 @@
 
     <script src="/static/js/social-likes.min.js"></script>
     <script>
+        function signout() {
+            firebase.auth().signOut().then(function () {
+                // Sign-out successful.
+            }).catch(function (error) {
+                // An error happened.
+            });
+        }
+
         $(function () {
             var $container = $('#games');
             // initialize
@@ -223,6 +231,33 @@
         });
         var isfetching = false;
         var curr_cursor = '{{ next_page_cursor }}';
+
+        function newUser(user, token, callback) {
+            "use strict";
+
+
+            $.ajax({
+                "url": "/api/create-user",
+                "data": {
+                    'email': user.email,
+                    'emailVerified': user.emailVerified,
+                    'uid': user.uid,
+                    'photoURL': user.photoURL,
+                    'token': token
+                },
+                "success": function (data) {
+                    callback(data)
+                },
+                "type": "POST",
+                "cache": false,
+                "error": function (xhr, error, thrown) {
+                    if (error == "parsererror") {
+                    }
+                    // TODO allways ensure theres a user with getorinsert
+                    callback(error)
+                }
+            });
+        }
 
         function loadmore() {
             if (!isfetching) {
@@ -278,17 +313,17 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
 
     <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyBqfxiizjd4h5z_HOJ-3aCWy2_hgghfOWo",
-        authDomain: "addictingwordgames.firebaseapp.com",
-        databaseURL: "https://addictingwordgames.firebaseio.com",
-        projectId: "addictingwordgames",
-        storageBucket: "addictingwordgames.appspot.com",
-        messagingSenderId: "972112451973"
-      };
-      firebase.initializeApp(config);
-      var db = firebase.firestore();
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBqfxiizjd4h5z_HOJ-3aCWy2_hgghfOWo",
+            authDomain: "addictingwordgames.firebaseapp.com",
+            databaseURL: "https://addictingwordgames.firebaseio.com",
+            projectId: "addictingwordgames",
+            storageBucket: "addictingwordgames.appspot.com",
+            messagingSenderId: "972112451973"
+        };
+        firebase.initializeApp(config);
+        var db = firebase.firestore();
 
     </script>
 

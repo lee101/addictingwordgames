@@ -1,24 +1,17 @@
 #!/usr/bin/env python
 
-from Models import *
-from google.appengine.api import users
-from google.appengine.ext.webapp import template
-from ws import ws
-import json
-import os
-import webapp2
-import facebook
-from webapp2_extras import sessions
-import utils
-import jinja2
-from crawlers.crawlers import *
-from cgi import escape
-import time
-from google.appengine.datastore.datastore_query import Cursor
-import awgutils
 import random
 
-from google.appengine.api import images
+import jinja2
+import webapp2
+from google.appengine.api import users
+from google.appengine.datastore.datastore_query import Cursor
+from webapp2_extras import sessions
+
+import awgutils
+import facebook
+import utils
+from crawlers.crawlers import *
 
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
@@ -27,7 +20,8 @@ FACEBOOK_APP_ID = "138831849632195"
 FACEBOOK_APP_SECRET = "93986c9cdd240540f70efaea56a9e3f2"
 
 config = {}
-config['webapp2_extras.sessions'] = dict(secret_key='93986c9cdd240540f70efaea56a9e3f2')
+config['webapp2_extras.sessions'] = dict(
+    secret_key='93986c9cdd240540f70efaea56a9e3f2')
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -45,7 +39,7 @@ class BaseHandler(webapp2.RequestHandler):
 
     @property
     def current_user(self):
-        #===== Google Auth
+        # ===== Google Auth
         user = users.get_current_user()
         if user:
             dbUser = User.byId(user.user_id())
@@ -60,7 +54,7 @@ class BaseHandler(webapp2.RequestHandler):
                 dbUser.put()
                 return dbUser
 
-        #===== FACEBOOK Auth
+        # ===== FACEBOOK Auth
         if self.session.get("user"):
             # User is logged in
             return User.byId(self.session.get("user")["id"])
@@ -97,7 +91,7 @@ class BaseHandler(webapp2.RequestHandler):
                     access_token=user.access_token
                 )
                 return user
-        #======== use session cookie user
+        # ======== use session cookie user
         anonymous_cookie = self.request.cookies.get('wsuser', None)
         if anonymous_cookie is None:
             cookie_value = utils.random_string()
@@ -118,7 +112,6 @@ class BaseHandler(webapp2.RequestHandler):
             anon_user.id = cookie_value
             anon_user.put()
             return anon_user
-
 
     def dispatch(self):
         """
@@ -144,7 +137,6 @@ class BaseHandler(webapp2.RequestHandler):
 
         """
         return self.session_store.get_session()
-
 
     def getRandomGameUrl(self):
         '''
@@ -198,9 +190,6 @@ class BaseHandler(webapp2.RequestHandler):
 #             raise err
 
 
-
-
-
 class ScoresHandler(BaseHandler):
     def get(self):
         userscore = Score()
@@ -214,7 +203,8 @@ class ScoresHandler(BaseHandler):
         if self.current_user:
             userscore.user = self.current_user.key
         userscore.put()
-        HighScore.updateHighScoreFor(self.current_user, userscore.score, userscore.difficulty, userscore.timedMode)
+        HighScore.updateHighScoreFor(self.current_user, userscore.score,
+                                     userscore.difficulty, userscore.timedMode)
 
         self.response.out.write('success')
 
@@ -228,7 +218,7 @@ class AchievementsHandler(BaseHandler):
         if self.current_user:
             acheive.user = self.current_user.key
         acheive.put()
-        #graph = facebook.GraphAPI(self.current_user['access_token'])
+        # graph = facebook.GraphAPI(self.current_user['access_token'])
         self.response.out.write('success')
 
 
@@ -286,9 +276,11 @@ class LoadGamesHandler(BaseHandler):
             curs = Cursor(urlsafe=self.request.get('cursor'))
             if urltitle:
 
-                games, next_curs, more = Game.randomOrder(urltitle).fetch_page(40, start_cursor=curs)
+                games, next_curs, more = Game.randomOrder(urltitle).fetch_page(
+                    40, start_cursor=curs)
             else:
-                games, next_curs, more = Game.query().fetch_page(40, start_cursor=curs)
+                games, next_curs, more = Game.query().fetch_page(40,
+                                                                 start_cursor=curs)
 
             if more and next_curs:
                 next_page_cursor = next_curs.urlsafe()
@@ -310,7 +302,8 @@ class GameHandler(BaseHandler):
     def get(self, urltitle):
         game = Game.oneByUrlTitle(urltitle)
         curs = Cursor(urlsafe=self.request.get('cursor'))
-        games, next_curs, more = Game.randomOrder(urltitle).fetch_page(40, start_cursor=curs)
+        games, next_curs, more = Game.randomOrder(urltitle).fetch_page(40,
+                                                                       start_cursor=curs)
 
         if more and next_curs:
             next_page_cursor = next_curs.urlsafe()
@@ -326,7 +319,8 @@ class GameHandler(BaseHandler):
 class TagHandler(BaseHandler):
     def get(self, tag):
         curs = Cursor(urlsafe=self.request.get('cursor'))
-        games, next_curs, more = Game.byTag(tag).fetch_page(40, start_cursor=curs)
+        games, next_curs, more = Game.byTag(tag).fetch_page(40,
+                                                            start_cursor=curs)
 
         if more and next_curs:
             next_page_cursor = next_curs.urlsafe()
@@ -340,13 +334,16 @@ class TagHandler(BaseHandler):
         }
         self.render('/templates/tag.jinja2', extraParams)
 
+
 class LoginHandler(BaseHandler):
     def get(self):
         self.render('/templates/login.jinja2', {})
 
+
 class SignUpHandler(BaseHandler):
     def get(self):
         self.render('/templates/signup.jinja2', {})
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -354,6 +351,28 @@ class LogoutHandler(BaseHandler):
             self.session['user'] = None
 
         self.redirect('/')
+
+
+class CreateUserHandler(BaseHandler):
+
+    def post(self):
+        email = self.request.form['email']
+        emailVerified = self.request.form['emailVerified']
+        uid = self.request.form['uid']
+        photoURL = self.request.form['photoURL']
+        token = self.request.form['token']
+        user = self.current_user
+        if user:
+            # get or create
+            user.id = uid
+            user.email = email
+            user.token = token
+            user.emailVerified = emailVerified
+            user.put()
+
+    # send_signup_email(email, referral_url_key)
+        return {'success': True}
+
 
 # class Thumbnailer(webapp2.RequestHandler):
 #     def get(self, title):
@@ -376,22 +395,22 @@ class LogoutHandler(BaseHandler):
 
 
 app = ndb.toplevel(webapp2.WSGIApplication([
-                                               ('/', MainHandler),
-                                               ('/scores', ScoresHandler),
-                                               ('/achievements', AchievementsHandler),
-                                               ('/login', LoginHandler),
-                                               ('/sign-up', SignUpHandler),
-                                               ('/logout', LogoutHandler),
-                                               ('/privacy-policy', PrivacyHandler),
-                                               ('/terms', TermsHandler),
-                                               ('/facebook', FbHandler),
-                                               ('/about', AboutHandler),
-                                               ('/contact', ContactHandler),
-                                               ('/game/(.*)', GameHandler),
-                                               ('/games/(.*)', TagHandler),
-                                               # ('/gomochi', MochiGamesCrawler),
-                                               ('/loadgames', LoadGamesHandler),
-                                               ('/sitemap', SitemapHandler),
+    ('/', MainHandler),
+    ('/scores', ScoresHandler),
+    ('/achievements', AchievementsHandler),
+    ('/login', LoginHandler),
+    ('/sign-up', SignUpHandler),
+    ('/logout', LogoutHandler),
+    ('/privacy-policy', PrivacyHandler),
+    ('/terms', TermsHandler),
+    ('/facebook', FbHandler),
+    ('/about', AboutHandler),
+    ('/contact', ContactHandler),
+    ('/game/(.*)', GameHandler),
+    ('/games/(.*)', TagHandler),
+    ('/api/create-user', CreateUserHandler),
+    # ('/gomochi', MochiGamesCrawler),
+    ('/loadgames', LoadGamesHandler),
+    ('/sitemap', SitemapHandler),
 
-
-                                           ], debug=ws.debug, config=config))
+], debug=ws.debug, config=config))

@@ -3,17 +3,19 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{ game.title }} - Addicting Word Games</title>
+    <title>login - Addicting Word Games</title>
     <meta name="description"
-          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+          content="Play login at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
 
     <meta name="keywords"
-          content="puzzle games, addicting games, {{ game.title }}, puzzle games, addicting word games">
-    <meta property="og:title" content="{{ game.title }} - Addicting Word Games">
+          content="puzzle games, addicting games, login, puzzle games, addicting word games">
+    <meta property="og:title" content="login - Addicting Word Games">
     <meta property="og:url" content="{{ url }}">
-    <meta property="og:image" content="{{ awgutils.getImgUrl(game.urltitle) }}">
+    <meta property="og:image"
+          content="http://www.addictingwordgames.com/img/addicting-word-games-icon200.png">
+
     <meta property="og:description"
-          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+          content="Play login at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
     <meta property="og:type" content="game">
     <meta property="og:site_name" content="Addicting Word Games">
     <meta property="fb:admins" content="337972272904903">
@@ -26,29 +28,37 @@
 {{ macros.templates() }}
 <div id="pagebody">
     {{ macros.topbar() }}
-    <script type="text/javascript">
-        // FirebaseUI config.
-        var uiConfig = {
-            signInSuccessUrl: '/coins',
-            signInOptions: [
-                // Leave the lines as is for the providers you want to offer your users.
-                {
-                    provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                    requireDisplayName: false
-                }
-            ],
-            credentialHelper: firebaseui.auth.CredentialHelper.NONE,
 
-            // Terms of service url.
-            tosUrl: '/terms'
-        };
+    <main class="demo-main mdl-layout__content">
+        <div class="demo-container mdl-grid">
+            <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
 
-        // Initialize the FirebaseUI Widget using Firebase.
-        var ui = new firebaseui.auth.AuthUI(firebase.auth());
-        // The start method will wait until the DOM is loaded.
-        ui.start('#firebaseui-auth-container', uiConfig);
-    </script>
-    <div id="firebaseui-auth-container"></div>
+                <script type="text/javascript">
+                    // FirebaseUI config.
+                    var uiConfig = {
+                        signInSuccessUrl: '/',
+                        signInOptions: [
+                            // Leave the lines as is for the providers you want to offer your users.
+                            {
+                                provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                                requireDisplayName: false
+                            }
+                        ],
+                        credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+
+                        // Terms of service url.
+                        tosUrl: '/terms'
+                    };
+
+                    // Initialize the FirebaseUI Widget using Firebase.
+                    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+                    // The start method will wait until the DOM is loaded.
+                    ui.start('#firebaseui-auth-container', uiConfig);
+                </script>
+                <div id="firebaseui-auth-container"></div>
+            </div>
+        </div>
+    </main>
 </div>
 
 

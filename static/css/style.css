@@ -207,7 +207,133 @@ body {
 }
 
 
-/*    BITBANK*/
+/*    BITBANK =======================================================================
+=============================================================================================
+*/
+
+.demo-ribbon {
+    width: 100%;
+    height: 40vh;
+    background-color: rgb(0, 188, 212);
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+
+.demo-main {
+    margin-top: -35vh;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    display: block;
+}
+
+.small-note {
+    font-size: 10px;
+}
+
+.lee-img {
+    border-radius: 200px;
+}
+
+.bitbank-face {
+    float: left;
+    margin: 10px;
+}
+
+.smaller-currency {
+    font-size: 20px;
+}
+
+.demo-header .mdl-layout__header-row {
+    padding-left: 40px;
+}
+
+.demo-container {
+    max-width: 1600px;
+    width: calc(100% - 16px);
+    margin: 0 auto;
+}
+
+.demo-content {
+    border-radius: 2px;
+    padding: 30px 30px;
+    margin-bottom: 80px;
+}
+
+@media (min-width:780px) {
+
+    .demo-content {
+        padding: 40px 56px;
+    }
+}
+
+.pricing-content {
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 40px;
+}
+
+.demo-layout.is-small-screen .demo-content {
+    padding: 40px 28px;
+}
+
+.demo-content h3 {
+    margin-top: 48px;
+}
+
+/*INDEX*/
+
+.hero-section {
+    height: 45vh;
+    /* IE11 doesn't like min-height */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(63, 81, 181, 0.6);
+    background-image: linear-gradient(rgba(63, 81, 181, 0.3), rgba(63, 81, 181, 0.3)), url(https://storage.googleapis.com/bitbank-nz/static/img/tech-banner2.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.hero-text {
+    color: white;
+    margin: auto;
+}
+
+@media (max-width: 780px) {
+    .hero-text h1 {
+        font-size: 21px;
+        line-height: 1.25;
+    }
+
+    .hero-text p {
+        font-size: 18px;
+        line-height: 1.25;
+    }
+
+    .mdl-typography--headline {
+        font-size: 17px;
+    }
+}
+
+@media (min-width: 580px) {
+    .hero-icon {
+        margin: 0 25px;
+    }
+}
+
+.hero-icon {
+    box-sizing: border-box;
+    border-radius: 50%;
+    font-size: 56px;
+    color: #ff4081;
+}
 
 
 .fa-footer {

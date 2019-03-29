@@ -30,6 +30,8 @@ class User(ndb.Model):
     name = ndb.StringProperty()
     profile_url = ndb.StringProperty()
     access_token = ndb.StringProperty()
+    has_purchased = ndb.IntegerProperty(default=0)
+
     #     game_urltitles_played = ndb.IntegerProperty()
     @classmethod
     def byId(cls, id):
