@@ -138,7 +138,7 @@ body {
 }
 
 .small-description-text {
-    height: 63px;
+    height: 67px;
     text-overflow: clip;
     text-overflow: ellipsis;
     text-overflow: "...";

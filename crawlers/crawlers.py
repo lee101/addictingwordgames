@@ -9,7 +9,7 @@ import urllib
 import json
 import logging
 
-from Models import *
+from models import *
 import awgutils
 from bs4 import BeautifulSoup
 

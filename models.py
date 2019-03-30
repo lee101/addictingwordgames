@@ -20,7 +20,10 @@ UNLOCKED_HARD = 2
 ACHEIVEMENTS = set([UNLOCKED_MEDIUM, UNLOCKED_HARD])
 
 
-class User(ndb.Model):
+class BaseModel(ndb.Model):
+    def default(self, o): return o.to_dict()
+
+class User(BaseModel):
     id = ndb.StringProperty(required=True)
 
     cookie_user = ndb.IntegerProperty()
@@ -38,7 +41,7 @@ class User(ndb.Model):
         return cls.query(cls.id == id).get()
 
 
-class Score(ndb.Model):
+class Score(BaseModel):
     time = ndb.DateTimeProperty(auto_now_add=True)
     name = ndb.TextProperty()
     user = ndb.KeyProperty(kind=User)
@@ -47,7 +50,7 @@ class Score(ndb.Model):
     timedMode = ndb.IntegerProperty(default=0)
 
 
-class HighScore(ndb.Model):
+class HighScore(BaseModel):
     '''
     users high scores, only one per difficulty
     '''
@@ -90,7 +93,7 @@ class HighScore(ndb.Model):
         #title = ndb.StringProperty(required=True)
 
 
-class Achievement(ndb.Model):
+class Achievement(BaseModel):
     '''
     provides a many to many relationship between achievments and users
     '''
@@ -112,7 +115,7 @@ class Achievement(ndb.Model):
 all_titles = []
 
 
-class Game(ndb.Model):
+class Game(BaseModel):
     title = ndb.StringProperty()
     urltitle = ndb.StringProperty()
     description = ndb.TextProperty()
@@ -164,7 +167,7 @@ class Game(ndb.Model):
         return cls.query(cls.tags == tag)
 
 
-class Photo(ndb.Model):
+class Photo(BaseModel):
     title = ndb.StringProperty()
     full_size_image = ndb.BlobProperty()
     # width = ndb.IntegerProperty()

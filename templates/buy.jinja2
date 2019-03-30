@@ -1,0 +1,150 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <title>sign up - Addicting Word Games</title>
+    <meta name="description"
+          content="Signup at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Just $7!">
+
+    <meta name="keywords"
+          content="puzzle games, addicting games, sign up, puzzle games, addicting word games">
+    <meta property="og:title" content="sign up - Addicting Word Games">
+    <meta property="og:url" content="{{ url }}">
+    <meta property="og:image"
+          content="http://www.addictingwordgames.com/img/addicting-word-games-icon200.png">
+
+    <meta property="og:description"
+          content="Play sign up at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Addicting Word Games">
+    <meta property="fb:admins" content="337972272904903">
+
+
+    {{ macros.headers(ws, highscores, achievements) }}
+
+</head>
+<body>
+{{ macros.templates() }}
+<div id="pagebody">
+    {{ macros.topbar() }}
+    <script type="text/javascript">
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                var displayName = user.displayName;
+                var email = user.email;
+                var emailVerified = user.emailVerified;
+                var photoURL = user.photoURL;
+                var uid = user.uid;
+                var phoneNumber = user.phoneNumber;
+                var providerData = user.providerData;
+                //TODO err handler ?
+                window.user = user;
+            } else {
+                window.location.href = '/sign-up';
+                // User is signed out.
+            }
+        }, function (error) {
+            console.log(error);
+        });
+
+        function signup() {
+            var email = $('#username').val();
+            var password = $('#userpass').val();
+            var isSuccessful = true
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                $('#signupFormError').html(errorMessage);
+                $('#signupFormError').show();
+                $('#signupFormError').css('visibility', 'visible');
+                isSuccessful = false
+            }).then(function (status) {
+                if (isSuccessful) {
+                    saveUser();
+                    $('#signupFormError').hide();
+
+                }
+
+            });
+        }
+    </script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script defer>
+        var handler = StripeCheckout.configure({
+            key: 'pk_test_f2IstzDsCh9Ac23rJdPNAmPu',
+            image: '/static/img/addicting-word-games-icon200.png',
+            locale: 'auto',
+            token: function (token) {
+                // You can access the token ID with `token.id`.
+                // Get the token ID to your server-side code for use.
+                $.ajax({
+                    "url": "/api/buy",
+                    "data": {
+                        'token': token
+                    },
+                    "success": function (data) {
+                        // TODO goto previous game
+                        location.href = '/'
+                    },
+                    "type": "POST",
+                    "cache": false,
+                    "error": function (xhr, error, thrown) {
+                        if (error == "parsererror") {
+                        }
+                        // todo ROLLBAR
+                        console.log(error)
+                    }
+                });
+            }
+        });
+
+        function openStripe(e) {
+            // Open Checkout with further options:
+            var email = ''
+            if (window.user && window.user.email) {
+                email = window.user.email
+            }
+            handler.open({
+                name: 'Addicting Word Games',
+                description: 'Buy All Games for $7',
+                currency: 'usd',
+                amount: 700,
+                email: email
+            });
+            return false;
+        };
+
+        // Close Checkout on page navigation:
+        window.addEventListener('popstate', function () {
+            handler.close();
+        });
+    </script>
+    <div id="firebaseui-auth-container"></div>
+
+    <div class="demo-ribbon"></div>
+    <main class="demo-main mdl-layout__content">
+        <div class="demo-container mdl-grid">
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+            <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+                <h4>All Addicting Word Games forever for Just $7</h4>
+
+                <div id="stripe-form">
+                    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            onclick="return openStripe()">
+                        Buy Now
+                    </button>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

@@ -1,20 +1,17 @@
 #!/usr/bin/env python
 
-import random
-
 import jinja2
-import webapp2
-from google.appengine.api import users
+import stripe
 from google.appengine.datastore.datastore_query import Cursor
 from webapp2_extras import sessions
 
-import awgutils
 import facebook
 import utils
 from crawlers.crawlers import *
 
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
+from gameon_utils import GameOnUtils
 
 FACEBOOK_APP_ID = "138831849632195"
 FACEBOOK_APP_SECRET = "93986c9cdd240540f70efaea56a9e3f2"
@@ -345,12 +342,26 @@ class SignUpHandler(BaseHandler):
         self.render('/templates/signup.jinja2', {})
 
 
+class BuyHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/buy.jinja2', {})
+
+
 class LogoutHandler(BaseHandler):
     def get(self):
         if self.current_user is not None:
             self.session['user'] = None
 
         self.redirect('/')
+
+
+class GetUserHandler(BaseHandler):
+    def get(self):
+        user = self.current_user
+
+        self.response.headers['Content-Type'] = 'application/json'
+
+        self.response.write(json.dumps(user.to_dict(), cls=GameOnUtils.MyEncoder))
 
 
 class CreateUserHandler(BaseHandler):
@@ -362,16 +373,45 @@ class CreateUserHandler(BaseHandler):
         photoURL = self.request.form['photoURL']
         token = self.request.form['token']
         user = self.current_user
-        if user:
-            # get or create
-            user.id = uid
-            user.email = email
-            user.token = token
-            user.emailVerified = emailVerified
-            user.put()
+        if not user:
+            user = User()
+        # get or create
+        user.id = uid
+        user.email = email
+        user.token = token
+        user.emailVerified = emailVerified
+        user.put()
 
-    # send_signup_email(email, referral_url_key)
-        return {'success': True}
+        self.session["user"] = dict(
+            name=user.name,
+            profile_url=user.profile_url,
+            id=user.id,
+            access_token=user.access_token
+        )
+
+        # send_signup_email(email, referral_url_key)
+        self.response.headers['Content-Type'] = 'application/json'
+
+        self.response.out.write(json.dumps({'success': True}))
+
+
+class ChargeForBuyHandler(BaseHandler):
+
+    def post(self):
+        token = self.request.form['stripeToken']  # Using Flask
+
+        charge = stripe.Charge.create(
+            amount=700,
+            currency='usd',
+            description='Addicting Word Games.com',
+            source=token,
+        )
+
+
+        # send_signup_email(email, referral_url_key)
+        self.response.headers['Content-Type'] = 'application/json'
+
+        self.response.out.write(json.dumps({'success': True}))
 
 
 # class Thumbnailer(webapp2.RequestHandler):
@@ -400,6 +440,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/achievements', AchievementsHandler),
     ('/login', LoginHandler),
     ('/sign-up', SignUpHandler),
+    ('/buy', BuyHandler),
     ('/logout', LogoutHandler),
     ('/privacy-policy', PrivacyHandler),
     ('/terms', TermsHandler),
@@ -409,6 +450,8 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/game/(.*)', GameHandler),
     ('/games/(.*)', TagHandler),
     ('/api/create-user', CreateUserHandler),
+    ('/api/get-user', GetUserHandler),
+    ('/api/buy', ChargeForBuyHandler),
     # ('/gomochi', MochiGamesCrawler),
     ('/loadgames', LoadGamesHandler),
     ('/sitemap', SitemapHandler),
