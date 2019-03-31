@@ -31,6 +31,8 @@ class User(BaseModel):
     updated = ndb.DateTimeProperty(auto_now=True)
 
     name = ndb.StringProperty()
+    email = ndb.StringProperty()
+
     profile_url = ndb.StringProperty()
     access_token = ndb.StringProperty()
     has_purchased = ndb.IntegerProperty(default=0)
@@ -39,6 +41,10 @@ class User(BaseModel):
     @classmethod
     def byId(cls, id):
         return cls.query(cls.id == id).get()
+
+    @classmethod
+    def byEmail(cls, email):
+        return cls.query(cls.email == email).get()
 
 
 class Score(BaseModel):

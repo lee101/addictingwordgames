@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import logging
 
 import jinja2
 import stripe
@@ -194,7 +195,7 @@ class BaseHandler(webapp2.RequestHandler):
 
             traceback.print_exc()
             self.response.write(err)
-
+            raise err
 
 #             self.response.write(traceback.print_exc())
 #             raise err
@@ -372,7 +373,18 @@ class LogoutHandler(BaseHandler):
 
 class GetUserHandler(BaseHandler):
     def get(self):
-        user = self.current_user
+        email = self.request.get('email')
+        user = User.byEmail(email)
+
+        if not user:
+            user = User()
+
+            cookie_value = utils.random_string()
+            self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
+            user.id = cookie_value
+            user.email = email
+            user.put()
+        # user = self.current_user
 
         self.response.headers['Content-Type'] = 'application/json'
 
@@ -383,11 +395,11 @@ class GetUserHandler(BaseHandler):
 class CreateUserHandler(BaseHandler):
 
     def post(self):
-        email = self.request.form['email']
-        emailVerified = self.request.form['emailVerified']
-        uid = self.request.form['uid']
-        photoURL = self.request.form['photoURL']
-        token = self.request.form['token']
+        email = self.request.get('email')
+        emailVerified = self.request.get('emailVerified')
+        uid = self.request.get('uid')
+        photoURL = self.request.get('photoURL')
+        token = self.request.get('token')
         user = self.current_user
         if not user:
             user = User()
@@ -408,28 +420,72 @@ class CreateUserHandler(BaseHandler):
         # send_signup_email(email, referral_url_key)
         self.response.headers['Content-Type'] = 'application/json'
 
-        self.response.out.write(json.dumps({'success': True}))
+        self.response.write(json.dumps({'success': True}))
 
 
 class ChargeForBuyHandler(BaseHandler):
 
     def post(self):
-        token = self.request.form['stripeToken']  # Using Flask
-
-        charge = stripe.Charge.create(
-            amount=700,
-            currency='usd',
-            description='Addicting Word Games.com',
-            source=token,
-        )
+        print 'HERE1'
+        token = self.request.get('token[id]')  # Using Flask
+        print 'HERE2'
         user = self.current_user
-        user.has_purchased = True
-        user.put()
+        try:
+            # Use Stripe's library to make requests...
+            charge = stripe.Charge.create(
+                amount=700,
+                currency='usd',
+                description='Addicting Word Games.com',
+                source=token,
+                idempotency_key=user.id
+            )
+        except stripe.error.CardError as e:
+            logging.error(e)
+            # Since it's a decline, stripe.error.CardError will be caught
+            body = e.json_body
+            err = body.get('error', {})
 
-        # send_signup_email(email, referral_url_key)
-        self.response.headers['Content-Type'] = 'application/json'
+            print "Status is: %s" % e.http_status
+            print "Type is: %s" % err.get('type')
+            print "Code is: %s" % err.get('code')
+            # param is '' in this case
+            print "Param is: %s" % err.get('param')
+            print "Message is: %s" % err.get('message')
+        except stripe.error.RateLimitError as e:
+            logging.error(e)
+            # Too many requests made to the API too quickly
+            pass
+        except stripe.error.InvalidRequestError as e:
+            logging.error(e)
+            # Invalid parameters were supplied to Stripe's API
+            pass
+        except stripe.error.AuthenticationError as e:
+            logging.error(e)
+            # Authentication with Stripe's API failed
+            # (maybe you changed API keys recently)
+            pass
+        except stripe.error.APIConnectionError as e:
+            logging.error(e)
+            # Network communication with Stripe failed
+            pass
+        except stripe.error.StripeError as e:
+            logging.error(e)
+            # Display a very generic error to the user, and maybe send
+            # yourself an email
+            pass
+        except Exception as e:
+            # Something else happened, completely unrelated to Stripe
+            logging.error(e)
+            self.response.write(json.dumps({'success': False}))
+            return
+        else:
+            user.has_purchased = True
+            user.put()
 
-        self.response.out.write(json.dumps({'success': True}))
+            # send_signup_email(email, referral_url_key)
+            self.response.headers['Content-Type'] = 'application/json'
+
+            self.response.write(json.dumps({'success': True}))
 
 
 # class Thumbnailer(webapp2.RequestHandler):

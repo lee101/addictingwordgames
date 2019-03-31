@@ -168,9 +168,8 @@
 {% macro topbar() -%}
     <div id="main">
         <div id="logo">
-            <h1 class="header"><a href="/" title="Addicting Word Games">Addicting
-                <span
-                        style="color:gray;display:inline-block;">Word Games</span></a>
+            <h1 class="header"><a href="/" title="Addicting Word Games">Addicting<span
+                    style="color:gray;display:inline-block;"> Word Games</span></a>
             </h1>
 
             {#            <div class="header-share">#}
@@ -209,10 +208,10 @@
 
     <script type="text/javascript"
             src="/static/js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="/static/js/jquery.blockUI.js"></script>
     <script type="text/javascript"
             src="/static/js/masonry.pkgd.min.js"></script>
 
+    <script src="/static/js/dialog-polyfill.js"></script>
     <script src="/static/js/social-likes.min.js"></script>
     <script>
         function signout() {
@@ -266,13 +265,15 @@
             });
         }
 
-        function getUser(callback) {
+        function getUser(email, callback) {
             "use strict";
 
 
             $.ajax({
                 "url": "/api/get-user",
-                "data": {},
+                "data": {
+                    'email':email
+                },
                 "success": function (data) {
                     callback(data)
                 },
@@ -351,7 +352,7 @@
         };
         firebase.initializeApp(config);
         // User
-
+        window.has_purchased = false;
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 // User is signed in.
@@ -361,10 +362,14 @@
                 $('#log-out').show();
 
 
-                getUser(function (userData) {
+                getUser(user.email, function (userData) {
                     if (!userData.has_purchased) {
                         $('#buy').show()
+
+                        // set timeout for prompt to pay
                     } else {
+                        window.has_purchased = true;
+
                         $('#buy').hide()
                     }
                 })
@@ -378,6 +383,23 @@
             console.log(error);
         });
 
+        function payPrompt() {
+            if (window.has_purchased) {
+                return false;
+            }
+            var dialog = document.querySelector('dialog');
+            var showDialogButton = document.querySelector('#show-pay-dialog');
+            if (!dialog.showModal) {
+                dialogPolyfill.registerDialog(dialog);
+            }
+            showDialogButton.addEventListener('click', function () {
+                dialog.showModal();
+            });
+            dialog.querySelector('.close').addEventListener('click', function () {
+                dialog.close();
+            });
+        }
+
     </script>
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet"
@@ -388,15 +410,15 @@
 {%- endmacro %}
 
 {% macro templates() -%}
-{#    <div id="fb-root"></div>#}
-{#    <script>(function (d, s, id) {#}
-{#        var js, fjs = d.getElementsByTagName(s)[0];#}
-{#        if (d.getElementById(id)) return;#}
-{#        js = d.createElement(s);#}
-{#        js.id = id;#}
-{#        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=138831849632195";#}
-{#        fjs.parentNode.insertBefore(js, fjs);#}
-{#    }(document, 'script', 'facebook-jssdk'));</script>#}
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=138831849632195";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 {%- endmacro %}
 
 {% macro loadmorebutton() -%}
@@ -440,6 +462,20 @@
         </a> -->
         </p>
     </div>
+    <button id="show-pay-dialog" type="button" class="mdl-button">Show Dialog
+    </button>
+    <dialog class="mdl-dialog">
+        <h4 class="mdl-dialog__title">Please support us!</h4>
+        <div class="mdl-dialog__content">
+            <p>
+                $7 to buy all Addicting Word Games forever + any future
+                releases!
+            </p>
+        </div>
+        <div class="mdl-dialog__actions">
+            <a type="button" class="mdl-button" href="/sign-up">Buy Now</a>
+        </div>
+    </dialog>
 {%- endmacro %}
 
 {%- macro shareBtnsHorizontal(url) %}

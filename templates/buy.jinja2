@@ -118,9 +118,35 @@
             return false;
         };
 
+
         // Close Checkout on page navigation:
         window.addEventListener('popstate', function () {
             handler.close();
+        });
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+
+                window.user = user;
+
+                // open stripe straight away
+                openStripe();
+
+                getUser(user.email, function (userData) {
+                    if (!userData.has_purchased) {
+                        // they are in the right place
+
+                        // set timeout for prompt to pay
+                    } else {
+                        //successfully purchased already
+                        window.location.href = '/'
+                    }
+                })
+            } else {
+                window.location.href = '/sign-up';
+                // User is signed out.
+            }
+        }, function (error) {
+            console.log(error);
         });
     </script>
     <div id="firebaseui-auth-container"></div>
@@ -130,7 +156,8 @@
         <div class="demo-container mdl-grid">
             <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
             <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
-                <h4>All Addicting Word Games forever for Just $7</h4>
+                <h4>All Addicting Word Games forever for $7</h4>
+                <p>694 Unique Games and counting all for $7</p>
 
                 <div id="stripe-form">
                     <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
