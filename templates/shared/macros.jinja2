@@ -180,9 +180,9 @@
                 <a id="log-out" href="/logout" onclick="signout()"
                    style="display: none;">Log out</a>
                 <a id="log-in" href="/login">Login</a>
-                <a id="sign-up" href="/sign-up" class="btn btn-warning">Sign
+                <a id="sign-up" href="/sign-up" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Sign
                     Up</a>
-                <a id="buy" href="/buy" class="btn btn-warning"
+                <a id="buy" href="/buy" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
                    style="display: none;">$7 Buy All Games</a>
             </div>
             <div class="clear"></div>
@@ -388,13 +388,10 @@
                 return false;
             }
             var dialog = document.querySelector('dialog');
-            var showDialogButton = document.querySelector('#show-pay-dialog');
             if (!dialog.showModal) {
                 dialogPolyfill.registerDialog(dialog);
             }
-            showDialogButton.addEventListener('click', function () {
-                dialog.showModal();
-            });
+            dialog.showModal();
             dialog.querySelector('.close').addEventListener('click', function () {
                 dialog.close();
             });
@@ -462,18 +459,16 @@
         </a> -->
         </p>
     </div>
-    <button id="show-pay-dialog" type="button" class="mdl-button">Show Dialog
-    </button>
     <dialog class="mdl-dialog">
         <h4 class="mdl-dialog__title">Please support us!</h4>
         <div class="mdl-dialog__content">
             <p>
-                $7 to buy all Addicting Word Games forever + any future
+                $7 to buy all 694 Addicting Word Games forever + any future
                 releases!
             </p>
         </div>
         <div class="mdl-dialog__actions">
-            <a type="button" class="mdl-button" href="/sign-up">Buy Now</a>
+            <a type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect close" href="/sign-up" target="_blank">Buy Now</a>
         </div>
     </dialog>
 {%- endmacro %}

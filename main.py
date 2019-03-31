@@ -134,8 +134,6 @@ class BaseHandler(webapp2.RequestHandler):
         self.session_store = sessions.get_store(request=self.request)
         try:
             webapp2.RequestHandler.dispatch(self)
-        except:
-            pass
         finally:
             self.session_store.save_sessions(self.response)
 
@@ -426,10 +424,9 @@ class CreateUserHandler(BaseHandler):
 class ChargeForBuyHandler(BaseHandler):
 
     def post(self):
-        print 'HERE1'
         token = self.request.get('token[id]')  # Using Flask
-        print 'HERE2'
-        user = self.current_user
+        email = self.request.get('token[email]')  # Using Flask
+        user = User.byEmail(email)
         try:
             # Use Stripe's library to make requests...
             charge = stripe.Charge.create(
@@ -437,10 +434,11 @@ class ChargeForBuyHandler(BaseHandler):
                 currency='usd',
                 description='Addicting Word Games.com',
                 source=token,
-                idempotency_key=user.id
+                # idempotency_key=user.id
             )
         except stripe.error.CardError as e:
             logging.error(e)
+            print e
             # Since it's a decline, stripe.error.CardError will be caught
             body = e.json_body
             err = body.get('error', {})
@@ -453,39 +451,46 @@ class ChargeForBuyHandler(BaseHandler):
             print "Message is: %s" % err.get('message')
         except stripe.error.RateLimitError as e:
             logging.error(e)
+            print e
             # Too many requests made to the API too quickly
             pass
         except stripe.error.InvalidRequestError as e:
             logging.error(e)
+            print e
             # Invalid parameters were supplied to Stripe's API
             pass
         except stripe.error.AuthenticationError as e:
             logging.error(e)
+            print e
             # Authentication with Stripe's API failed
             # (maybe you changed API keys recently)
             pass
         except stripe.error.APIConnectionError as e:
             logging.error(e)
+            print e
             # Network communication with Stripe failed
             pass
         except stripe.error.StripeError as e:
             logging.error(e)
+            print e
             # Display a very generic error to the user, and maybe send
             # yourself an email
             pass
         except Exception as e:
             # Something else happened, completely unrelated to Stripe
             logging.error(e)
+            print e
             self.response.write(json.dumps({'success': False}))
             return
-        else:
-            user.has_purchased = True
-            user.put()
+        # TODO put inside else to be strict
+        # else:
+        user.has_purchased = True
+        user.put()
 
-            # send_signup_email(email, referral_url_key)
-            self.response.headers['Content-Type'] = 'application/json'
+        # send_signup_email(email, referral_url_key)
+        self.response.headers['Content-Type'] = 'application/json'
 
-            self.response.write(json.dumps({'success': True}))
+        self.response.write(json.dumps({'success': True}))
 
 
 # class Thumbnailer(webapp2.RequestHandler):
