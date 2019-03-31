@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import logging
 
 import jinja2
 import stripe
@@ -195,6 +194,7 @@ class BaseHandler(webapp2.RequestHandler):
             self.response.write(err)
             raise err
 
+
 #             self.response.write(traceback.print_exc())
 #             raise err
 
@@ -325,6 +325,26 @@ class GameHandler(BaseHandler):
         self.render('/templates/game.jinja2', extraParams)
 
 
+games = {
+    'wordsmashing': {
+        'title': 'Word Smashing',
+        'image_url': '',
+        'url': 'https://wordsmashing.com'
+    },
+    'multiplication-master': {
+
+    }
+}
+
+
+class PlayGameHandler(BaseHandler):
+    def get(self, urltitle):
+        game = games['urltitle']
+        extraParams = {'game': game,
+                       'urltitle': urltitle}
+        self.render('/templates/play-game.jinja2', extraParams)
+
+
 class TagHandler(BaseHandler):
     def get(self, tag):
         curs = Cursor(urlsafe=self.request.get('cursor'))
@@ -452,7 +472,7 @@ class ChargeForBuyHandler(BaseHandler):
         except stripe.error.RateLimitError as e:
             logging.error(e)
             print e
-            # Too many requests made to the API too quickly
+            # Too many   requests made to the API too quickly
             pass
         except stripe.error.InvalidRequestError as e:
             logging.error(e)
@@ -527,6 +547,7 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
     ('/game/(.*)', GameHandler),
+    ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
     ('/api/create-user', CreateUserHandler),
     ('/api/get-user', GetUserHandler),

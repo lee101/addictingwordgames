@@ -1,0 +1,40 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ game.title }} - Addicting Word Games</title>
+    <meta name="description"
+          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+
+    <meta name="keywords" content="puzzle games, addicting games, {{ game.title }}, puzzle games, addicting word games">
+    <meta property="og:title" content="{{ game.title }} - Addicting Word Games">
+    <meta property="og:url" content="{{ url }}">
+    <meta property="og:image" content="{{ game.image_url }}">
+    <meta property="og:description"
+          content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
+    <meta property="og:type" content="game">
+    <meta property="og:site_name" content="Addicting Word Games">
+    <meta property="fb:admins" content="337972272904903">
+
+
+    {{ macros.headers(ws, highscores, achievements) }}
+
+</head>
+<body>
+{{ macros.templates() }}
+<div id="pagebody">
+    {{ macros.topbar() }}
+    <div id="searchbox">
+        <a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>
+    </div>
+    <iframe src="{{ game.url }}" frameborder="0" style="border: 0;margin: 0;width: 100%;height: 100%;"></iframe>
+    <div class="clear">
+    </div>
+    {{ macros.footer() }}
+    <div class="clear">
+    </div>
+</div>
+
+</body>
+</html>
