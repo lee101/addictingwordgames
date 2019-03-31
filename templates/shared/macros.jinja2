@@ -94,7 +94,8 @@
 
 {% macro showmaingame() -%}
     {% if game %}
-        <div class="game game-panel mdl-shadow--4dp" style="width:{{ game.width+40 }}px;">
+        <div class="game game-panel mdl-shadow--4dp"
+             style="width:{{ game.width+40 }}px;">
             <h2>{{ game.title }}</h2>
 
             <div>
@@ -177,8 +178,13 @@
             {#                     data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>#}
             {#            </div>#}
             <div class="right-nav">
-                <a href="/login">Login</a>
-                <a href="/sign-up" class="btn btn-warning">Sign Up</a>
+                <a id="log-out" href="/logout" onclick="signout()"
+                   style="display: none;">Log out</a>
+                <a id="log-in" href="/login">Login</a>
+                <a id="sign-up" href="/sign-up" class="btn btn-warning">Sign
+                    Up</a>
+                <a id="buy" href="/buy" class="btn btn-warning"
+                   style="display: none;">$7 Buy All Games</a>
             </div>
             <div class="clear"></div>
         </div>
@@ -259,14 +265,14 @@
                 }
             });
         }
-        function getUser(user, callback) {
+
+        function getUser(callback) {
             "use strict";
 
 
             $.ajax({
                 "url": "/api/get-user",
-                "data": {
-                },
+                "data": {},
                 "success": function (data) {
                     callback(data)
                 },
@@ -332,7 +338,6 @@
 
 
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
 
     <script>
         // Initialize Firebase
@@ -345,27 +350,53 @@
             messagingSenderId: "972112451973"
         };
         firebase.initializeApp(config);
-        var db = firebase.firestore();
+        // User
 
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                window.firebaseUser = user
+                $('#sign-up').hide();
+                $('#log-in').hide();
+                $('#log-out').show();
+
+
+                getUser(function (userData) {
+                    if (!userData.has_purchased) {
+                        $('#buy').show()
+                    } else {
+                        $('#buy').hide()
+                    }
+                })
+            } else {
+
+                // User is signed out.
+                // set timeout for prompt to pay
+
+            }
+        }, function (error) {
+            console.log(error);
+        });
 
     </script>
-
-    <script src="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet"
+          href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
 
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 {%- endmacro %}
 
 {% macro templates() -%}
-    <div id="fb-root"></div>
-    <script>(function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=138831849632195";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+{#    <div id="fb-root"></div>#}
+{#    <script>(function (d, s, id) {#}
+{#        var js, fjs = d.getElementsByTagName(s)[0];#}
+{#        if (d.getElementById(id)) return;#}
+{#        js = d.createElement(s);#}
+{#        js.id = id;#}
+{#        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=138831849632195";#}
+{#        fjs.parentNode.insertBefore(js, fjs);#}
+{#    }(document, 'script', 'facebook-jssdk'));</script>#}
 {%- endmacro %}
 
 {% macro loadmorebutton() -%}

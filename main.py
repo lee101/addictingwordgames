@@ -6,11 +6,11 @@ from google.appengine.datastore.datastore_query import Cursor
 from webapp2_extras import sessions
 
 import facebook
-import utils
-from crawlers.crawlers import *
-
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
+import sellerinfo
+import utils
+from crawlers.crawlers import *
 from gameon_utils import GameOnUtils
 
 FACEBOOK_APP_ID = "138831849632195"
@@ -23,6 +23,19 @@ config['webapp2_extras.sessions'] = dict(
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'])
+
+if GameOnUtils.debug:
+    stripe_keys = {
+        'secret_key': sellerinfo.STRIPE_TEST_SECRET,
+        'publishable_key': sellerinfo.STRIPE_TEST_KEY
+    }
+else:
+    stripe_keys = {
+        'secret_key': sellerinfo.STRIPE_LIVE_SECRET,
+        'publishable_key': sellerinfo.STRIPE_LIVE_KEY
+    }
+
+stripe.api_key = stripe_keys['secret_key']
 
 
 class BaseHandler(webapp2.RequestHandler):
@@ -344,7 +357,9 @@ class SignUpHandler(BaseHandler):
 
 class BuyHandler(BaseHandler):
     def get(self):
-        self.render('/templates/buy.jinja2', {})
+        self.render('/templates/buy.jinja2', {
+            'stripe_publishable_key': stripe_keys['publishable_key']
+        })
 
 
 class LogoutHandler(BaseHandler):
@@ -361,7 +376,8 @@ class GetUserHandler(BaseHandler):
 
         self.response.headers['Content-Type'] = 'application/json'
 
-        self.response.write(json.dumps(user.to_dict(), cls=GameOnUtils.MyEncoder))
+        self.response.write(
+            json.dumps(user.to_dict(), cls=GameOnUtils.MyEncoder))
 
 
 class CreateUserHandler(BaseHandler):
@@ -406,7 +422,9 @@ class ChargeForBuyHandler(BaseHandler):
             description='Addicting Word Games.com',
             source=token,
         )
-
+        user = self.current_user
+        user.has_purchased = True
+        user.put()
 
         # send_signup_email(email, referral_url_key)
         self.response.headers['Content-Type'] = 'application/json'

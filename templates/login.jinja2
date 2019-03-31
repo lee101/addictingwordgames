@@ -29,37 +29,43 @@
 <div id="pagebody">
     {{ macros.topbar() }}
 
-    <main class="demo-main mdl-layout__content">
-        <div class="demo-container mdl-grid">
-            <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
 
-                <script type="text/javascript">
-                    // FirebaseUI config.
-                    var uiConfig = {
-                        signInSuccessUrl: '/',
-                        signInOptions: [
-                            // Leave the lines as is for the providers you want to offer your users.
-                            {
-                                provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-                                requireDisplayName: false
-                            }
-                        ],
-                        credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+    <div class="mdl-layout mdl-js-layout">
+        <main class="mdl-layout__content">
+            <div class="page-content mdl-grid">
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+                <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
 
-                        // Terms of service url.
-                        tosUrl: '/terms'
-                    };
+                    <script type="text/javascript">
+                        // FirebaseUI config.
+                        var uiConfig = {
+                            signInSuccessUrl: '/',
+                            signInOptions: [
+                                // Leave the lines as is for the providers you want to offer your users.
+                                {
+                                    provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                                    requireDisplayName: false
+                                },
 
-                    // Initialize the FirebaseUI Widget using Firebase.
-                    var ui = new firebaseui.auth.AuthUI(firebase.auth());
-                    // The start method will wait until the DOM is loaded.
-                    ui.start('#firebaseui-auth-container', uiConfig);
-                </script>
-                <div id="firebaseui-auth-container"></div>
+                                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                                firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+                            ],
+                            credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+
+                            // Terms of service url.
+                            tosUrl: '/terms'
+                        };
+
+                        // Initialize the FirebaseUI Widget using Firebase.
+                        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+                        // The start method will wait until the DOM is loaded.
+                        ui.start('#firebaseui-auth-container', uiConfig);
+                    </script>
+                    <div id="firebaseui-auth-container"></div>
+                </div>
             </div>
-        </div>
-    </main>
-</div>
+        </main>
+    </div>
 
 
 </body>

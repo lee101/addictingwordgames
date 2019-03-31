@@ -75,7 +75,7 @@
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <script defer>
         var handler = StripeCheckout.configure({
-            key: 'pk_test_f2IstzDsCh9Ac23rJdPNAmPu',
+            key: '{{ stripe_publishable_key }}',
             image: '/static/img/addicting-word-games-icon200.png',
             locale: 'auto',
             token: function (token) {
