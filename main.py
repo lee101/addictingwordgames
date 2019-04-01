@@ -339,7 +339,7 @@ games = {
 
 class PlayGameHandler(BaseHandler):
     def get(self, urltitle):
-        game = games['urltitle']
+        game = games[urltitle]
         extraParams = {'game': game,
                        'urltitle': urltitle}
         self.render('/templates/play-game.jinja2', extraParams)

@@ -9,9 +9,16 @@
     opacity: 0.5;
     filter: alpha(opacity=50);
 }
+
 .right-nav {
     float: right;
     padding: 5px;
+}
+
+#pagebody {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
 }
 
 #modal {
@@ -263,7 +270,7 @@ body {
 
 }
 
-@media (min-width:780px) {
+@media (min-width: 780px) {
 
     .demo-content {
         padding: 40px 56px;
