@@ -15,11 +15,6 @@
     padding: 5px;
 }
 
-#pagebody {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-}
 
 #modal {
     position: absolute;
