@@ -367,6 +367,7 @@
                         $('#buy').show()
 
                         // set timeout for prompt to pay
+                        window.setTimeout(payPrompt, 60 * 1000)
                     } else {
                         window.has_purchased = true;
 
@@ -377,6 +378,7 @@
 
                 // User is signed out.
                 // set timeout for prompt to pay
+                window.setTimeout(payPrompt, 60 * 1000)
 
             }
         }, function (error) {
@@ -392,9 +394,11 @@
                 dialogPolyfill.registerDialog(dialog);
             }
             dialog.showModal();
-            dialog.querySelector('.close').addEventListener('click', function () {
+            dialog.querySelector('.closes-modal').addEventListener('click', function () {
                 dialog.close();
             });
+        window.setTimeout(payPrompt, 60 * 1000)
+
         }
 
     </script>
@@ -468,7 +472,7 @@
             </p>
         </div>
         <div class="mdl-dialog__actions">
-            <a type="button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect close" href="/sign-up" target="_blank">Buy Now</a>
+            <a type="button" class="mdl-button mdl-button--colored mdl-button--accent mdl-js-button mdl-js-ripple-effect closes-modal" href="/sign-up" target="_blank">Buy Now</a>
         </div>
     </dialog>
 {%- endmacro %}
