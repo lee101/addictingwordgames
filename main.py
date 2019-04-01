@@ -334,17 +334,17 @@ games = {
     'multiplication-master': {
         'title': 'Multiplication Master',
         'image_url': '/static/img/multiplication-master-promo-256.png',
-        'url': 'http://www.multiplicationmaster.com'
+        'url': 'https://www.multiplicationmaster.com'
     },
     'reword-game': {
         'title': 'ReWord Game',
         'image_url': '/static/img/reword-game-logo256.png',
-        'url': 'http://rewordgame.com'
+        'url': 'https://rewordgame.com'
     },
     'big-multiplayer-chess': {
         'title': 'Big Multiplayer Chess',
         'image_url': '/static/img/big-multiplayer-chess-logo256.png',
-        'url': 'http://bigmultiplayerchess.com'
+        'url': 'https://bigmultiplayerchess.com'
     },
 }
 
