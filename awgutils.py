@@ -11,10 +11,10 @@ def urlEncode(s):
     return urllib.quote_plus(s)
 
 def getImgUrl(title):
-    return 'http://commondatastorage.googleapis.com/wordgames%2F' + title
+    return 'https://storage.googleapis.com/wordgames/' + title
 
 def getSWFUrl(title):
-    return 'http://games.addictingwordgames.com/' + title
+    return 'https://storage.googleapis.com/games.addictingwordgames.com/' + title
 
 def shouldShowAddBefore(game):
     return True
