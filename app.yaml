@@ -57,7 +57,7 @@ automatic_scaling:
   max_idle_instances: 1
   target_cpu_utilization: 9.5
   target_throughput_utilization: 9.5
-  min_pending_latency: 300ms  # default value
+  min_pending_latency: 300ms
   max_pending_latency: 15000ms
   max_concurrent_requests: 80
 
