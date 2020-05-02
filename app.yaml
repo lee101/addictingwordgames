@@ -1,6 +1,7 @@
 runtime: python27
 api_version: 1
 threadsafe: yes
+version:
 
 default_expiration: "300d 5h"
 
@@ -50,6 +51,15 @@ builtins:
 
 inbound_services:
 - warmup
+
+# YOLO cost saving autoscaling
+automatic_scaling:
+  max_idle_instances: 1
+  target_cpu_utilization: 9.5
+  target_throughput_utilization: 9.5
+  min_pending_latency: 300ms  # default value
+  max_pending_latency: 1000ms
+  max_concurrent_requests: 80
 
 skip_files:
 - ^(.*/)?#.*#$
