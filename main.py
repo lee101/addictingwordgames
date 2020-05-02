@@ -462,7 +462,7 @@ class ChargeForBuyHandler(BaseHandler):
         try:
             # Use Stripe's library to make requests...
             charge = stripe.Charge.create(
-                amount=700,
+                amount=199,
                 currency='usd',
                 description='Addicting Word Games.com',
                 source=token,
