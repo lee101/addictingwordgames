@@ -30,7 +30,7 @@
                 src="/static/img/word-smashing-logo.png"
                 alt="Word Smashing, Addicting Word Puzzle Game" width="250"
                 height="184"/></a>
-        <a href="http://www.wordsmashing.com" title="Play Word Smashing!"
+        <a href="/play-game/wordsmashing" title="Play Word Smashing!"
            target="_blank">Word Smashing!</a>
 
         <p class="small-description-text">Additively Fun Free Word Puzzle! Slide
@@ -92,6 +92,21 @@
     </div>
 {%- endmacro %}
 
+{% macro showquestionsgame() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/play-game/20-questions-with-ai"
+           title="20 Questions with AI"><img
+                src="/static/img/text-generator-brain-logo.png"
+                alt="20 Questions with AI" width="256"
+                height="256"/></a>
+        <a href="/play-game/20-questions-with-ai"
+           title="Play Big Multiplayer Chess!">20 Questions with AI</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Guess what Albert Bottington is thinking!</p>
+    </div>
+{%- endmacro %}
+
 {% macro showmaingame() -%}
     {% if game %}
         <div class="game game-panel mdl-shadow--4dp"
@@ -145,6 +160,7 @@
         {{ showmultiplicationmaster() }}
         {{ showrewordgame() }}
         {{ showbigmultiplayerchess() }}
+        {{ showquestionsgame() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
             {#            {% if awgutils.shouldShowAddBefore(game) %}#}

@@ -346,6 +346,11 @@ games = {
         'image_url': '/static/img/big-multiplayer-chess-logo256.png',
         'url': 'https://bigmultiplayerchess.com'
     },
+    '20-questions-with-ai': {
+        'title': '20 Questions with AI',
+        'image_url': '/static/img/text-generator-brain-logo.png',
+        'url': 'https://language-generator.app.nz/questions-game'
+    },
 }
 
 
