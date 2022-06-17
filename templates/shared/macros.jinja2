@@ -107,6 +107,20 @@
     </div>
 {%- endmacro %}
 
+{% macro showreadingtimegame() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/play-game/reading-time"
+           title="20 Questions with AI"><img
+                src="/static/img/reading-time-icon256.png"
+                alt="20 Questions with AI" width="256"
+                height="256" style="padding: 25px"/></a>
+        <a href="/play-game/reading-time"
+           title="Play Reading Time">Reading Time</a>
+
+        <p class="small-description-text small-description-text-featured">Read kids to sleep with books to help kids read.</p>
+    </div>
+{%- endmacro %}
+
 {% macro showmaingame() -%}
     {% if game %}
         <div class="game game-panel mdl-shadow--4dp"
@@ -161,6 +175,7 @@
         {{ showrewordgame() }}
         {{ showbigmultiplayerchess() }}
         {{ showquestionsgame() }}
+        {{ showreadingtimegame() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
             {#            {% if awgutils.shouldShowAddBefore(game) %}#}

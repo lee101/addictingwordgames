@@ -351,6 +351,11 @@ games = {
         'image_url': '/static/img/text-generator-brain-logo.png',
         'url': 'https://language-generator.app.nz/questions-game'
     },
+    'reading-time': {
+        'title': 'Reading Time',
+        'image_url': '/static/img/reading-time-icon256.png',
+        'url': 'https://readingtime.app.nz'
+    },
 }
 
 
