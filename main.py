@@ -349,12 +349,17 @@ games = {
     '20-questions-with-ai': {
         'title': '20 Questions with AI',
         'image_url': '/static/img/text-generator-brain-logo.png',
-        'url': 'https://language-generator.app.nz/questions-game'
+        'url': 'https://textgenerator.app.nz/questions-game'
     },
     'reading-time': {
         'title': 'Reading Time',
         'image_url': '/static/img/reading-time-icon256.png',
         'url': 'https://readingtime.app.nz'
+    },
+    'joy-drop': {
+        'title': 'Joy Drop',
+        'image_url': '/static/img/joydrop-sun-logo256.png',
+        'url': 'https://joydrop.app.nz'
     },
 }
 
