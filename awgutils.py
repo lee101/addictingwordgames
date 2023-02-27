@@ -1,4 +1,4 @@
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 
 def removeNonAscii(s):
@@ -8,7 +8,7 @@ def urlEncode(s):
     s = removeNonAscii(s.replace(" ", "-").lower())
     # s = s.translate(string.maketrans("", "", ), '!@#;:\',./<>?')
     s = re.sub("[\.\t\,\:;\(\)'@!\\\?#/<>\s]", "", s, 0, 0)
-    return urllib.quote_plus(s)
+    return urllib.parse.quote_plus(s)
 
 def getImgUrl(title):
     return 'https://storage.googleapis.com/wordgames/' + title

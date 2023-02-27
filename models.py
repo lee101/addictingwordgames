@@ -4,6 +4,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
+
 import os
 import datetime
 import logging
@@ -165,7 +166,7 @@ class Game(BaseModel):
         global all_titles
 
         if len(all_titles) <= 0:
-            all_titles = map(lambda x: x.urltitle, cls.query().fetch(5000, projection=[cls.urltitle]))
+            all_titles = [x.urltitle for x in cls.query().fetch(5000, projection=[cls.urltitle])]
         return all_titles
 
     @classmethod

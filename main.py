@@ -2,7 +2,9 @@
 
 import jinja2
 import stripe
-from google.appengine.datastore.datastore_query import Cursor
+# from google.appengine.datastore.datastore_query import Cursor
+from google.cloud import ndb
+from google.cloud.ndb import Cursor
 from webapp2_extras import sessions
 
 import facebook
@@ -185,7 +187,7 @@ class BaseHandler(webapp2.RequestHandler):
 
             template = JINJA_ENVIRONMENT.get_template(view_name)
             self.response.write(template.render(template_values))
-        except Exception, err:
+        except Exception as err:
             logging.error(Exception)
             logging.error(err)
             import traceback
@@ -297,7 +299,7 @@ class LoadGamesHandler(BaseHandler):
                 next_page_cursor = None
             extraParams = {'games': games,
                            'next_page_cursor': next_page_cursor}
-        except Exception, err:
+        except Exception as err:
             logging.error(Exception)
             logging.error(err)
             import traceback
@@ -485,48 +487,48 @@ class ChargeForBuyHandler(BaseHandler):
             )
         except stripe.error.CardError as e:
             logging.error(e)
-            print e
+            print(e)
             # Since it's a decline, stripe.error.CardError will be caught
             body = e.json_body
             err = body.get('error', {})
 
-            print "Status is: %s" % e.http_status
-            print "Type is: %s" % err.get('type')
-            print "Code is: %s" % err.get('code')
+            print("Status is: %s" % e.http_status)
+            print("Type is: %s" % err.get('type'))
+            print("Code is: %s" % err.get('code'))
             # param is '' in this case
-            print "Param is: %s" % err.get('param')
-            print "Message is: %s" % err.get('message')
+            print("Param is: %s" % err.get('param'))
+            print("Message is: %s" % err.get('message'))
         except stripe.error.RateLimitError as e:
             logging.error(e)
-            print e
+            print(e)
             # Too many   requests made to the API too quickly
             pass
         except stripe.error.InvalidRequestError as e:
             logging.error(e)
-            print e
+            print(e)
             # Invalid parameters were supplied to Stripe's API
             pass
         except stripe.error.AuthenticationError as e:
             logging.error(e)
-            print e
+            print(e)
             # Authentication with Stripe's API failed
             # (maybe you changed API keys recently)
             pass
         except stripe.error.APIConnectionError as e:
             logging.error(e)
-            print e
+            print(e)
             # Network communication with Stripe failed
             pass
         except stripe.error.StripeError as e:
             logging.error(e)
-            print e
+            print(e)
             # Display a very generic error to the user, and maybe send
             # yourself an email
             pass
         except Exception as e:
             # Something else happened, completely unrelated to Stripe
             logging.error(e)
-            print e
+            print(e)
             self.response.write(json.dumps({'success': False}))
             return
         # TODO put inside else to be strict
