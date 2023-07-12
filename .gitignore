@@ -36,3 +36,4 @@ env
 venv
 secrets
 .env
+.settings
