@@ -35,3 +35,4 @@ sellerinfo.py
 env
 venv
 secrets
+.env

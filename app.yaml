@@ -57,11 +57,3 @@ automatic_scaling:
 #  min_pending_latency: 300ms
 #  max_pending_latency: 15000ms
 #  max_concurrent_requests: 80
-
-skip_files:
-- ^(.*/)?#.*#$
-- ^(.*/)?.*~$
-- ^(.*/)?.*\.py[co]$
-- ^(.*/)?.*/RCS/.*$
-- ^(.*/)?\..*$
-- ^node_modules.*$
