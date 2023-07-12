@@ -5,14 +5,15 @@ import stripe
 # from google.appengine.datastore.datastore_query import Cursor
 from google.cloud import ndb
 from google.cloud.ndb import Cursor
-from webapp2_extras import sessions
 
 import facebook
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
 import sellerinfo
 import utils
-from crawlers.crawlers import *
+import webapp2
+import os
+# from crawlers.crawlers import *
 from gameon_utils import GameOnUtils
 
 FACEBOOK_APP_ID = "138831849632195"
