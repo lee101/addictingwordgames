@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import json
 from random import choice
 
 import jinja2
@@ -9,7 +10,6 @@ from google.cloud.ndb import Cursor
 from webapp2_extras import sessions
 
 import awgutils
-import facebook
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
 import sellerinfo
@@ -66,66 +66,66 @@ class BaseHandler(webapp2.RequestHandler):
     @property
     def current_user(self):
         # ===== Google Auth
-        user = users.get_current_user()
-        if user:
-            dbUser = User.byId(user.user_id())
-            if dbUser:
-                return dbUser
-            else:
-
-                dbUser = User()
-                dbUser.id = user.user_id()
-                dbUser.name = user.nickname()
-                dbUser.email = user.email().lower()
-                dbUser.put()
-                return dbUser
+        # user = users.get_current_user()
+        # if user:
+        #     dbUser = User.byId(user.user_id())
+        #     if dbUser:
+        #         return dbUser
+        #     else:
+        #
+        #         dbUser = User()
+        #         dbUser.id = user.user_id()
+        #         dbUser.name = user.nickname()
+        #         dbUser.email = user.email().lower()
+        #         User.save(dbUser)
+        #         return dbUser
 
         # ===== FACEBOOK Auth
-        if self.session.cursor("user"):
-            # User is logged in
-            return User.byId(self.session.cursor("user")["id"])
-        else:
-            # Either used just logged in or just saw the first page
-            # We'll see here
-            fbcookie = facebook.get_user_from_cookie(self.request.cookies,
-                                                     FACEBOOK_APP_ID,
-                                                     FACEBOOK_APP_SECRET)
-            if fbcookie:
-                # Okay so user logged in.
-                # Now, check to see if existing user
-                user = User.byId(fbcookie["uid"])
-                if not user:
-                    # Not an existing user so get user info
-                    graph = facebook.GraphAPI(fbcookie["access_token"])
-                    profile = graph.get_object("me")
-                    user = User(
-                        key_name=str(profile["id"]),
-                        id=str(profile["id"]),
-                        name=profile["name"],
-                        profile_url=profile["link"],
-                        access_token=fbcookie["access_token"]
-                    )
-                    user.put()
-                elif user.access_token != fbcookie["access_token"]:
-                    user.access_token = fbcookie["access_token"]
-                    user.put()
-                # User is now logged in
-                self.session["user"] = dict(
-                    name=user.name,
-                    profile_url=user.profile_url,
-                    id=user.id,
-                    access_token=user.access_token
-                )
-                return user
+        # if self.session.cursor("user"):
+        #     # User is logged in
+        #     return User.byId(self.session.cursor("user")["id"])
+        # else:
+        #     # Either used just logged in or just saw the first page
+        #     # We'll see here
+        #     fbcookie = facebook.get_user_from_cookie(self.request.cookies,
+        #                                              FACEBOOK_APP_ID,
+        #                                              FACEBOOK_APP_SECRET)
+        #     if fbcookie:
+        #         # Okay so user logged in.
+        #         # Now, check to see if existing user
+        #         user = User.byId(fbcookie["uid"])
+        #         if not user:
+        #             # Not an existing user so get user info
+        #             graph = facebook.GraphAPI(fbcookie["access_token"])
+        #             profile = graph.get_object("me")
+        #             user = User(
+        #                 key_name=str(profile["id"]),
+        #                 id=str(profile["id"]),
+        #                 name=profile["name"],
+        #                 profile_url=profile["link"],
+        #                 access_token=fbcookie["access_token"]
+        #             )
+        #             User.save(user)
+        #         elif user.access_token != fbcookie["access_token"]:
+        #             user.access_token = fbcookie["access_token"]
+        #             User.save(user)
+        #         # User is now logged in
+        #         self.session["user"] = dict(
+        #             name=user.name,
+        #             profile_url=user.profile_url,
+        #             id=user.id,
+        #             access_token=user.access_token
+        #         )
+        #         return user
         # ======== use session cookie user
-        anonymous_cookie = self.request.cookies.cursor('wsuser', None)
+        anonymous_cookie = self.request.cookies.get('wsuser', None)
         if anonymous_cookie is None:
             cookie_value = utils.random_string()
             self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
             anon_user = User()
             anon_user.cookie_user = 1
             anon_user.id = cookie_value
-            anon_user.put()
+            User.save(anon_user)
             return anon_user
         else:
             anon_user = User.byId(anonymous_cookie)
@@ -136,7 +136,7 @@ class BaseHandler(webapp2.RequestHandler):
             anon_user = User()
             anon_user.cookie_user = 1
             anon_user.id = cookie_value
-            anon_user.put()
+            User.save(anon_user)
             return anon_user
 
     def dispatch(self):
@@ -228,7 +228,7 @@ class ScoresHandler(BaseHandler):
 
         if self.current_user:
             userscore.user = self.current_user.key
-        userscore.put()
+        Score.save(userscore)
         HighScore.updateHighScoreFor(self.current_user, userscore.score,
                                      userscore.difficulty, userscore.timedMode)
 
@@ -243,7 +243,7 @@ class AchievementsHandler(BaseHandler):
             raise Exception("unknown achievement: " + acheive.type)
         if self.current_user:
             acheive.user = self.current_user.key
-        acheive.put()
+        Achievement.save(acheive)
         # graph = facebook.GraphAPI(self.current_user['access_token'])
         self.response.out.write('success')
 
@@ -428,7 +428,7 @@ class GetUserHandler(BaseHandler):
             self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
             user.id = cookie_value
             user.email = email
-            user.put()
+            User.save(user)
         # user = self.current_user
 
         self.response.headers['Content-Type'] = 'application/json'
@@ -453,7 +453,7 @@ class CreateUserHandler(BaseHandler):
         user.email = email
         user.token = token
         user.emailVerified = emailVerified
-        user.put()
+        User.save(user)
 
         self.session["user"] = dict(
             name=user.name,
@@ -529,10 +529,10 @@ class ChargeForBuyHandler(BaseHandler):
             print(e)
             self.response.write(json.dumps({'success': False}))
             return
-        # TODO put inside else to be strict
+        # TODO save inside else to be strict
         # else:
         user.has_purchased = True
-        user.put()
+        User.save(user)
 
         # send_signup_email(email, referral_url_key)
         self.response.headers['Content-Type'] = 'application/json'
