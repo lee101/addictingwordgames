@@ -38,26 +38,25 @@ handlers:
 - url: .*
   script: main.app
 
-libraries:
-- name: webapp2
-  version: "2.5.2"
-- name: jinja2
-  version: "2.6"
-
 builtins:
 - deferred: on
 
 inbound_services:
 - warmup
 
-# YOLO cost saving autoscaling
+
+instance_class: F1
 automatic_scaling:
-  max_idle_instances: 1
-  target_cpu_utilization: .95
-  target_throughput_utilization: .95
-  min_pending_latency: 300ms
-  max_pending_latency: 15000ms
-  max_concurrent_requests: 80
+  max_pending_latency: 15s # 15 is the max
+
+# YOLO cost saving autoscaling
+#automatic_scaling:
+#  max_idle_instances: 1
+#  target_cpu_utilization: .95
+#  target_throughput_utilization: .95
+#  min_pending_latency: 300ms
+#  max_pending_latency: 15000ms
+#  max_concurrent_requests: 80
 
 skip_files:
 - ^(.*/)?#.*#$
