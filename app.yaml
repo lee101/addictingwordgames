@@ -27,6 +27,9 @@ handlers:
 - url: /mochi.html
   static_files: mochi.html
   upload: mochi.html
+- url: /ads.txt
+  static_files: static/ads.txt
+  upload: static/ads.txt
 - url: /achievement-hard.html
   static_files: achievement-hard.html
   upload: achievement-hard.html
