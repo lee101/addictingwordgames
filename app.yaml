@@ -1,5 +1,5 @@
 runtime: python311
-entrypoint: gunicorn -k sync -b :$PORT main:app --timeout 120 --workers 2 --threads 1
+entrypoint: gunicorn -k gthread -b :$PORT main:app --timeout 120 --workers 2 --threads 1
 
 default_expiration: "300d 5h"
 
