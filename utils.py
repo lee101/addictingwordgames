@@ -5,38 +5,38 @@ import hashlib
 import string
 import unicodedata
 from datetime import datetime, timedelta
-import Cookie
+# import Cookie
 import webapp2
 
 def random_string(size=6, chars=string.ascii_letters + string.digits):
     """ Generate random string """
     return ''.join(random.choice(chars) for _ in range(size))
 
-def hashing(plaintext, salt=""):
-    """ Returns the hashed and encrypted hexdigest of a plaintext and salt"""
-    app = webapp2.get_app()
-
-    # Hashing (sha512)
-    plaintext = "%s@%s" % (plaintext, salt)
-    phrase_digest = hashlib.sha512(plaintext.encode('UTF-8')).hexdigest()
-
-    # Encryption (PyCrypto)
-    # wow... it's so secure :)
-    try:
-        from Crypto.Cipher import AES
-        mode = AES.MODE_CBC
-
-        # We can not generate random initialization vector because is difficult to retrieve them later without knowing
-        # a priori the hash to match. We take 16 bytes from the hexdigest to make the vectors different for each hashed
-        # plaintext.
-        iv = phrase_digest[:16]
-        encryptor = AES.new(app.config.get('aes_key'), mode,iv)
-        ciphertext = [encryptor.encrypt(chunk) for chunk in chunks(phrase_digest, 16)]
-        return ''.join(ciphertext)
-    except (ImportError, NameError), e:
-        import logging
-        logging.error("CRYPTO is not running")
-        return phrase_digest
+# def hashing(plaintext, salt=""):
+#     """ Returns the hashed and encrypted hexdigest of a plaintext and salt"""
+#     app = webapp2.get_app()
+#
+#     # Hashing (sha512)
+#     plaintext = "%s@%s" % (plaintext, salt)
+#     phrase_digest = hashlib.sha512(plaintext.encode('UTF-8')).hexdigest()
+#
+#     # Encryption (PyCrypto)
+#     # wow... it's so secure :)
+#     try:
+#         from Crypto.Cipher import AES
+#         mode = AES.MODE_CBC
+#
+#         # We can not generate random initialization vector because is difficult to retrieve them later without knowing
+#         # a priori the hash to match. We take 16 bytes from the hexdigest to make the vectors different for each hashed
+#         # plaintext.
+#         iv = phrase_digest[:16]
+#         encryptor = AES.new(app.config.get('aes_key'), mode,iv)
+#         ciphertext = [encryptor.encrypt(chunk) for chunk in chunks(phrase_digest, 16)]
+#         return ''.join(ciphertext)
+#     except (ImportError, NameError), e:
+#         import logging
+#         logging.error("CRYPTO is not running")
+#         return phrase_digest
 
 def chunks(list, size):
     """ Yield successive sized chunks from list. """
@@ -205,7 +205,7 @@ def parse_if_int(s):
     """Try to parse a string to an int.
     Return the int on success or string on failure.
     Useful for parsing entity ids from urls when
-    entity ids could be manually assigned strings or 
+    entity ids could be manually assigned strings or
     automatically assigned numbers.
     """
     try:

@@ -76,7 +76,7 @@
     <script defer>
         var handler = StripeCheckout.configure({
             key: '{{ stripe_publishable_key }}',
-            image: '/static/img/addicting-word-games-icon200.png',
+            image: '{{ static_url }}/img/addicting-word-games-icon200.png',
             locale: 'auto',
             token: function (token) {
                 // You can access the token ID with `token.id`.

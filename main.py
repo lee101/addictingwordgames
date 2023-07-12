@@ -1,11 +1,14 @@
 #!/usr/bin/env python
+from random import choice
 
 import jinja2
 import stripe
 # from google.appengine.datastore.datastore_query import Cursor
-from google.cloud import ndb
 from google.cloud.ndb import Cursor
 
+from webapp2_extras import sessions
+
+import awgutils
 import facebook
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
@@ -14,7 +17,12 @@ import utils
 import webapp2
 import os
 # from crawlers.crawlers import *
+from loguru import logger
+import ws
 from gameon_utils import GameOnUtils
+from models import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
+    get_rand_order_page, get_cursor_and_random_games
+from ws import ws
 
 FACEBOOK_APP_ID = "138831849632195"
 FACEBOOK_APP_SECRET = "93986c9cdd240540f70efaea56a9e3f2"
@@ -24,15 +32,20 @@ config['webapp2_extras.sessions'] = dict(
     secret_key='93986c9cdd240540f70efaea56a9e3f2')
 
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-    extensions=['jinja2.ext.autoescape'])
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+    # extensions=['jinja2.ext.autoescape'])
+
+GCLOUD_STATIC_BUCKET_URL = ""
 
 if GameOnUtils.debug:
+    GCLOUD_STATIC_BUCKET_URL = "/static"
     stripe_keys = {
         'secret_key': sellerinfo.STRIPE_TEST_SECRET,
         'publishable_key': sellerinfo.STRIPE_TEST_KEY
     }
 else:
+    GCLOUD_STATIC_BUCKET_URL = "https://static.addictingwordgames.com/static"
+
     stripe_keys = {
         'secret_key': sellerinfo.STRIPE_LIVE_SECRET,
         'publishable_key': sellerinfo.STRIPE_LIVE_KEY
@@ -68,9 +81,9 @@ class BaseHandler(webapp2.RequestHandler):
                 return dbUser
 
         # ===== FACEBOOK Auth
-        if self.session.get("user"):
+        if self.session.cursor("user"):
             # User is logged in
-            return User.byId(self.session.get("user")["id"])
+            return User.byId(self.session.cursor("user")["id"])
         else:
             # Either used just logged in or just saw the first page
             # We'll see here
@@ -105,7 +118,7 @@ class BaseHandler(webapp2.RequestHandler):
                 )
                 return user
         # ======== use session cookie user
-        anonymous_cookie = self.request.cookies.get('wsuser', None)
+        anonymous_cookie = self.request.cookies.cursor('wsuser', None)
         if anonymous_cookie is None:
             cookie_value = utils.random_string()
             self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
@@ -156,8 +169,8 @@ class BaseHandler(webapp2.RequestHandler):
         titles = Game.getAllTitles()
         if len(titles) == 0:
             return '/'
-        choice = random.choice(titles)
-        return '/game/' + choice
+        randchoice = choice(titles)
+        return '/game/' + randchoice
 
     def render(self, view_name, extraParams={}):
 
@@ -182,6 +195,7 @@ class BaseHandler(webapp2.RequestHandler):
                 # 'glogout_url': users.create_logout_url(self.request.uri),
                 'awgutils': awgutils,
                 'url': self.request.uri,
+                'static_url': GCLOUD_STATIC_BUCKET_URL,
                 'random_game_url': random_game_url
             }
             template_values.update(extraParams)
@@ -189,8 +203,8 @@ class BaseHandler(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template(view_name)
             self.response.write(template.render(template_values))
         except Exception as err:
-            logging.error(Exception)
-            logging.error(err)
+            logger.error(Exception)
+            logger.error(err)
             import traceback
 
             traceback.print_exc()
@@ -236,15 +250,10 @@ class AchievementsHandler(BaseHandler):
 
 class MainHandler(BaseHandler):
     def get(self):
-        curs = Cursor(urlsafe=self.request.get('cursor'))
-        games, next_curs, more = Game.query().fetch_page(40, start_cursor=curs)
-
-        if more and next_curs:
-            next_page_cursor = next_curs.urlsafe()
-        else:
-            next_page_cursor = None
+        cursor = self.request.get('cursor')
+        games, next_page_cursor = get_cursor_and_games(cursor)
         extraParams = {'games': games,
-                       'next_page_cursor': next_page_cursor}
+                       'next_page_cursor': str(next_page_cursor.decode("utf-8"))}
         self.render('/templates/index.jinja2', extraParams)
 
 
@@ -285,24 +294,13 @@ class LoadGamesHandler(BaseHandler):
     def get(self):
         try:
             urltitle = self.request.get('title')
-            curs = Cursor(urlsafe=self.request.get('cursor'))
-            if urltitle:
-
-                games, next_curs, more = Game.randomOrder(urltitle).fetch_page(
-                    40, start_cursor=curs)
-            else:
-                games, next_curs, more = Game.query().fetch_page(40,
-                                                                 start_cursor=curs)
-
-            if more and next_curs:
-                next_page_cursor = next_curs.urlsafe()
-            else:
-                next_page_cursor = None
+            cursor = self.request.get('cursor')
+            games, next_page_cursor = get_rand_order_page(cursor, urltitle)
             extraParams = {'games': games,
-                           'next_page_cursor': next_page_cursor}
+                           'next_page_cursor': str(next_page_cursor.decode("utf-8"))}
         except Exception as err:
-            logging.error(Exception)
-            logging.error(err)
+            logger.error(Exception)
+            logger.error(err)
             import traceback
 
             traceback.print_exc()
@@ -313,17 +311,11 @@ class LoadGamesHandler(BaseHandler):
 class GameHandler(BaseHandler):
     def get(self, urltitle):
         game = Game.oneByUrlTitle(urltitle)
-        curs = Cursor(urlsafe=self.request.get('cursor'))
-        games, next_curs, more = Game.randomOrder(urltitle).fetch_page(40,
-                                                                       start_cursor=curs)
-
-        if more and next_curs:
-            next_page_cursor = next_curs.urlsafe()
-        else:
-            next_page_cursor = None
+        current_cursor = self.request.get('cursor')
+        games, next_page_cursor = get_cursor_and_random_games(current_cursor, urltitle)
         extraParams = {'game': game,
                        'games': games,
-                       'next_page_cursor': next_page_cursor,
+                       'next_page_cursor': str(next_page_cursor.decode("utf-8")),
                        'urltitle': urltitle}
         self.render('/templates/game.jinja2', extraParams)
 
@@ -363,6 +355,11 @@ games = {
         'title': 'Joy Drop',
         'image_url': '/static/img/joydrop-sun-logo256.png',
         'url': 'https://joydrop.app.nz'
+    },
+    'netwrck': {
+        'title': 'Netwrck',
+        'image_url': '/static/img/netwrck-logo-colord256.png',
+        'url': 'https://netwrck.com'
     },
 }
 
@@ -487,48 +484,48 @@ class ChargeForBuyHandler(BaseHandler):
                 # idempotency_key=user.id
             )
         except stripe.error.CardError as e:
-            logging.error(e)
+            logger.error(e)
             print(e)
             # Since it's a decline, stripe.error.CardError will be caught
             body = e.json_body
-            err = body.get('error', {})
+            err = body.cursor('error', {})
 
             print("Status is: %s" % e.http_status)
-            print("Type is: %s" % err.get('type'))
-            print("Code is: %s" % err.get('code'))
+            print("Type is: %s" % err.cursor('type'))
+            print("Code is: %s" % err.cursor('code'))
             # param is '' in this case
-            print("Param is: %s" % err.get('param'))
-            print("Message is: %s" % err.get('message'))
+            print("Param is: %s" % err.cursor('param'))
+            print("Message is: %s" % err.cursor('message'))
         except stripe.error.RateLimitError as e:
-            logging.error(e)
+            logger.error(e)
             print(e)
             # Too many   requests made to the API too quickly
             pass
         except stripe.error.InvalidRequestError as e:
-            logging.error(e)
+            logger.error(e)
             print(e)
             # Invalid parameters were supplied to Stripe's API
             pass
         except stripe.error.AuthenticationError as e:
-            logging.error(e)
+            logger.error(e)
             print(e)
             # Authentication with Stripe's API failed
             # (maybe you changed API keys recently)
             pass
         except stripe.error.APIConnectionError as e:
-            logging.error(e)
+            logger.error(e)
             print(e)
             # Network communication with Stripe failed
             pass
         except stripe.error.StripeError as e:
-            logging.error(e)
+            logger.error(e)
             print(e)
             # Display a very generic error to the user, and maybe send
             # yourself an email
             pass
         except Exception as e:
             # Something else happened, completely unrelated to Stripe
-            logging.error(e)
+            logger.error(e)
             print(e)
             self.response.write(json.dumps({'success': False}))
             return
@@ -562,8 +559,7 @@ class ChargeForBuyHandler(BaseHandler):
 #         # in the datastore.
 #         self.error(404)
 
-
-app = ndb.toplevel(webapp2.WSGIApplication([
+app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/scores', ScoresHandler),
     ('/achievements', AchievementsHandler),
@@ -586,4 +582,4 @@ app = ndb.toplevel(webapp2.WSGIApplication([
     ('/loadgames', LoadGamesHandler),
     ('/sitemap', SitemapHandler),
 
-], debug=ws.debug, config=config))
+], debug=ws.debug, config=config)

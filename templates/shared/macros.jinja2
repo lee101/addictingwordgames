@@ -27,7 +27,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/wordsmashing"
            title="Word Smashing Puzzle" target="_blank"><img
-                src="/static/img/word-smashing-logo.png"
+                src="{{ static_url }}/img/word-smashing-logo.png"
                 alt="Word Smashing, Addicting Word Puzzle Game" width="250"
                 height="184"/></a>
         <a href="/play-game/wordsmashing" title="Play Word Smashing!"
@@ -43,7 +43,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/reword-game"
            title="reWord Game Word Puzzle" target="_blank"><img
-                src="/static/img/reword-game-logo256.png"
+                src="{{ static_url }}/img/reword-game-logo256.png"
                 alt="reWord Game, Word Swapping Puzzle Game" width="256"
                 height="256"/></a>
         <a href="/play-game/reword-game" title="Play reWord Game!"
@@ -60,7 +60,7 @@
         <a class="game-link" href="/play-game/multiplication-master"
            title="Multiplication Master Multiplication Game"
            ><img
-                src="/static/img/multiplication-master-promo-256.png"
+                src="{{ static_url }}/img/multiplication-master-promo-256.png"
                 alt="Multiplication Master Maths Game" width="256"
                 height="256"/></a>
         <a href="/play-game/multiplication-master"
@@ -79,7 +79,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/big-multiplayer-chess"
            title="Big Multiplayer Chess Game"><img
-                src="/static/img/big-multiplayer-chess-logo256.png"
+                src="{{ static_url }}/img/big-multiplayer-chess-logo256.png"
                 alt="Big Multiplayer Chess Game" width="256"
                 height="256"/></a>
         <a href="/play-game/big-multiplayer-chess"
@@ -96,7 +96,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/20-questions-with-ai"
            title="20 Questions with AI"><img
-                src="/static/img/text-generator-brain-logo.png"
+                src="{{ static_url }}/img/text-generator-brain-logo.png"
                 alt="20 Questions with AI" width="256"
                 height="256"/></a>
         <a href="/play-game/20-questions-with-ai"
@@ -111,7 +111,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/reading-time"
            title="20 Questions with AI"><img
-                src="/static/img/reading-time-icon256.png"
+                src="{{ static_url }}/img/reading-time-icon256.png"
                 alt="Reading Time Stories" width="256"
                 height="256" style="padding: 25px"/></a>
         <a href="/play-game/reading-time"
@@ -125,7 +125,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/joy-drop"
            title="20 Questions with AI"><img
-                src="/static/img/joydrop-sun-logo.png"
+                src="{{ static_url }}/img/joydrop-sun-logo.png"
                 alt="Joy Drop" width="256"
                 height="256" style="padding: 25px"/></a>
         <a href="/play-game/joy-drop"
@@ -244,21 +244,21 @@
 
     <link rel="stylesheet"
           href="https://code.getmdl.io/1.3.0/material.cyan-pink.min.css"/>
-    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.css"/>
-    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
-    <link rel="stylesheet" href="/static/css/social-likes.css">
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/style.css"/>
+    <link rel="stylesheet" href="{{ static_url }}/css/social-likes.css">
     <!--[if IE 8]>
-    <link rel="stylesheet" href="/static/css/ie8.css"
+    <link rel="stylesheet" href="{{ static_url }}/css/ie8.css"
           type="text/css"/><![endif]-->
 
 
     <script type="text/javascript"
-            src="/static/js/jquery-1.9.1.min.js"></script>
+            src="{{ static_url }}/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript"
-            src="/static/js/masonry.pkgd.min.js"></script>
+            src="{{ static_url }}/js/masonry.pkgd.min.js"></script>
 
-    <script src="/static/js/dialog-polyfill.js"></script>
-    <script src="/static/js/social-likes.min.js"></script>
+    <script src="{{ static_url }}/js/dialog-polyfill.js"></script>
+    <script src="{{ static_url }}/js/social-likes.min.js"></script>
     <script>
         function signout() {
             firebase.auth().signOut().then(function () {

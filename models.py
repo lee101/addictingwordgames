@@ -1,14 +1,17 @@
-from google.appengine.ext.webapp import template
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext import ndb
-from google.appengine.api import users
+from google.cloud import ndb
+from google.cloud.ndb import Cursor
+
+client = ndb.Client()
 
 
-import os
-import datetime
-import logging
-import random
+class BaseModel(ndb.Model):
+    def default(self, o):
+        return o.to_dict()
+
+    @classmethod
+    def save(cls, obj):
+        with client.context():
+            return obj.put()
 
 
 EASY = 2
@@ -20,9 +23,6 @@ UNLOCKED_MEDIUM = 1
 UNLOCKED_HARD = 2
 ACHEIVEMENTS = set([UNLOCKED_MEDIUM, UNLOCKED_HARD])
 
-
-class BaseModel(ndb.Model):
-    def default(self, o): return o.to_dict()
 
 class User(BaseModel):
     id = ndb.StringProperty(required=True)
@@ -41,11 +41,13 @@ class User(BaseModel):
     #     game_urltitles_played = ndb.IntegerProperty()
     @classmethod
     def byId(cls, id):
-        return cls.query(cls.id == id).get()
+        with client.context():
+            return cls.query(cls.id == id).get()
 
     @classmethod
     def byEmail(cls, email):
-        return cls.query(cls.email == email).get()
+        with client.context():
+            return cls.query(cls.email == email).get()
 
 
 class Score(BaseModel):
@@ -68,36 +70,38 @@ class HighScore(BaseModel):
 
     @classmethod
     def getHighScores(cls, user):
-        return cls.query(cls.user == user.key).order(cls.difficulty, cls.score).fetch_async(10)
+        with client.context():
+            return cls.query(cls.user == user.key).order(cls.difficulty, cls.score).fetch_async(10)
 
     @classmethod
     def updateHighScoreFor(cls, user, score, difficulty, timedMode):
         '''
-        updates users highscore returns true if it is there high score false otherwise
-        '''
-        hs = cls.query(cls.user == user.key,
-                       cls.difficulty == difficulty,
-                       cls.timedMode == timedMode).order(-cls.score).fetch(1)
-        if len(hs) > 0 and hs[0].score < score:
-            hs = HighScore()
-            hs.user = user.key
-            hs.score = score
-            hs.difficulty = difficulty
-            hs.timedMode = timedMode
-            hs.put()
-            return True
-        if len(hs) == 0:
-            hs = HighScore()
-            hs.user = user.key
-            hs.score = score
-            hs.difficulty = difficulty
-            hs.timedMode = timedMode
-            hs.put()
-            return True
-        return False
+                updates users highscore returns true if it is there high score false otherwise
+                '''
+        with client.context():
 
+            hs = cls.query(cls.user == user.key,
+                           cls.difficulty == difficulty,
+                           cls.timedMode == timedMode).order(-cls.score).fetch(1)
+            if len(hs) > 0 and hs[0].score < score:
+                hs = HighScore()
+                hs.user = user.key
+                hs.score = score
+                hs.difficulty = difficulty
+                hs.timedMode = timedMode
+                hs.put()
+                return True
+            if len(hs) == 0:
+                hs = HighScore()
+                hs.user = user.key
+                hs.score = score
+                hs.difficulty = difficulty
+                hs.timedMode = timedMode
+                hs.put()
+                return True
+            return False
 
-        #title = ndb.StringProperty(required=True)
+        # title = ndb.StringProperty(required=True)
 
 
 class Achievement(BaseModel):
@@ -109,14 +113,15 @@ class Achievement(BaseModel):
     user = ndb.KeyProperty(kind=User)
 
     @classmethod
-    def getUserAchievements(cls, user):
+    def getUserAchievements(cls, user: User):
         '''
         user a User object
         '''
-        achievements = cls.query(cls.user == user.key).fetch_async(10)  #.all()?
-        # if len(achievements) == 0:
-        #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
-        return achievements
+        with client.context():
+            achievements = cls.query(cls.user == user.key).fetch_async(10)  # .all()?
+            # if len(achievements) == 0:
+            #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
+            return achievements
 
 
 all_titles = []
@@ -136,16 +141,19 @@ class Game(BaseModel):
 
     @classmethod
     def oneByTitle(cls, title):
-        game = cls.query(cls.title == title).get()  #.all()?
+        with client.context():
+            game = cls.query(cls.title == title).get()  # .all()?
         return game
 
     @classmethod
     def oneByUrlTitle(cls, urltitle):
-        game = cls.query(cls.urltitle == urltitle).get()  #.all()?
+        with client.context():
+            game = cls.query(cls.urltitle == urltitle).get()  # .all()?
         return game
 
     @classmethod
     def randomOrder(cls, title):
+        # with client.context(): dont need as get is called later?
         ordering = hash(title) % 6
         if ordering == 0:
             return cls.query().order(cls.urltitle)
@@ -163,22 +171,66 @@ class Game(BaseModel):
 
     @classmethod
     def getAllTitles(cls):
-        global all_titles
+        with client.context():
+            global all_titles
 
-        if len(all_titles) <= 0:
-            all_titles = [x.urltitle for x in cls.query().fetch(5000, projection=[cls.urltitle])]
-        return all_titles
+            if len(all_titles) <= 0:
+                all_titles = [x.urltitle for x in cls.query().fetch(5000, projection=[cls.urltitle])]
+            return all_titles
 
     @classmethod
     def byTag(cls, tag):
-        return cls.query(cls.tags == tag)
+        with client.context():
+            return cls.query(cls.tags == tag)
 
 
 class Photo(BaseModel):
     title = ndb.StringProperty()
     full_size_image = ndb.BlobProperty()
+
     # width = ndb.IntegerProperty()
     # height = ndb.IntegerProperty()
     @classmethod
     def byTitle(cls, title):
-        return cls.query(cls.title == title).get()
+        with client.context():
+            return cls.query(cls.title == title).get()
+
+
+def get_cursor_and_games(cursor):
+    with client.context():
+        curs = Cursor(urlsafe=cursor)
+        games, next_curs, more = Game.query().fetch_page(40, start_cursor=curs)
+        if more and next_curs:
+            next_page_cursor = next_curs.urlsafe()
+        else:
+            next_page_cursor = None
+        return games, next_page_cursor
+
+
+def get_rand_order_page(cursor, urltitle):
+    with client.context():
+        curs = Cursor(urlsafe=cursor)
+        if urltitle:
+
+            games, next_curs, more = Game.randomOrder(urltitle).fetch_page(
+                40, start_cursor=curs)
+        else:
+            games, next_curs, more = Game.query().fetch_page(40,
+                                                             start_cursor=curs)
+        if more and next_curs:
+            next_page_cursor = next_curs.urlsafe()
+        else:
+            next_page_cursor = None
+        return games, next_page_cursor
+
+
+def get_cursor_and_random_games(current_cursor, urltitle):
+    with client.context():
+        curs = Cursor(urlsafe=current_cursor)
+        games, next_curs, more = Game.randomOrder(urltitle).fetch_page(40,
+                                                                       start_cursor=curs)
+        if more and next_curs:
+            next_page_cursor = next_curs.urlsafe()
+        else:
+            next_page_cursor = None
+        return games, next_page_cursor
