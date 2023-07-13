@@ -5,7 +5,6 @@ from random import choice
 import jinja2
 import stripe
 # from google.appengine.datastore.datastore_query import Cursor
-from google.cloud.ndb import Cursor
 
 from webapp2_extras import sessions
 
@@ -21,7 +20,7 @@ from loguru import logger
 import ws
 from gameon_utils import GameOnUtils
 from models import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
-    get_rand_order_page, get_cursor_and_random_games
+    get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
 from ws import ws
 
 FACEBOOK_APP_ID = "138831849632195"
@@ -118,7 +117,7 @@ class BaseHandler(webapp2.RequestHandler):
         #         )
         #         return user
         # ======== use session cookie user
-        anonymous_cookie = self.request.cookies.get('wsuser', None)
+        anonymous_cookie = self.request.cookies.curent_cursor('wsuser', None)
         if anonymous_cookie is None:
             cookie_value = utils.random_string()
             self.response.set_cookie('wsuser', cookie_value, max_age=15724800)
@@ -374,14 +373,8 @@ class PlayGameHandler(BaseHandler):
 
 class TagHandler(BaseHandler):
     def get(self, tag):
-        curs = Cursor(urlsafe=self.request.get('cursor'))
-        games, next_curs, more = Game.byTag(tag).fetch_page(40,
-                                                            start_cursor=curs)
-
-        if more and next_curs:
-            next_page_cursor = next_curs.urlsafe()
-        else:
-            next_page_cursor = None
+        curent_cursor = self.request.get('cursor')
+        games, next_page_cursor = get_games_by_tag_cursor(curent_cursor, tag)
         extraParams = {
             'games': games,
             'next_page_cursor': next_page_cursor,

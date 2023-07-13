@@ -234,3 +234,15 @@ def get_cursor_and_random_games(current_cursor, urltitle):
         else:
             next_page_cursor = None
         return games, next_page_cursor
+
+
+def get_games_by_tag_cursor( curent_cursor, tag):
+    with client.context():
+        curs = Cursor(urlsafe=curent_cursor)
+        games, next_curs, more = Game.byTag(tag).fetch_page(40,
+                                                            start_cursor=curs)
+        if more and next_curs:
+            next_page_cursor = next_curs.urlsafe()
+        else:
+            next_page_cursor = None
+        return games, next_page_cursor
