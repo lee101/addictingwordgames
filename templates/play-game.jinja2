@@ -34,6 +34,11 @@
     {{ macros.topbar() }}
     <iframe src="https://p.addictingwordgames.com/cats-pgw7qq/{{ game.url }}" frameborder="0"
             style="border: 0;margin: 0;width: 100%;height: 100%;"></iframe>
+    <script >var gameUrl = '{{ game.url }}'
+    if (!gameUrl) {
+        window.location.href = 'https://www.addictingwordgames.com'
+    }
+    </script>
     <div class="clear">
     </div>
     <div class="clear">
