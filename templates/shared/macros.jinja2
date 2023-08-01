@@ -39,6 +39,20 @@
     </div>
 {%- endmacro %}
 
+{% macro shownetwrck() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="https://netwrck.com"
+           title="Netwrck AI Chat" target="_blank"><img
+                src="{{ static_url }}/img/netwrck-logo-colord256.png"
+                alt="Netwrck AI Chat" width="250"
+                height="250"/></a>
+        <a href="https://netwrck.com" title="Play Netwrck!"
+           target="_blank">Netwrck AI Chat!</a>
+
+        <p class="small-description-text">AI Chat - Play Text Adventures and role play with endless AI Characters created by the community</p>
+    </div>
+{%- endmacro %}
+
 {% macro showrewordgame() -%}
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/reword-game"
@@ -184,6 +198,7 @@
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ shownetwrck() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}
         {{ showrewordgame() }}
