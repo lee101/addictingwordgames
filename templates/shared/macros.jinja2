@@ -1,11 +1,10 @@
 {% macro showgame(game) -%}
     <div class="game mdl-shadow--4dp">
-        <a class="game-link" href="/game/{{ game.urltitle }}"
-           title="{{ game.title }}"><img
-                src="{{ awgutils.getImgUrl(game.urltitle) }}"
-                alt="{{ game.title }}" width="{{ game.imgwidth }}"
-                height="{{ game.imgheight }}"/></a>
-        <a href="/game/{{ game.urltitle }}"
+        <a class="game-link" href="https://{{ game.url }}"
+           title="{{ game.title }}" style="min-height: 270px; min-width: 270px"><img class="game-image"
+                src="{{ game.image }}"
+                alt="{{ game.title }}"/></a>
+        <a href="https://{{ game.url }}"
            title="{{ game.title }}">{{ game.title }}</a>
 
         <p class="small-description-text">{{ game.description }}</p>
@@ -155,9 +154,7 @@
              style="width:{{ game.width+40 }}px;">
             <h2>{{ game.title }}</h2>
 
-            <div>
-                {{ renderswf() }}
-            </div>
+            <iframe src="https://p.addictingwordgames.com/cats-pgw7qq/{{ game.url }}" frameborder="0" width="100%" height="100%"></iframe>
             {{ shareBtnsHorizontal(url) }}
             {% if game.description %}
                 <div class="game-panel-description">
@@ -530,7 +527,7 @@
         <h4 class="mdl-dialog__title">Please support us!</h4>
         <div class="mdl-dialog__content">
             <p>
-                $1.99 to buy all 694 Addicting Word Games forever + any future
+                $1.99 for Addicting Word Games forever + any future
                 releases!
             </p>
         </div>

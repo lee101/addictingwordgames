@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import json
+from copy import deepcopy
 from random import choice
 
 import jinja2
@@ -18,6 +19,7 @@ import os
 # from crawlers.crawlers import *
 from loguru import logger
 import ws
+from awg.itch.all_games import all_games
 from gameon_utils import GameOnUtils
 from models import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
     get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
@@ -250,9 +252,12 @@ class AchievementsHandler(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         cursor = self.request.get('cursor')
-        games, next_page_cursor = get_cursor_and_games(cursor)
-        extraParams = {'games': games,
-                       'next_page_cursor': str(next_page_cursor.decode("utf-8"))}
+        # games, next_page_cursor = get_cursor_and_games(cursor)
+        # pop all original games: we don't want to show them again
+        flat_games_new = [game for game in flat_games if game['urltitle'] not in original_games]
+        extraParams = {'games': flat_games_new,
+                       # 'next_page_cursor': str(next_page_cursor.decode("utf-8"))
+                       }
         self.render('/templates/index.jinja2', extraParams)
 
 
@@ -311,10 +316,10 @@ class GameHandler(BaseHandler):
     def get(self, urltitle):
         game = Game.oneByUrlTitle(urltitle)
         current_cursor = self.request.get('cursor')
-        games, next_page_cursor = get_cursor_and_random_games(current_cursor, urltitle)
+        # games, next_page_cursor = get_cursor_and_random_games(current_cursor, urltitle)
         extraParams = {'game': game,
-                       'games': games,
-                       'next_page_cursor': str(next_page_cursor.decode("utf-8")),
+                       'games': flat_games,
+                       # 'next_page_cursor': str(next_page_cursor.decode("utf-8")),
                        'urltitle': urltitle}
         self.render('/templates/game.jinja2', extraParams)
 
@@ -323,49 +328,53 @@ games = {
     'wordsmashing': {
         'title': 'Word Smashing',
         'image_url': '/static/img/word-smashing-logo.png',
-        'url': 'https://wordsmashing.com'
+        'url': 'wordsmashing.com'
     },
     'multiplication-master': {
         'title': 'Multiplication Master',
         'image_url': '/static/img/multiplication-master-promo-256.png',
-        'url': 'https://www.multiplicationmaster.com'
+        'url': 'www.multiplicationmaster.com'
     },
     'reword-game': {
         'title': 'ReWord Game',
         'image_url': '/static/img/reword-game-logo256.png',
-        'url': 'https://rewordgame.com'
+        'url': 'rewordgame.com'
     },
     'big-multiplayer-chess': {
         'title': 'Big Multiplayer Chess',
         'image_url': '/static/img/big-multiplayer-chess-logo256.png',
-        'url': 'https://bigmultiplayerchess.com'
+        'url': 'bigmultiplayerchess.com'
     },
-    '20-questions-with-ai': {
-        'title': '20 Questions with AI',
-        'image_url': '/static/img/text-generator-brain-logo.png',
-        'url': 'https://textgenerator.app.nz/questions-game'
-    },
+    # '20-questions-with-ai': {
+    #     'title': '20 Questions with AI',
+    #     'image_url': '/static/img/text-generator-brain-logo.png',
+    #     'url': 'textgenerator.app.nz/questions-game'
+    # },
     'reading-time': {
         'title': 'Reading Time',
         'image_url': '/static/img/reading-time-icon256.png',
-        'url': 'https://readingtime.app.nz'
+        'url': 'readingtime.app.nz'
     },
     'joy-drop': {
         'title': 'Joy Drop',
         'image_url': '/static/img/joydrop-sun-logo256.png',
-        'url': 'https://joydrop.app.nz'
+        'url': 'joydrop.app.nz'
     },
     'netwrck': {
         'title': 'Netwrck',
         'image_url': '/static/img/netwrck-logo-colord256.png',
-        'url': 'https://netwrck.com'
+        'url': 'netwrck.com'
     },
 }
-
-
+original_games = deepcopy(games)
+games.update(all_games)
+flat_games = []
+for game in games:
+    flat_games.append(games[game] | {'urltitle': game})
 class PlayGameHandler(BaseHandler):
     def get(self, urltitle):
-        game = games[urltitle]
+        game = games.get(urltitle)
+
         extraParams = {'game': game,
                        'urltitle': urltitle}
         self.render('/templates/play-game.jinja2', extraParams)
@@ -374,10 +383,10 @@ class PlayGameHandler(BaseHandler):
 class TagHandler(BaseHandler):
     def get(self, tag):
         curent_cursor = self.request.get('cursor')
-        games, next_page_cursor = get_games_by_tag_cursor(curent_cursor, tag)
+        # games, next_page_cursor = get_games_by_tag_cursor(curent_cursor, tag)
         extraParams = {
-            'games': games,
-            'next_page_cursor': next_page_cursor,
+            'games': flat_games,
+            # 'next_page_cursor': next_page_cursor,
             'tag': tag,
             'tagtitle': awgutils.titleDecode(tag),
         }
