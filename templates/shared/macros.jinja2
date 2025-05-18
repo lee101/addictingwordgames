@@ -148,6 +148,34 @@
     </div>
 {%- endmacro %}
 
+{% macro showtypinggame() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/typing-game"
+           title="Typing Game"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Typing Game" width="256"
+                height="256"/></a>
+        <a href="/typing-game" title="Play Typing Game">Typing Game</a>
+
+        <p class="small-description-text small-description-text-featured">Type
+            the falling letters before they hit the bottom.</p>
+    </div>
+{%- endmacro %}
+
+{% macro showwordlezgame() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/wordlez"
+           title="Wordlez"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Wordlez" width="256"
+                height="256"/></a>
+        <a href="/wordlez" title="Play Wordlez">Wordlez</a>
+
+        <p class="small-description-text small-description-text-featured">Guess
+            the hidden words like Wordle with three puzzles per level.</p>
+    </div>
+{%- endmacro %}
+
 {% macro showmaingame() -%}
     {% if game %}
         <div class="game game-panel mdl-shadow--4dp"
@@ -202,6 +230,8 @@
         {{ showbigmultiplayerchess() }}
         {{ showquestionsgame() }}
         {{ showreadingtimegame() }}
+        {{ showtypinggame() }}
+        {{ showwordlezgame() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
             {#            {% if awgutils.shouldShowAddBefore(game) %}#}
