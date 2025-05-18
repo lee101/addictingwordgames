@@ -286,6 +286,16 @@ class TermsHandler(BaseHandler):
         self.render('/templates/terms.jinja2')
 
 
+class TypingGameHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/typing-game.jinja2', {})
+
+
+class WordlezHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/wordlez.jinja2', {})
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -574,6 +584,8 @@ app = webapp2.WSGIApplication([
     ('/facebook', FbHandler),
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
+    ('/typing-game', TypingGameHandler),
+    ('/wordlez', WordlezHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),

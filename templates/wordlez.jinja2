@@ -1,0 +1,31 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Wordlez - Addicting Word Games</title>
+    {{ macros.headers(ws, highscores, achievements) }}
+    <style>
+        #board { display:flex; flex-direction:column; align-items:center; margin-top:20px; }
+        .row { display:flex; }
+        .cell { width:40px; height:40px; border:1px solid #555; margin:2px; line-height:40px; text-align:center; font-size:24px; text-transform:uppercase; }
+        .correct { background:green; color:#fff; }
+        .present { background:orange; color:#fff; }
+        .absent { background:#333; color:#fff; }
+        #controls { text-align:center; margin-top:10px; }
+    </style>
+</head>
+<body>
+{{ macros.templates() }}
+<div id="pagebody">
+    {{ macros.topbar() }}
+    <div id="board"></div>
+    <div id="controls">
+        <input type="text" id="guess" maxlength="5" autocomplete="off" class="form-control" style="display:inline-block;width:120px" />
+        <button id="guess-btn" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Guess</button>
+    </div>
+    {{ macros.footer() }}
+</div>
+<script src="{{ static_url }}/js/wordlez.js"></script>
+</body>
+</html>
