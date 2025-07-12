@@ -42,4 +42,5 @@ provided via the `GCS_BUCKET` and `S3_BUCKET` environment variables.
 Users can now upload their own games with a custom frame colour. Run the server
 and navigate to `/upload-user-game` to submit a new game. Uploaded games are
 stored in the SQLite database and can be viewed at `/user-games` or `/my-games`
-when logged in.
+when logged in. The upload form contains a hidden honeypot field to deter bots,
+and games record their upload date automatically.

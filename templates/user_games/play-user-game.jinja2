@@ -1,5 +1,6 @@
 <!doctype html>
 <html><head><title>{{ game.title }}</title></head>
 <body style="margin:0; background-color: {{ game.frame }}">
+<p>Uploaded {{ game.created_at[:10] }}</p>
 <iframe src="{{ game.url }}" style="border:5px solid {{ game.frame }}; width: {{ game.width }}px; height: {{ game.height }}px;"></iframe>
 </body></html>

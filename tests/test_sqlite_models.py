@@ -48,8 +48,11 @@ def test_user_games_table(tmp_path):
     assert row[2] == "My Game"
     assert row[3] == "http://example.com"
     assert row[4] == "#111"
-    db.update_user_game(row[0], "#222", 800, 600)
+    assert row[7] is not None
+    db.update_user_game(row[0], "#222", 800, 600, "New Title", "http://new")
     updated = db.fetch_user_game(row[0])
+    assert updated[2] == "New Title"
+    assert updated[3] == "http://new"
     assert updated[4] == "#222"
     db.delete_user_game(row[0])
     assert db.fetch_user_game(row[0]) is None

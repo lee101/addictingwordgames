@@ -412,6 +412,9 @@ class UploadUserGameHandler(BaseHandler):
         frame = self.request.get('frame')
         width = int(self.request.get('width', 800))
         height = int(self.request.get('height', 600))
+        # Simple honeypot check: bots filling the hidden field are ignored
+        if self.request.get('hp'):
+            self.abort(400)
         DB.insert_user_game(self.current_user.id, title, url, frame, width, height)
         self.redirect('/my-games')
 
@@ -428,6 +431,7 @@ class MyGamesHandler(BaseHandler):
                 'frame': r[4],
                 'width': r[5],
                 'height': r[6],
+                'created_at': r[7],
             }
             for r in rows
         ]
@@ -446,6 +450,7 @@ class UserGamesHandler(BaseHandler):
                 'frame': r[4],
                 'width': r[5],
                 'height': r[6],
+                'created_at': r[7],
             }
             for r in rows
         ]
@@ -465,6 +470,7 @@ class PlayUploadedGameHandler(BaseHandler):
             'frame': row[4],
             'width': row[5],
             'height': row[6],
+            'created_at': row[7],
         }
         self.render('/templates/user_games/play-user-game.jinja2', {'game': game})
 
@@ -482,6 +488,7 @@ class EditUserGameHandler(BaseHandler):
             'frame': row[4],
             'width': row[5],
             'height': row[6],
+            'created_at': row[7],
         }
         self.render('/templates/user_games/edit-user-game.jinja2', {'game': game})
 
@@ -489,7 +496,9 @@ class EditUserGameHandler(BaseHandler):
         frame = self.request.get('frame')
         width = int(self.request.get('width', 800))
         height = int(self.request.get('height', 600))
-        DB.update_user_game(int(game_id), frame, width, height)
+        title = self.request.get('title')
+        url = self.request.get('url')
+        DB.update_user_game(int(game_id), frame, width, height, title, url)
         self.redirect('/my-games')
 
 

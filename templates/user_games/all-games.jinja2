@@ -3,7 +3,10 @@
 <h1>User Uploaded Games</h1>
 <ul>
 {% for game in games %}
-  <li><a href="/play-user-game/{{ game.id }}">{{ game.title }}</a></li>
+  <li>
+    <a href="/play-user-game/{{ game.id }}">{{ game.title }}</a>
+    - uploaded {{ game.created_at[:10] }}
+  </li>
 {% endfor %}
 </ul>
 <p><a href="/upload-user-game">Upload your own</a></p>

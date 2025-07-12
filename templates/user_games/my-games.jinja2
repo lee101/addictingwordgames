@@ -5,6 +5,7 @@
 {% for game in games %}
   <li>
     <a href="/play-user-game/{{ game.id }}">{{ game.title }}</a>
+    - uploaded {{ game.created_at[:10] }}
     (<a href="/edit-user-game/{{ game.id }}">edit</a>
     <a href="/delete-user-game/{{ game.id }}">delete</a>)
   </li>

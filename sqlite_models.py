@@ -94,7 +94,8 @@ class SQLiteDB:
                 url TEXT,
                 frame TEXT,
                 width INTEGER,
-                height INTEGER
+                height INTEGER,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
             """
         )
@@ -129,21 +130,38 @@ class SQLiteDB:
         return self.fetchone("user_games", "id=?", [game_id])
 
     def list_user_games(self, user_id: str | None = None) -> list:
-        cur = (
-            self.conn.execute(
-                "SELECT * FROM user_games WHERE user_id=?" if user_id else "SELECT * FROM user_games",
-                (user_id,) if user_id else (),
-            )
+        query = (
+            "SELECT * FROM user_games WHERE user_id=? ORDER BY created_at DESC"
+            if user_id
+            else "SELECT * FROM user_games ORDER BY created_at DESC"
         )
+        cur = self.conn.execute(query, (user_id,) if user_id else ())
         return cur.fetchall()
 
     def delete_user_game(self, game_id: int) -> None:
         self.conn.execute("DELETE FROM user_games WHERE id=?", (game_id,))
         self.conn.commit()
 
-    def update_user_game(self, game_id: int, frame: str, width: int, height: int) -> None:
+    def update_user_game(
+        self,
+        game_id: int,
+        frame: str,
+        width: int,
+        height: int,
+        title: Optional[str] = None,
+        url: Optional[str] = None,
+    ) -> None:
+        parts = ["frame=?", "width=?", "height=?"]
+        params = [frame, width, height]
+        if title is not None:
+            parts.append("title=?")
+            params.append(title)
+        if url is not None:
+            parts.append("url=?")
+            params.append(url)
+        params.append(game_id)
         self.conn.execute(
-            "UPDATE user_games SET frame=?, width=?, height=? WHERE id=?",
-            (frame, width, height, game_id),
+            f"UPDATE user_games SET {', '.join(parts)} WHERE id=?",
+            params,
         )
         self.conn.commit()
