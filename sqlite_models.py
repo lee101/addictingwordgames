@@ -85,6 +85,20 @@ class SQLiteDB:
             )
             """
         )
+        cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS user_games (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                title TEXT,
+                url TEXT,
+                frame TEXT,
+                width INTEGER,
+                height INTEGER,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        )
         self.conn.commit()
 
     def insert(self, table: str, cols: Iterable[str], values: Iterable) -> None:
@@ -102,3 +116,52 @@ class SQLiteDB:
         cur = self.conn.execute(f"SELECT * FROM {table}")
         cols = [d[0] for d in cur.description]
         return [dict(zip(cols, row)) for row in cur.fetchall()]
+
+    # --- User uploaded games helpers ---
+    def insert_user_game(self, user_id: str, title: str, url: str,
+                         frame: str, width: int, height: int) -> None:
+        self.insert(
+            "user_games",
+            ["user_id", "title", "url", "frame", "width", "height"],
+            [user_id, title, url, frame, width, height],
+        )
+
+    def fetch_user_game(self, game_id: int) -> Optional[tuple]:
+        return self.fetchone("user_games", "id=?", [game_id])
+
+    def list_user_games(self, user_id: str | None = None) -> list:
+        query = (
+            "SELECT * FROM user_games WHERE user_id=? ORDER BY id DESC"
+            if user_id
+            else "SELECT * FROM user_games ORDER BY id DESC"
+        )
+        cur = self.conn.execute(query, (user_id,) if user_id else ())
+        return cur.fetchall()
+
+    def delete_user_game(self, game_id: int) -> None:
+        self.conn.execute("DELETE FROM user_games WHERE id=?", (game_id,))
+        self.conn.commit()
+
+    def update_user_game(
+        self,
+        game_id: int,
+        frame: str,
+        width: int,
+        height: int,
+        title: Optional[str] = None,
+        url: Optional[str] = None,
+    ) -> None:
+        parts = ["frame=?", "width=?", "height=?"]
+        params = [frame, width, height]
+        if title is not None:
+            parts.append("title=?")
+            params.append(title)
+        if url is not None:
+            parts.append("url=?")
+            params.append(url)
+        params.append(game_id)
+        self.conn.execute(
+            f"UPDATE user_games SET {', '.join(parts)} WHERE id=?",
+            params,
+        )
+        self.conn.commit()
