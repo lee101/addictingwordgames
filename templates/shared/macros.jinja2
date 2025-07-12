@@ -420,6 +420,7 @@
                 $('#sign-up').hide();
                 $('#log-in').hide();
                 $('#log-out').show();
+                newUser(user, "", function () {});
 
 
                 getUser(user.email, function (userData) {
