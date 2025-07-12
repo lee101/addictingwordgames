@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Infinite Wordle</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+        #board .row { margin-bottom: 5px; }
+        .tile { display: inline-block; width: 40px; height: 40px; line-height: 40px; margin: 2px; color: white; font-weight: bold; text-transform: uppercase; }
+        .tile.green { background: green; }
+        .tile.gold { background: gold; }
+        .tile.gray { background: gray; }
+        #keyboard button { margin: 2px; width: 30px; height: 40px; font-weight: bold; }
+        .dark { background: #111; color: #eee; }
+        #fireworks { position: fixed; left:0; top:0; width:100%; height:100%; pointer-events:none; overflow:hidden; }
+        .confetti { position:absolute; width:8px; height:8px; opacity:1; animation: fall 1s ease-out forwards; }
+        @keyframes fall {
+            from { transform: translateY(0) rotate(0); }
+            to { transform: translateY(600px) rotate(720deg); opacity:0; }
+        }
+    </style>
+</head>
+<body>
+<h1>Infinite Wordle</h1>
+<p id="best">Best: --</p>
+<p id="instructions">Type a 5-letter word and press Enter or Guess. Green means correct spot, gold means the letter is in the word.</p>
+<div id="board"></div>
+<p id="attempts">Attempts: 0</p>
+<input id="guess" type="text" maxlength="5" placeholder="5-letter word">
+<button id="submit">Guess</button>
+<button id="new-game">New Game</button>
+<button id="show-answer">Show Answer</button>
+<button id="toggle-mode">Dark Mode</button>
+<div id="keyboard"></div>
+<div id="message"></div>
+<div id="fireworks"></div>
+<script>
+let words = [];
+let secret = '';
+let attempts = 0;
+
+async function loadWords() {
+    const resp = await fetch('/static/wordle_words.txt');
+    const text = await resp.text();
+    words = text.split(/\s+/).filter(w => w.length === 5).map(w => w.toUpperCase());
+    newGame();
+}
+
+function pickWord() {
+    return words[Math.floor(Math.random() * words.length)];
+}
+
+function newGame() {
+    secret = pickWord();
+    attempts = 0;
+    document.getElementById('board').innerHTML = '';
+    document.getElementById('message').textContent = '';
+    document.getElementById('attempts').textContent = 'Attempts: 0';
+    document.getElementById('show-answer').disabled = false;
+    document.getElementById('best').textContent = `Best: ${localStorage.getItem('bestAttempts') || '--'}`;
+    updateKeyboard('');
+}
+
+function evaluateGuess(guess) {
+    guess = guess.toUpperCase();
+    let result = '';
+    let secretRemaining = secret.split('');
+    const colors = Array(5).fill('gray');
+
+    // first pass for greens
+    for (let i = 0; i < 5; i++) {
+        if (guess[i] === secret[i]) {
+            colors[i] = 'green';
+            secretRemaining[i] = null;
+        }
+    }
+    // second pass for yellows
+    for (let i = 0; i < 5; i++) {
+        if (colors[i] === 'green') continue;
+        const idx = secretRemaining.indexOf(guess[i]);
+        if (idx !== -1) {
+            colors[i] = 'gold';
+            secretRemaining[idx] = null;
+        }
+    }
+    for (let i = 0; i < 5; i++) {
+        result += `<span class="tile ${colors[i]}">${guess[i]}</span>`;
+    }
+    return result;
+}
+
+function updateKeyboard(guess) {
+    if (!guess) {
+        document.getElementById('keyboard').querySelectorAll('button').forEach(b => b.className = '');
+        return;
+    }
+    const colors = evaluate_guess_array(secret, guess);
+    const keys = document.getElementById('keyboard').querySelectorAll('button');
+    guess.toUpperCase().split('').forEach((ch, idx) => {
+        const btn = document.getElementById('key-' + ch);
+        if (btn) {
+            if (colors[idx] === 'green') btn.classList.add('green');
+            else if (colors[idx] === 'yellow') btn.classList.add('gold');
+            else btn.classList.add('gray');
+        }
+    });
+}
+
+function evaluate_guess_array(secretWord, guessWord) {
+    const secretArr = secretWord.split('');
+    const result = Array(5).fill('gray');
+    const rem = secretArr.slice();
+    for (let i = 0; i < 5; i++) {
+        if (guessWord[i] === secretArr[i]) {
+            result[i] = 'green';
+            rem[i] = null;
+        }
+    }
+    for (let i = 0; i < 5; i++) {
+        if (result[i] === 'green') continue;
+        const idx = rem.indexOf(guessWord[i]);
+        if (idx !== -1) {
+            result[i] = 'yellow';
+            rem[idx] = null;
+        }
+    }
+    return result;
+}
+
+document.getElementById('submit').onclick = function() {
+    const guessField = document.getElementById('guess');
+    const guess = guessField.value;
+    if (guess.length !== 5) {
+        alert('Enter a 5-letter word.');
+        return;
+    }
+    document.getElementById('board').innerHTML += `<div class="row">${evaluateGuess(guess)}</div>`;
+    updateKeyboard(guess);
+    attempts++;
+    document.getElementById('attempts').textContent = `Attempts: ${attempts}`;
+    if (guess.toUpperCase() === secret) {
+        document.getElementById('message').textContent = `You win in ${attempts} guesses!`;
+        showFireworks();
+        const best = localStorage.getItem('bestAttempts');
+        if (!best || attempts < parseInt(best)) {
+            localStorage.setItem('bestAttempts', attempts);
+        }
+    }
+    guessField.value = '';
+    guessField.focus();
+};
+
+document.getElementById('new-game').onclick = newGame;
+document.getElementById('guess').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('submit').click();
+    }
+});
+document.getElementById('show-answer').onclick = function() {
+    document.getElementById('message').textContent = `Answer: ${secret}`;
+    this.disabled = true;
+};
+document.getElementById('toggle-mode').onclick = function() {
+    document.body.classList.toggle('dark');
+};
+
+function buildKeyboard() {
+    const layout = ['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'];
+    const kb = document.getElementById('keyboard');
+    layout.forEach(row => {
+        const div = document.createElement('div');
+        for (const ch of row) {
+            const b = document.createElement('button');
+            b.textContent = ch;
+            b.id = 'key-' + ch;
+            div.appendChild(b);
+        }
+        kb.appendChild(div);
+    });
+}
+
+function showFireworks() {
+    const container = document.getElementById('fireworks');
+    for (let i = 0; i < 80; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.backgroundColor = ['red','gold','blue','green','purple'][i%5];
+        c.style.left = Math.random()*window.innerWidth + 'px';
+        c.style.top = '-10px';
+        c.style.animationDelay = (Math.random()*0.5)+'s';
+        container.appendChild(c);
+    }
+    setTimeout(() => container.innerHTML = '', 1500);
+}
+
+window.onload = function() {
+    buildKeyboard();
+    loadWords();
+};
+</script>
+</body>
+</html>
+
