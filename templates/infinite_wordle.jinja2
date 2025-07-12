@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Infinite Wordle</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+        #board .row { margin-bottom: 5px; }
+        .tile { display: inline-block; width: 40px; height: 40px; line-height: 40px; margin: 2px; color: white; font-weight: bold; text-transform: uppercase; }
+        .tile.green { background: green; }
+        .tile.gold { background: gold; }
+        .tile.gray { background: gray; }
+    </style>
+</head>
+<body>
+<h1>Infinite Wordle</h1>
+<p id="instructions">Type a 5-letter word and press Enter or Guess. Green means correct spot, gold means the letter is in the word.</p>
+<div id="board"></div>
+<p id="attempts">Attempts: 0</p>
+<input id="guess" type="text" maxlength="5" placeholder="5-letter word">
+<button id="submit">Guess</button>
+<button id="new-game">New Game</button>
+<button id="show-answer">Show Answer</button>
+<div id="message"></div>
+<script>
+const words = ["apple","grape","banjo","chief","brave","crane","share","flint","prime","stone","chair","brand","sling","smile","sugar","tiger","bread","cargo","ghost","dream","eagle","level","media","night","ocean","proud","quick","rough","shine","toast"]; 
+let secret = pickWord();
+let attempts = 0;
+
+function pickWord() {
+    return words[Math.floor(Math.random() * words.length)].toUpperCase();
+}
+
+function newGame() {
+    secret = pickWord();
+    attempts = 0;
+    document.getElementById('board').innerHTML = '';
+    document.getElementById('message').textContent = '';
+    document.getElementById('attempts').textContent = 'Attempts: 0';
+    document.getElementById('show-answer').disabled = false;
+}
+
+function evaluateGuess(guess) {
+    guess = guess.toUpperCase();
+    let result = '';
+    let secretRemaining = secret.split('');
+    const colors = Array(5).fill('gray');
+
+    // first pass for greens
+    for (let i = 0; i < 5; i++) {
+        if (guess[i] === secret[i]) {
+            colors[i] = 'green';
+            secretRemaining[i] = null;
+        }
+    }
+    // second pass for yellows
+    for (let i = 0; i < 5; i++) {
+        if (colors[i] === 'green') continue;
+        const idx = secretRemaining.indexOf(guess[i]);
+        if (idx !== -1) {
+            colors[i] = 'gold';
+            secretRemaining[idx] = null;
+        }
+    }
+    for (let i = 0; i < 5; i++) {
+        result += `<span class="tile ${colors[i]}">${guess[i]}</span>`;
+    }
+    return result;
+}
+
+document.getElementById('submit').onclick = function() {
+    const guessField = document.getElementById('guess');
+    const guess = guessField.value;
+    if (guess.length !== 5) {
+        alert('Enter a 5-letter word.');
+        return;
+    }
+    document.getElementById('board').innerHTML += `<div class="row">${evaluateGuess(guess)}</div>`;
+    attempts++;
+    document.getElementById('attempts').textContent = `Attempts: ${attempts}`;
+    if (guess.toUpperCase() === secret) {
+        document.getElementById('message').textContent = `You win in ${attempts} guesses!`;
+    }
+    guessField.value = '';
+    guessField.focus();
+};
+
+document.getElementById('new-game').onclick = newGame;
+document.getElementById('guess').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('submit').click();
+    }
+});
+document.getElementById('show-answer').onclick = function() {
+    document.getElementById('message').textContent = `Answer: ${secret}`;
+    this.disabled = true;
+};
+</script>
+</body>
+</html>
