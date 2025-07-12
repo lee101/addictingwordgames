@@ -286,6 +286,11 @@ class TermsHandler(BaseHandler):
         self.render('/templates/terms.jinja2')
 
 
+class InfiniteWordleHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/infinite_wordle.jinja2')
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -574,6 +579,7 @@ app = webapp2.WSGIApplication([
     ('/facebook', FbHandler),
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
+    ('/wordle', InfiniteWordleHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
