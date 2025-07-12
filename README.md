@@ -36,3 +36,10 @@ python migrate_swf_to_s3.py games.addictingwordgames.com addictionwordgamesstati
 Use `--prefix` to limit which objects are copied. The script supports `--dry-run`
 and `--skip-existing` flags for safer migrations. Bucket names may also be
 provided via the `GCS_BUCKET` and `S3_BUCKET` environment variables.
+
+## User Uploaded Games
+
+Users can now upload their own games with a custom frame colour. Run the server
+and navigate to `/upload-user-game` to submit a new game. Uploaded games are
+stored in the SQLite database and can be viewed at `/user-games` or `/my-games`
+when logged in.

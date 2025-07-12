@@ -85,6 +85,19 @@ class SQLiteDB:
             )
             """
         )
+        cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS user_games (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                title TEXT,
+                url TEXT,
+                frame TEXT,
+                width INTEGER,
+                height INTEGER
+            )
+            """
+        )
         self.conn.commit()
 
     def insert(self, table: str, cols: Iterable[str], values: Iterable) -> None:
@@ -102,3 +115,35 @@ class SQLiteDB:
         cur = self.conn.execute(f"SELECT * FROM {table}")
         cols = [d[0] for d in cur.description]
         return [dict(zip(cols, row)) for row in cur.fetchall()]
+
+    # --- User uploaded games helpers ---
+    def insert_user_game(self, user_id: str, title: str, url: str,
+                         frame: str, width: int, height: int) -> None:
+        self.insert(
+            "user_games",
+            ["user_id", "title", "url", "frame", "width", "height"],
+            [user_id, title, url, frame, width, height],
+        )
+
+    def fetch_user_game(self, game_id: int) -> Optional[tuple]:
+        return self.fetchone("user_games", "id=?", [game_id])
+
+    def list_user_games(self, user_id: str | None = None) -> list:
+        cur = (
+            self.conn.execute(
+                "SELECT * FROM user_games WHERE user_id=?" if user_id else "SELECT * FROM user_games",
+                (user_id,) if user_id else (),
+            )
+        )
+        return cur.fetchall()
+
+    def delete_user_game(self, game_id: int) -> None:
+        self.conn.execute("DELETE FROM user_games WHERE id=?", (game_id,))
+        self.conn.commit()
+
+    def update_user_game(self, game_id: int, frame: str, width: int, height: int) -> None:
+        self.conn.execute(
+            "UPDATE user_games SET frame=?, width=?, height=? WHERE id=?",
+            (frame, width, height, game_id),
+        )
+        self.conn.commit()
