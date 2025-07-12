@@ -1,0 +1,10 @@
+<!doctype html>
+<html><head><title>User Games</title></head><body>
+<h1>User Uploaded Games</h1>
+<ul>
+{% for game in games %}
+  <li><a href="/play-user-game/{{ game.id }}">{{ game.title }}</a></li>
+{% endfor %}
+</ul>
+<p><a href="/upload-user-game">Upload your own</a></p>
+</body></html>

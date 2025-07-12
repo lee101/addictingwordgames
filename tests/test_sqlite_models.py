@@ -38,3 +38,18 @@ def test_cli(tmp_path):
         str(db_path),
     ])
     assert "u3" in out.decode()
+
+
+def test_user_games_table(tmp_path):
+    db_path = tmp_path / "test.db"
+    db = SQLiteDB(str(db_path))
+    db.insert_user_game("u1", "My Game", "http://example.com", "#111", 640, 480)
+    row = db.fetchone("user_games", "user_id=?", ["u1"])
+    assert row[2] == "My Game"
+    assert row[3] == "http://example.com"
+    assert row[4] == "#111"
+    db.update_user_game(row[0], "#222", 800, 600)
+    updated = db.fetch_user_game(row[0])
+    assert updated[4] == "#222"
+    db.delete_user_game(row[0])
+    assert db.fetch_user_game(row[0]) is None

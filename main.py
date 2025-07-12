@@ -14,6 +14,7 @@ import awgutils
 # from sellerinfo import SELLER_SECRET
 import sellerinfo
 import utils
+from sqlite_models import SQLiteDB
 import webapp2
 import os
 # from crawlers.crawlers import *
@@ -53,6 +54,9 @@ else:
     }
 
 stripe.api_key = stripe_keys['secret_key']
+
+# Global SQLite database instance for user uploaded games
+DB = SQLiteDB()
 
 
 class BaseHandler(webapp2.RequestHandler):
@@ -398,6 +402,105 @@ class TagHandler(BaseHandler):
         self.render('/templates/tag.jinja2', extraParams)
 
 
+class UploadUserGameHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/user_games/upload-user-game.jinja2', {})
+
+    def post(self):
+        title = self.request.get('title')
+        url = self.request.get('url')
+        frame = self.request.get('frame')
+        width = int(self.request.get('width', 800))
+        height = int(self.request.get('height', 600))
+        DB.insert_user_game(self.current_user.id, title, url, frame, width, height)
+        self.redirect('/my-games')
+
+
+class MyGamesHandler(BaseHandler):
+    def get(self):
+        rows = DB.list_user_games(self.current_user.id)
+        games_list = [
+            {
+                'id': r[0],
+                'user_id': r[1],
+                'title': r[2],
+                'url': r[3],
+                'frame': r[4],
+                'width': r[5],
+                'height': r[6],
+            }
+            for r in rows
+        ]
+        self.render('/templates/user_games/my-games.jinja2', {'games': games_list})
+
+
+class UserGamesHandler(BaseHandler):
+    def get(self):
+        rows = DB.list_user_games()
+        games_list = [
+            {
+                'id': r[0],
+                'user_id': r[1],
+                'title': r[2],
+                'url': r[3],
+                'frame': r[4],
+                'width': r[5],
+                'height': r[6],
+            }
+            for r in rows
+        ]
+        self.render('/templates/user_games/all-games.jinja2', {'games': games_list})
+
+
+class PlayUploadedGameHandler(BaseHandler):
+    def get(self, game_id):
+        row = DB.fetch_user_game(int(game_id))
+        if not row:
+            self.abort(404)
+        game = {
+            'id': row[0],
+            'user_id': row[1],
+            'title': row[2],
+            'url': row[3],
+            'frame': row[4],
+            'width': row[5],
+            'height': row[6],
+        }
+        self.render('/templates/user_games/play-user-game.jinja2', {'game': game})
+
+
+class EditUserGameHandler(BaseHandler):
+    def get(self, game_id):
+        row = DB.fetch_user_game(int(game_id))
+        if not row or row[1] != self.current_user.id:
+            self.abort(404)
+        game = {
+            'id': row[0],
+            'user_id': row[1],
+            'title': row[2],
+            'url': row[3],
+            'frame': row[4],
+            'width': row[5],
+            'height': row[6],
+        }
+        self.render('/templates/user_games/edit-user-game.jinja2', {'game': game})
+
+    def post(self, game_id):
+        frame = self.request.get('frame')
+        width = int(self.request.get('width', 800))
+        height = int(self.request.get('height', 600))
+        DB.update_user_game(int(game_id), frame, width, height)
+        self.redirect('/my-games')
+
+
+class DeleteUserGameHandler(BaseHandler):
+    def get(self, game_id):
+        row = DB.fetch_user_game(int(game_id))
+        if row and row[1] == self.current_user.id:
+            DB.delete_user_game(int(game_id))
+        self.redirect('/my-games')
+
+
 class LoginHandler(BaseHandler):
     def get(self):
         self.render('/templates/login.jinja2', {})
@@ -583,6 +686,12 @@ app = webapp2.WSGIApplication([
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
+    ('/upload-user-game', UploadUserGameHandler),
+    ('/my-games', MyGamesHandler),
+    ('/user-games', UserGamesHandler),
+    ('/play-user-game/(\d+)', PlayUploadedGameHandler),
+    ('/edit-user-game/(\d+)', EditUserGameHandler),
+    ('/delete-user-game/(\d+)', DeleteUserGameHandler),
     ('/api/create-user', CreateUserHandler),
     ('/api/get-user', GetUserHandler),
     ('/api/buy', ChargeForBuyHandler),

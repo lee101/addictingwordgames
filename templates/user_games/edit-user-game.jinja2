@@ -1,0 +1,13 @@
+<!doctype html>
+<html><head><title>Edit Game</title></head>
+<body>
+<h1>Edit Game</h1>
+<form method="post">
+    <label>Frame Color: <input type="text" name="frame" value="{{ game.frame }}"></label><br>
+    <label>Width: <input type="number" name="width" value="{{ game.width }}"></label><br>
+    <label>Height: <input type="number" name="height" value="{{ game.height }}"></label><br>
+    <button type="submit">Update</button>
+</form>
+<p><a href="/my-games">Back</a></p>
+</body>
+</html>
