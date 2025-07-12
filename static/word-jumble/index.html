@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Word Jumble</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Word Jumble</h1>
+        <p id="scrambled"></p>
+        <input type="text" id="guess" placeholder="Your guess" autofocus>
+        <button id="check">Check Guess</button>
+        <button id="skip">Skip</button>
+        <p id="message"></p>
+        <p>Score: <span id="score">0</span></p>
+        <p>Lives: <span id="lives">3</span></p>
+        <p>High score: <span id="high-score">0</span></p>
+        <p>Time: <span id="timer">0</span>s</p>
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+            <option value="auto">Auto</option>
+        </select>
+        <button id="pause">Pause</button>
+        <button id="hint">Hint</button>
+        <button id="show-scores">Scores</button>
+    </div>
+    <div id="scoreboard" class="hidden">
+        <h2>High Scores</h2>
+        <ul id="scores-list"></ul>
+        <button id="close-scores">Close</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

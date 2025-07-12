@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+#scrambled {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    letter-spacing: 5px;
+}
+#message {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+select, button {
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+#scoreboard {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.hidden {
+    display: none;
+}
+
+#scoreboard.visible {
+    opacity: 1;
+    pointer-events: auto;
+    animation: fadeIn 0.5s forwards;
+}
+
+#scoreboard.fade-out {
+    animation: fadeOut 0.5s forwards;
+    pointer-events: none;
+}
+
+.correct {
+    animation: pop 0.5s ease;
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+.flash {
+    animation: flash 0.5s;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes flash {
+    0% { background-color: #fff; }
+    50% { background-color: #ffeb3b; }
+    100% { background-color: #fff; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
