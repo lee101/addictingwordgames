@@ -39,17 +39,18 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
     # extensions=['jinja2.ext.autoescape'])
 
-GCLOUD_STATIC_BUCKET_URL = ""
+# Force debug mode for local development - set to False for production
+LOCAL_DEBUG = os.environ.get('LOCAL_DEBUG', 'true').lower() == 'true'
 
-if GameOnUtils.debug:
+# Use R2 bucket for static assets in production, local for CSS/JS in dev
+if LOCAL_DEBUG or GameOnUtils.debug:
+    # For development, use local for CSS/JS but R2 for images
     GCLOUD_STATIC_BUCKET_URL = "/static"
     stripe_keys = {
         'secret_key': sellerinfo.STRIPE_TEST_SECRET,
         'publishable_key': sellerinfo.STRIPE_TEST_KEY
     }
 else:
-    GCLOUD_STATIC_BUCKET_URL = "https://static.addictingwordgames.com/static"
-
     stripe_keys = {
         'secret_key': sellerinfo.STRIPE_LIVE_SECRET,
         'publishable_key': sellerinfo.STRIPE_LIVE_KEY
@@ -349,22 +350,26 @@ class GameHandler(BaseHandler):
 games = {
     'wordsmashing': {
         'title': 'Word Smashing',
-        'image_url': '/static/img/word-smashing-logo.png',
+        'image': 'https://static.addictingwordgames.com/static/img/word-smashing-logo.png',
+        'image_url': 'https://static.addictingwordgames.com/static/img/word-smashing-logo.png',
         'url': 'wordsmashing.com'
     },
     'multiplication-master': {
         'title': 'Multiplication Master',
-        'image_url': '/static/img/multiplication-master-promo-256.png',
+        'image': 'https://static.addictingwordgames.com/static/img/multiplication-master-promo-256.png',
+        'image_url': 'https://static.addictingwordgames.com/static/img/multiplication-master-promo-256.png',
         'url': 'www.multiplicationmaster.com'
     },
     'reword-game': {
         'title': 'ReWord Game',
-        'image_url': '/static/img/reword-game-logo256.png',
+        'image': 'https://static.addictingwordgames.com/static/img/reword-game-logo256.png',
+        'image_url': 'https://static.addictingwordgames.com/static/img/reword-game-logo256.png',
         'url': 'rewordgame.com'
     },
     'big-multiplayer-chess': {
         'title': 'Big Multiplayer Chess',
-        'image_url': '/static/img/big-multiplayer-chess-logo256.png',
+        'image': 'https://static.addictingwordgames.com/static/img/big-multiplayer-chess-logo256.png',
+        'image_url': 'https://static.addictingwordgames.com/static/img/big-multiplayer-chess-logo256.png',
         'url': 'bigmultiplayerchess.com'
     },
     # '20-questions-with-ai': {
@@ -374,17 +379,20 @@ games = {
     # },
     'reading-time': {
         'title': 'Reading Time',
-        'image_url': '/static/img/reading-time-icon256.png',
+        'image': 'https://static.addictingwordgames.com/static/img/reading-time-icon256.png',
+        'image_url': 'https://static.addictingwordgames.com/static/img/reading-time-icon256.png',
         'url': 'readingtime.app.nz'
     },
     'joy-drop': {
         'title': 'Joy Drop',
-        'image_url': '/static/img/joydrop-sun-logo256.png',
+        'image': 'https://static.addictingwordgames.com/static/img/joydrop-sun-logo256.png',
+        'image_url': 'https://static.addictingwordgames.com/static/img/joydrop-sun-logo256.png',
         'url': 'joydrop.app.nz'
     },
     'netwrck': {
         'title': 'Netwrck',
-        'image_url': '/static/img/netwrck-logo-colord256.png',
+        'image': 'https://static.addictingwordgames.com/static/img/netwrck-logo-colord256.png',
+        'image_url': 'https://static.addictingwordgames.com/static/img/netwrck-logo-colord256.png',
         'url': 'netwrck.com'
     },
 }
@@ -703,7 +711,31 @@ class ChargeForBuyHandler(BaseHandler):
 #         # in the datastore.
 #         self.error(404)
 
-app = webapp2.WSGIApplication([
+# Static file handler for local development
+class StaticFileHandler(webapp2.RequestHandler):
+    def get(self, path):
+        import mimetypes
+        static_path = os.path.join(os.path.dirname(__file__), 'static', path)
+        logger.info(f"Serving static file: {static_path}")
+        if os.path.exists(static_path) and os.path.isfile(static_path):
+            content_type, _ = mimetypes.guess_type(static_path)
+            if content_type:
+                self.response.headers['Content-Type'] = content_type
+            else:
+                # Default content type for unknown files
+                self.response.headers['Content-Type'] = 'application/octet-stream'
+            
+            # Read and serve the file in binary mode
+            with open(static_path, 'rb') as f:
+                file_data = f.read()
+                # For binary data, we need to write directly to the response body
+                # Set the response body directly instead of using write()
+                self.response.body = file_data
+        else:
+            logger.warning(f"Static file not found: {static_path}")
+            self.error(404)
+
+routes = [
     ('/', MainHandler),
     ('/scores', ScoresHandler),
     ('/achievements', AchievementsHandler),
@@ -732,5 +764,13 @@ app = webapp2.WSGIApplication([
     # ('/gomochi', MochiGamesCrawler),
     ('/loadgames', LoadGamesHandler),
     ('/sitemap', SitemapHandler),
+]
 
-], debug=ws.debug, config=config)
+# Add static file handler for local development
+if LOCAL_DEBUG or GameOnUtils.debug:
+    logger.info("Debug mode enabled - adding static file handler")
+    routes.insert(0, ('/static/(.*)', StaticFileHandler))
+else:
+    logger.info("Production mode - static files served from CDN")
+
+app = webapp2.WSGIApplication(routes, debug=ws.debug, config=config)
