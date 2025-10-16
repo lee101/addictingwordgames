@@ -14,6 +14,7 @@ import awgutils
 # from sellerinfo import SELLER_SECRET
 import sellerinfo
 import utils
+import flash_services
 from sqlite_models import SQLiteDB
 import webapp2
 import os
@@ -233,6 +234,136 @@ class BaseHandler(webapp2.RequestHandler):
 
 #             self.response.write(traceback.print_exc())
 #             raise err
+
+
+class ApiHandler(BaseHandler):
+    def render_json(self, payload, status=200):
+        self.response.status = status
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(payload, cls=GameOnUtils.MyEncoder))
+
+    def render_error(self, status, message, extra=None):
+        error_payload = {'error': {'code': status, 'message': message}}
+        if extra:
+            error_payload['error'].update(extra)
+        self.render_json(error_payload, status=status)
+
+
+class FlashSearchHandler(ApiHandler):
+    def get(self):
+        query = self.request.get('q', '').strip()
+        if not query:
+            self.render_error(400, "Missing required parameter 'q'.")
+            return
+
+        try:
+            page_size = self._parse_page_size(self.request.get('page_size'))
+        except ValueError as err:
+            self.render_error(400, str(err))
+            return
+
+        tags = self._parse_tags()
+        page_token = self.request.get('page_token') or None
+
+        try:
+            results = flash_services.flash_search_service.search(
+                query=query,
+                page_size=page_size,
+                page_token=page_token,
+                tags=tags or None,
+            )
+        except flash_services.InvalidPageTokenError as err:
+            self.render_error(400, str(err))
+            return
+        except flash_services.InvalidSearchRequest as err:
+            self.render_error(400, str(err))
+            return
+
+        results['page_size'] = page_size
+        self.render_json(results)
+
+    def _parse_page_size(self, raw_value):
+        if raw_value in (None, ''):
+            return flash_services.FlashSearchService.DEFAULT_PAGE_SIZE
+        try:
+            size = int(raw_value)
+        except (TypeError, ValueError):
+            raise ValueError(
+                f"page_size must be an integer between 1 and {flash_services.FlashSearchService.MAX_PAGE_SIZE}."
+            )
+        if size < 1 or size > flash_services.FlashSearchService.MAX_PAGE_SIZE:
+            raise ValueError(
+                f"page_size must be between 1 and {flash_services.FlashSearchService.MAX_PAGE_SIZE}."
+            )
+        return size
+
+    def _parse_tags(self):
+        tags = [tag for tag in self.request.get_all('tag') if tag]
+        if tags:
+            return tags
+        csv_tags = self.request.get('tags', '')
+        if not csv_tags:
+            return []
+        return [item.strip() for item in csv_tags.split(',') if item.strip()]
+
+
+class FlashMetadataHandler(ApiHandler):
+    def get(self, game_id):
+        if not game_id:
+            self.render_error(400, "Flash game id is required.")
+            return
+
+        game = flash_services.flash_repository.get(game_id)
+        if not game or not game.is_active:
+            self.render_error(404, f"Flash game '{game_id}' was not found.")
+            return
+
+        payload = game.to_metadata_dict()
+        payload['stream_endpoint'] = f"/api/flash/{game_id}/stream"
+        self.render_json(payload)
+
+
+class FlashStreamHandler(ApiHandler):
+    AUTH_HEADER = 'X-Flash-Token'
+
+    def get(self, game_id):
+        if not game_id:
+            self.render_error(400, "Flash game id is required.")
+            return
+
+        if not self._is_authorized():
+            return
+
+        rate_key = self._rate_limit_key()
+        allowed, retry_after = flash_services.stream_rate_limiter.check(rate_key)
+        if not allowed:
+            self.response.headers['Retry-After'] = str(max(retry_after, 0))
+            self.render_error(429, "Stream rate limit exceeded.", extra={'retry_after': retry_after})
+            return
+
+        try:
+            payload = flash_services.flash_stream_service.get_stream_payload(game_id)
+        except flash_services.FlashGameNotFoundError as err:
+            self.render_error(404, str(err))
+            return
+
+        self.render_json(payload)
+
+    def _is_authorized(self):
+        expected_token = os.environ.get('FLASH_STREAM_AUTH_TOKEN', 'development-token')
+        if not expected_token:
+            return True
+        provided = self.request.headers.get(self.AUTH_HEADER) or self.request.get('token')
+        if provided != expected_token:
+            self.render_error(401, "Missing or invalid stream authorization token.")
+            return False
+        return True
+
+    def _rate_limit_key(self):
+        forwarded = self.request.headers.get('X-Forwarded-For')
+        if forwarded:
+            return forwarded.split(',')[0].strip()
+        return self.request.remote_addr or 'unknown'
 
 
 class ScoresHandler(BaseHandler):
@@ -758,6 +889,9 @@ routes = [
     ('/play-user-game/(\d+)', PlayUploadedGameHandler),
     ('/edit-user-game/(\d+)', EditUserGameHandler),
     ('/delete-user-game/(\d+)', DeleteUserGameHandler),
+    (r'/api/flash/search', FlashSearchHandler),
+    (r'/api/flash/([^/]+)/stream', FlashStreamHandler),
+    (r'/api/flash/([^/]+)', FlashMetadataHandler),
     ('/api/create-user', CreateUserHandler),
     ('/api/get-user', GetUserHandler),
     ('/api/buy', ChargeForBuyHandler),
