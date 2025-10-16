@@ -52,6 +52,11 @@ instance_class: F1
 automatic_scaling:
   max_pending_latency: 15s # 15 is the max
 
+env_variables:
+  FLASH_STORAGE_BUCKET: flash-content
+  FLASH_STORAGE_PREFIX: flash-assets
+  FLASH_STORAGE_REGION: us-east-1
+
 # YOLO cost saving autoscaling
 #automatic_scaling:
 #  max_idle_instances: 1

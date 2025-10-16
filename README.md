@@ -37,3 +37,31 @@ Use `--prefix` to limit which objects are copied. The script supports `--dry-run
 and `--skip-existing` flags for safer migrations. Bucket names may also be
 provided via the `GCS_BUCKET` and `S3_BUCKET` environment variables.
 
+## Flash Content Storage
+
+Crawled Flash metadata is stored through the `flash_models.FlashGame` NDB
+entity. Binary SWF payloads and thumbnails are downloaded and written to the
+configured S3 bucket via `flash_storage.FlashAssetStorage` which records the
+checksum, MIME type, and storage path for each asset.
+
+### Configuration
+
+Set the following environment variables (or adjust them in `app.yaml`) so the
+storage helper can reach your bucket and AWS credentials:
+
+- `FLASH_STORAGE_BUCKET` – destination bucket (e.g. R2 or S3)
+- `FLASH_STORAGE_PREFIX` – prefix under which assets will be written
+- `FLASH_STORAGE_REGION` – AWS region for the S3 endpoint
+- `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` – credentials with write access
+
+### CLI Utilities
+
+Use `flash_cli.py` to inspect Flash metadata stored in Datastore:
+
+```bash
+python flash_cli.py list --limit 5
+python flash_cli.py get 4b8de0c3...
+```
+
+Filtering by tag is supported via `--tag`.
+
