@@ -8,9 +8,11 @@ from google.appengine.runtime import DeadlineExceededError
 import urllib
 import json
 import logging
+from typing import Dict, List
 
 from models import *
 import awgutils
+from crawlers.orchestrator import BinaryDownloadJob, CrawlResult, TransientCrawlError
 from bs4 import BeautifulSoup
 
 from ws import ws
@@ -34,6 +36,7 @@ gcs.set_default_retry_params(my_default_retry_params)
 
 IMG_BUCKET = '/wordgames/'
 WORD_GAMES_SWF_BUCKET = '/games.addictingwordgames.com/'
+MOCHI_FEED_URL_TEMPLATE = "http://feedmonger.mochimedia.com/feeds/query/?q=search%3Aword&partner_id=1e74098ab3d64da0&limit={limit}"
 
 
 class Crawler(webapp2.RequestHandler):
@@ -119,48 +122,100 @@ class Crawler(webapp2.RequestHandler):
         return soup.title.name
 
 
+
+def perform_mochi_crawl(limit: int = 1000, include_binary_jobs: bool = True) -> CrawlResult:
+    url = MOCHI_FEED_URL_TEMPLATE.format(limit=limit)
+    try:
+        response = urlfetch.fetch(url, deadline=30)
+    except DeadlineExceededError as exc:
+        raise TransientCrawlError("Timed out fetching Mochi feed") from exc
+    except Exception as exc:
+        raise TransientCrawlError(f"Failed to fetch Mochi feed: {exc}") from exc
+
+    if response.status_code != 200:
+        raise TransientCrawlError(f"Mochi feed returned {response.status_code}")
+
+    try:
+        data = json.loads(response.content)
+    except (TypeError, ValueError) as exc:
+        raise TransientCrawlError("Invalid JSON in Mochi response") from exc
+
+    games_payload = data.get('games', [])
+    saved_games = []
+    binary_jobs: List[BinaryDownloadJob] = []
+    skipped = 0
+    errors: List[Dict[str, Any]] = []
+
+    for payload in games_payload:
+        try:
+            title = (payload.get('name') or '').strip()
+            if not title:
+                skipped += 1
+                continue
+
+            game_entity = Game()
+            game_entity.title = title[:500]
+            game_entity.urltitle = awgutils.urlEncode(game_entity.title)
+
+            if Game.oneByUrlTitle(game_entity.urltitle):
+                skipped += 1
+                continue
+
+            game_entity.description = payload.get('description')
+            game_entity.instructions = payload.get('instructions')
+            game_entity.width = int(payload.get('width') or 0)
+            game_entity.height = int(payload.get('height') or 0)
+            tags = payload.get('tags', [])
+            game_entity.tags = [awgutils.urlEncode(tag) for tag in tags]
+
+            saved_games.append(game_entity)
+
+            if include_binary_jobs:
+                thumb_url = payload.get('thumbnail_url')
+                if thumb_url:
+                    binary_jobs.append(BinaryDownloadJob(
+                        name=f"{game_entity.urltitle}:thumb",
+                        func=uploadGameThumbTask,
+                        args=(thumb_url, game_entity.urltitle),
+                    ))
+                swf_url = payload.get('swf_url')
+                if swf_url:
+                    binary_jobs.append(BinaryDownloadJob(
+                        name=f"{game_entity.urltitle}:binary",
+                        func=uploadGameSWFTask,
+                        args=(swf_url, game_entity.urltitle),
+                    ))
+        except Exception as exc:  # pragma: no cover - defensive
+            logging.exception("Failed to process Mochi game %s", payload.get('name'), exc_info=exc)
+            errors.append({'game': payload.get('name'), 'error': str(exc)})
+
+    if saved_games:
+        with client.context():
+            ndb.put_multi(saved_games)
+
+    return CrawlResult(
+        ingested_count=len(saved_games),
+        skipped_count=skipped,
+        errors=errors,
+        binary_jobs=binary_jobs,
+    )
+
+
 class MochiGamesCrawler(Crawler):
-    '''
-    does everything manually doesnt do much using crawler
-    '''
+    """Compatibility wrapper that can be triggered via HTTP handlers."""
+
     def get(self):
-        # deferred.defer(self.go)
         self.go()
 
-    def go(self):
-        url = "http://feedmonger.mochimedia.com/feeds/query/?q=search%3Aword&partner_id=1e74098ab3d64da0&limit=1000"
-        #self.getUrl(url, self.callback)
-        self.callback(urlfetch.fetch(url))
-
-    def callback(self, result):
-        # ndb.delete_multi(Game.query().fetch(999999, keys_only=True))
-
-        data = json.loads(result.content)
-        games = data['games']
-        gamesmodels = []
-        thumbnail_urls = []
-        swf_urls = []
-        for game in games:
-            g = Game()
-            g.title = game['name'][:500]
-            g.urltitle = awgutils.urlEncode(g.title)
-            if Game.oneByUrlTitle(g.urltitle):
-                continue
-            g.description = game['description']
-            g.tags = map(awgutils.urlEncode, game['tags'])
-            g.instructions = game['instructions']
-            g.width = int(game['width'])
-            g.height = int(game['height'])
-            ##get image from
-            gamesmodels.append(g)
-            thumbnail_urls.append(game['thumbnail_url'])
-            swf_urls.append(game['swf_url'])
-        ndb.put_multi(gamesmodels)
+    def go(self, limit: int = 1000):
+        result = perform_mochi_crawl(limit=limit)
         if not ws.debug:
-            for i in range(len(thumbnail_urls)):
-                deferred.defer(uploadGameThumbTask, thumbnail_urls[i], gamesmodels[i].urltitle)
-                deferred.defer(uploadGameSWFTask, swf_urls[i], gamesmodels[i].urltitle)
-
+            for job in result.binary_jobs:
+                try:
+                    job.run()
+                except Exception as err:  # pragma: no cover - defensive
+                    logging.exception("Binary job execution failed for %s", job.name, exc_info=err)
+        return result
 
 
 def getContentType(image):

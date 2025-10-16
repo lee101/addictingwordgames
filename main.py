@@ -25,7 +25,8 @@ import ws
 from awg.itch.all_games import all_games
 from gameon_utils import GameOnUtils
 from models import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
-    get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
+    get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor, CrawlerRun
+from crawlers.factory import create_default_orchestrator
 from ws import ws
 
 FACEBOOK_APP_ID = "138831849632195"
@@ -692,6 +693,65 @@ class ChargeForBuyHandler(BaseHandler):
         self.response.write(json.dumps({'success': True}))
 
 
+class CrawlerRunTriggerHandler(webapp2.RequestHandler):
+    def get(self, run_type):
+        triggered_by = 'cron' if '/tasks/' in self.request.path else 'manual'
+        self._trigger(run_type, triggered_by)
+
+    def post(self, run_type):
+        triggered_by = 'cron' if '/tasks/' in self.request.path else 'api'
+        self._trigger(run_type, triggered_by)
+
+    def _trigger(self, run_type, triggered_by):
+        orchestrator = create_default_orchestrator()
+        try:
+            run_key = orchestrator.trigger_run(run_type, triggered_by=triggered_by)
+            summary = orchestrator.get_run_summary(run_key)
+            payload = {'status': 'scheduled', 'run': summary}
+            self.response.set_status(202)
+        except Exception as exc:
+            logger.exception("Failed to trigger crawler run", exc_info=exc)
+            self.response.set_status(500)
+            payload = {'status': 'error', 'error': str(exc)}
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(payload))
+
+
+class CrawlerRunHistoryHandler(webapp2.RequestHandler):
+    def get(self):
+        try:
+            limit = int(self.request.get('limit', 20))
+        except ValueError:
+            limit = 20
+        limit = max(1, min(limit, 100))
+        try:
+            runs = CrawlerRun.recent(limit)
+            payload = []
+            for run in runs:
+                payload.append({
+                    'id': run.key.id() if run.key else None,
+                    'run_type': run.run_type,
+                    'status': run.status,
+                    'started_at': run.started_at.isoformat() if run.started_at else None,
+                    'finished_at': run.finished_at.isoformat() if run.finished_at else None,
+                    'total_items': run.total_items,
+                    'success_count': run.success_count,
+                    'failure_count': run.failure_count,
+                    'retry_attempts': run.retry_attempts,
+                    'metrics': run.metrics or {},
+                    'failure_details': run.failure_details or [],
+                    'triggered_by': run.triggered_by,
+                })
+            response_body = {'runs': payload, 'count': len(payload)}
+            self.response.set_status(200)
+        except Exception as exc:
+            logger.exception("Failed to read crawler run history", exc_info=exc)
+            self.response.set_status(500)
+            response_body = {'status': 'error', 'error': str(exc)}
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(response_body))
+
+
 # class Thumbnailer(webapp2.RequestHandler):
 #     def get(self, title):
 #         if self.request.get("id"):
@@ -761,6 +821,9 @@ routes = [
     ('/api/create-user', CreateUserHandler),
     ('/api/get-user', GetUserHandler),
     ('/api/buy', ChargeForBuyHandler),
+    ('/tasks/crawlers/run/(full|incremental)', CrawlerRunTriggerHandler),
+    ('/admin/crawlers/run/(full|incremental)', CrawlerRunTriggerHandler),
+    ('/admin/crawlers/history', CrawlerRunHistoryHandler),
     # ('/gomochi', MochiGamesCrawler),
     ('/loadgames', LoadGamesHandler),
     ('/sitemap', SitemapHandler),

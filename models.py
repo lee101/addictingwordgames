@@ -1,7 +1,14 @@
+import os
+
+os.environ.setdefault('PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION', 'python')
+
+from google.auth.credentials import AnonymousCredentials
 from google.cloud import ndb
 from google.cloud.ndb import Cursor
 
-client = ndb.Client()
+_project_id = os.environ.get('GOOGLE_CLOUD_PROJECT', 'local-dev')
+_credentials = None if os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') else AnonymousCredentials()
+client = ndb.Client(project=_project_id, credentials=_credentials)
 
 
 class BaseModel(ndb.Model):
@@ -122,6 +129,28 @@ class Achievement(BaseModel):
             # if len(achievements) == 0:
             #     achievements = Acheivement.all().filter("cookie_user = ?", self.current_user["id"]).fetch(len(ACHEIVEMENTS))
             return achievements
+
+
+class CrawlerRun(BaseModel):
+    """Records metadata about crawler executions for observability."""
+
+    run_type = ndb.StringProperty(required=True, choices=['full', 'incremental'])
+    status = ndb.StringProperty(default='scheduled')
+    triggered_by = ndb.StringProperty()
+    started_at = ndb.DateTimeProperty(auto_now_add=True)
+    finished_at = ndb.DateTimeProperty()
+    total_items = ndb.IntegerProperty(default=0)
+    success_count = ndb.IntegerProperty(default=0)
+    failure_count = ndb.IntegerProperty(default=0)
+    failure_details = ndb.JsonProperty(default=list)
+    retry_attempts = ndb.IntegerProperty(default=0)
+    metadata = ndb.JsonProperty()
+    metrics = ndb.JsonProperty()
+
+    @classmethod
+    def recent(cls, limit=20):
+        with client.context():
+            return cls.query().order(-cls.started_at).fetch(limit)
 
 
 all_titles = []
