@@ -1,14 +1,30 @@
-
+# Addicting Word Games
 
 Addicting Word Games uses Twitter Bootstrap, JQuery and Python running on the Google app engine.
 
 http://www.addictingwordgames.com is a puzzle games portal.
 
-pip install -r requirements.txt 
+## Featured Games
+
+**Infinite Wordle** (`/wordle`) - Classic word-guessing game with unlimited plays. Guess the 5-letter word with color-coded feedback.
+
+**Word Phzzle** (`/word-phzzle`) - Unscramble words with TTS support! Features difficulty levels and dark mode.
+
+**Word Jumble** (`/word-jumble`) - Fast-paced word unscrambling with timer, lives system, and auto-scaling difficulty.
+
+**Typing Game** (`/typing-game`) - Catch falling letters before they hit the bottom! Test your typing speed.
+
+## Setup
+
+```bash
+pip install -r requirements.txt
 gunicorn -b :5050 main:app
+```
 
 Run:
-GOOGLE_APPLICATION_CREDENTIALS=secrets/google-credentials.json  gunicorn -k gthread -b :8891 main:app --timeout 120 --workers 2 --threads 1                 
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=secrets/google-credentials.json  gunicorn -k gthread -b :8891 main:app --timeout 120 --workers 2 --threads 1
+``` 
 
 ## SQLite Support
 

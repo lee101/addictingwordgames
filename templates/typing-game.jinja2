@@ -1,0 +1,96 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Typing Game - Addicting Word Games</title>
+    {{ macros.headers(ws, highscores, achievements) }}
+    <style>
+        #gameCanvas {
+            background: #000;
+            display:block;
+            margin:0 auto;
+        }
+        #stats {
+            text-align:center;
+            margin-top:10px;
+        }
+    </style>
+</head>
+<body>
+{{ macros.templates() }}
+<div id="pagebody">
+    {{ macros.topbar() }}
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <div id="stats">
+        <span id="health">Health: 5</span>
+        <span style="margin-left:20px" id="score">Score: 0</span>
+    </div>
+    {{ macros.footer() }}
+</div>
+<script>
+(function(){
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.font = '20px Arial';
+    let letters = [];
+    let lastSpawn = 0;
+    let health = 5;
+    let score = 0;
+
+    function spawnLetter() {
+        const letter = String.fromCharCode(65 + Math.floor(Math.random()*26));
+        letters.push({letter: letter, x: Math.random()*(canvas.width-20), y: -20});
+    }
+
+    function update(time){
+        if(!lastSpawn) lastSpawn = time;
+        if(time - lastSpawn > 1000){
+            spawnLetter();
+            lastSpawn = time;
+        }
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let i=0;i<letters.length;i++){
+            const l = letters[i];
+            l.y += 2;
+            ctx.fillStyle = '#fff';
+            ctx.fillText(l.letter, l.x, l.y);
+            if(l.y > canvas.height){
+                letters.splice(i,1);
+                i--;
+                health--; updateHealth();
+                if(health<=0){ gameOver(); return; }
+            }
+        }
+        requestAnimationFrame(update);
+    }
+
+    function updateHealth(){
+        document.getElementById('health').textContent = 'Health: '+health;
+    }
+    function updateScore(){
+        document.getElementById('score').textContent = 'Score: '+score;
+    }
+    function gameOver(){
+        alert('Game Over!');
+        letters = [];
+        health = 5; score = 0;
+        updateHealth(); updateScore();
+        lastSpawn = 0;
+        requestAnimationFrame(update);
+    }
+    document.addEventListener('keydown', function(e){
+        const key = e.key.toUpperCase();
+        for(let i=0;i<letters.length;i++){
+            if(letters[i].letter === key){
+                letters.splice(i,1);
+                score++; updateScore();
+                break;
+            }
+        }
+    });
+    requestAnimationFrame(update);
+})();
+</script>
+</body>
+</html>

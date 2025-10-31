@@ -31,6 +31,8 @@ nosetests.xml
 .DS_Store
 sellerinfo.py
 .pyc
+.venv*
+uv.lock
 
 env
 venv

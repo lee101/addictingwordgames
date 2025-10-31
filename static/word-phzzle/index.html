@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Word Phzzle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="scrambled"></h1>
+        <input id="guess" placeholder="Your guess" autocomplete="off" />
+        <button id="check">Check</button>
+        <button id="speak">Speak</button>
+        <button id="hint">Hint</button>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+        <button id="theme-toggle">Theme</button>
+        <p>Score: <span id="score">0</span></p>
+        <p id="message"></p>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

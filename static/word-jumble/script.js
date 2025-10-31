@@ -7,13 +7,10 @@ let score = 0;
 let highScore = 0;
 let timer;
 let timeLeft = 0;
-let initialTime = 0;
 let paused = false;
 let difficulty = 'easy';
 let lives = 3;
 let scores = [];
-let streak = 0;
-const unusedWords = { easy: [...easyWords], medium: [...mediumWords], hard: [...hardWords] };
 
 function loadHighScore() {
     if (typeof localStorage !== 'undefined') {
@@ -45,14 +42,6 @@ function saveHighScore() {
     }
 }
 
-function toggleTheme() {
-    const body = document.body;
-    const dark = body.classList.toggle('dark');
-    if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('wordJumbleTheme', dark ? 'dark' : 'light');
-    }
-}
-
 function getWordList(currentScore = score) {
     if (difficulty === 'auto') {
         if (currentScore < 5) return easyWords;
@@ -62,14 +51,6 @@ function getWordList(currentScore = score) {
     if (difficulty === 'easy') return easyWords;
     if (difficulty === 'medium') return mediumWords;
     return hardWords;
-}
-
-function getUniqueWord(list, key) {
-    if (!unusedWords[key] || unusedWords[key].length === 0) {
-        unusedWords[key] = [...list];
-    }
-    const idx = Math.floor(Math.random() * unusedWords[key].length);
-    return unusedWords[key].splice(idx, 1)[0];
 }
 
 function updateScoreboard() {
@@ -107,11 +88,9 @@ function endGame() {
     saveScores();
     showScores();
     score = 0;
-    streak = 0;
     lives = 3;
     document.getElementById('score').textContent = score;
     document.getElementById('lives').textContent = lives;
-    document.getElementById('streak').textContent = streak;
     pickWord();
 }
 
@@ -127,8 +106,6 @@ function loseLife() {
         const container = document.querySelector('.container');
         container.classList.add('shake', 'flash');
         setTimeout(() => container.classList.remove('flash'), 500);
-        streak = 0;
-        document.getElementById('streak').textContent = streak;
     }
 }
 
@@ -143,11 +120,7 @@ function shuffle(word) {
 
 function pickWord() {
     const list = getWordList();
-    let diffKey = difficulty;
-    if (difficulty === 'auto') {
-        diffKey = score < 5 ? 'easy' : score < 10 ? 'medium' : 'hard';
-    }
-    currentWord = getUniqueWord(list, diffKey);
+    currentWord = list[Math.floor(Math.random() * list.length)];
     const scrambledEl = document.getElementById('scrambled');
     scrambledEl.textContent = shuffle(currentWord);
     scrambledEl.classList.add('fade-in');
@@ -157,8 +130,6 @@ function pickWord() {
     const baseTime = 30;
     const reduction = Math.min(score * 2, 20);
     timeLeft = Math.max(10, baseTime - reduction);
-    initialTime = timeLeft;
-    document.getElementById('progress').style.width = '100%';
     document.querySelector('.container').classList.remove('shake', 'correct');
 }
 
@@ -169,7 +140,6 @@ function startTimer() {
         if (!paused) {
             timeLeft--;
             document.getElementById('timer').textContent = timeLeft;
-            document.getElementById('progress').style.width = `${Math.max(0, (timeLeft / initialTime) * 100)}%`;
             if (timeLeft <= 0) {
                 clearInterval(timer);
                 document.getElementById('message').textContent = `Time's up! The word was ${currentWord}.`;
@@ -184,8 +154,6 @@ function checkGuess() {
     if (guess === currentWord) {
         score++;
         document.getElementById('score').textContent = score;
-        streak++;
-        document.getElementById('streak').textContent = streak;
         if (score > highScore) {
             highScore = score;
             document.getElementById('high-score').textContent = highScore;
@@ -234,15 +202,6 @@ if (typeof window !== 'undefined') {
         startTimer();
     });
 
-    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-
-    if (typeof localStorage !== 'undefined') {
-        const savedTheme = localStorage.getItem('wordJumbleTheme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark');
-        }
-    }
-
     document.getElementById('show-scores').addEventListener('click', showScores);
     document.getElementById('close-scores').addEventListener('click', hideScores);
 
@@ -267,8 +226,6 @@ if (typeof module !== 'undefined') {
         getWordList,
         setDifficulty,
         setScore,
-        getUniqueWord,
-        toggleTheme,
         easyWords,
         mediumWords,
         hardWords

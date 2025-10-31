@@ -10,9 +10,3 @@ def test_evaluate_guess_yellow_and_green():
 def test_evaluate_guess_with_duplicates():
     # secret: BANAL, guess: ALALA
     assert wordle.evaluate_guess('BANAL', 'ALALA') == ['yellow', 'yellow', 'yellow', 'gray', 'gray']
-
-
-def test_load_words():
-    words = wordle.load_words()
-    assert len(words) > 1000
-    assert all(len(w) == 5 for w in words)

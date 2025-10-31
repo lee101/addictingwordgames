@@ -309,6 +309,23 @@ class InfiniteWordleHandler(BaseHandler):
         self.render('/templates/infinite_wordle.jinja2')
 
 
+class TypingGameHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/typing-game.jinja2')
+
+
+class WordPhzzleHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-phzzle/index.html")
+        self.response.write(template.render())
+
+
+class WordJumbleHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-jumble/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -749,6 +766,9 @@ routes = [
     ('/about', AboutHandler),
     ('/contact', ContactHandler),
     ('/wordle', InfiniteWordleHandler),
+    ('/typing-game', TypingGameHandler),
+    ('/word-phzzle', WordPhzzleHandler),
+    ('/word-jumble', WordJumbleHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),

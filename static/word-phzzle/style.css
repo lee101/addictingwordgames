@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    transition: background 0.3s;
+}
+
+.container {
+    max-width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+#scrambled {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    letter-spacing: 8px;
+    color: #667eea;
+    font-weight: bold;
+}
+
+input, button, select {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #667eea;
+    border-radius: 5px;
+}
+
+button {
+    background: #667eea;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: #764ba2;
+    transform: scale(1.05);
+}
+
+#message {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.2em;
+    min-height: 30px;
+}
+
+.dark {
+    background: #111;
+    color: #eee;
+}
+
+.dark .container {
+    background: #222;
+    color: #eee;
+}
+
+.dark button {
+    background: #764ba2;
+}
+
+.dark #scrambled {
+    color: #a78bfa;
+}
