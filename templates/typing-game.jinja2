@@ -7,13 +7,21 @@
     {{ macros.headers(ws, highscores, achievements) }}
     <style>
         #gameCanvas {
-            background: #000;
+            background: linear-gradient(180deg, #0f0c29, #302b63, #24243e);
             display:block;
             margin:0 auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         #stats {
             text-align:center;
             margin-top:10px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        #combo {
+            color: #f39c12;
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -25,6 +33,7 @@
     <div id="stats">
         <span id="health">Health: 5</span>
         <span style="margin-left:20px" id="score">Score: 0</span>
+        <span id="combo"></span>
     </div>
     {{ macros.footer() }}
 </div>
@@ -32,36 +41,108 @@
 (function(){
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    ctx.font = '20px Arial';
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
     let letters = [];
+    let particles = [];
     let lastSpawn = 0;
     let health = 5;
     let score = 0;
+    let combo = 0;
+    let speed = 2;
+
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe'];
+
+    function playTone(freq, duration, type = 'sine') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.type = type;
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playHit(comboLevel) {
+        const baseFreq = 440 + (comboLevel * 50);
+        playTone(baseFreq, 0.1);
+    }
+
+    function playMiss() {
+        playTone(200, 0.2, 'sawtooth');
+    }
+
+    function createParticles(x, y, color) {
+        for (let i = 0; i < 15; i++) {
+            particles.push({
+                x, y,
+                vx: (Math.random() - 0.5) * 6,
+                vy: (Math.random() - 0.5) * 6,
+                color,
+                life: 1
+            });
+        }
+    }
 
     function spawnLetter() {
         const letter = String.fromCharCode(65 + Math.floor(Math.random()*26));
-        letters.push({letter: letter, x: Math.random()*(canvas.width-20), y: -20});
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        letters.push({letter, x: Math.random()*(canvas.width-40), y: -20, color});
     }
 
     function update(time){
         if(!lastSpawn) lastSpawn = time;
-        if(time - lastSpawn > 1000){
+        const spawnRate = Math.max(500, 1000 - score * 10);
+        if(time - lastSpawn > spawnRate){
             spawnLetter();
             lastSpawn = time;
         }
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        ctx.fillStyle = 'rgba(15, 12, 41, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        speed = 2 + score * 0.05;
+
         for(let i=0;i<letters.length;i++){
             const l = letters[i];
-            l.y += 2;
-            ctx.fillStyle = '#fff';
+            l.y += speed;
+
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = l.color;
+            ctx.fillStyle = l.color;
+            ctx.font = 'bold 28px Arial';
             ctx.fillText(l.letter, l.x, l.y);
+            ctx.shadowBlur = 0;
+
             if(l.y > canvas.height){
                 letters.splice(i,1);
                 i--;
-                health--; updateHealth();
+                health--;
+                combo = 0;
+                updateHealth();
+                updateCombo();
+                playMiss();
                 if(health<=0){ gameOver(); return; }
             }
         }
+
+        for(let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.02;
+
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.life;
+            ctx.fillRect(p.x, p.y, 3, 3);
+            ctx.globalAlpha = 1;
+
+            if (p.life <= 0) particles.splice(i, 1);
+        }
+
         requestAnimationFrame(update);
     }
 
@@ -71,20 +152,45 @@
     function updateScore(){
         document.getElementById('score').textContent = 'Score: '+score;
     }
-    function gameOver(){
-        alert('Game Over!');
-        letters = [];
-        health = 5; score = 0;
-        updateHealth(); updateScore();
-        lastSpawn = 0;
-        requestAnimationFrame(update);
+    function updateCombo(){
+        const el = document.getElementById('combo');
+        if(combo > 1) {
+            el.textContent = `🔥 ${combo}x Combo!`;
+        } else {
+            el.textContent = '';
+        }
     }
+    function gameOver(){
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 36px Arial';
+        ctx.fillText('GAME OVER', canvas.width/2 - 120, canvas.height/2);
+        ctx.font = '24px Arial';
+        ctx.fillText(`Final Score: ${score}`, canvas.width/2 - 80, canvas.height/2 + 40);
+
+        setTimeout(() => {
+            letters = [];
+            particles = [];
+            health = 5; score = 0; combo = 0;
+            updateHealth(); updateScore(); updateCombo();
+            lastSpawn = 0;
+            requestAnimationFrame(update);
+        }, 3000);
+    }
+
     document.addEventListener('keydown', function(e){
         const key = e.key.toUpperCase();
         for(let i=0;i<letters.length;i++){
             if(letters[i].letter === key){
+                const l = letters[i];
+                createParticles(l.x + 10, l.y, l.color);
                 letters.splice(i,1);
-                score++; updateScore();
+                score++;
+                combo++;
+                playHit(combo);
+                updateScore();
+                updateCombo();
                 break;
             }
         }

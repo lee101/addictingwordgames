@@ -8,6 +8,31 @@ let pipelineFunc = null;
 let tts = null;
 let score = 0;
 
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTone(freq, duration, type = 'sine') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.frequency.value = freq;
+    osc.type = type;
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+}
+
+function playCorrect() {
+    [523.25, 659.25, 783.99].forEach((f, i) => {
+        setTimeout(() => playTone(f, 0.2), i * 80);
+    });
+}
+
+function playWrong() {
+    playTone(200, 0.3, 'sawtooth');
+}
+
 async function loadPipeline() {
     if (!pipelineFunc) {
         if (typeof window !== 'undefined') {
@@ -97,11 +122,20 @@ if (typeof window !== 'undefined') {
             score++;
             document.getElementById('score').textContent = score;
             saveScore();
-            document.getElementById('message').textContent = 'Correct!';
-            speakWord(currentWord);
-            pickNewWord();
+            const msg = document.getElementById('message');
+            msg.textContent = '✨ Correct!';
+            msg.style.color = '#27ae60';
+            playCorrect();
+            setTimeout(() => {
+                pickNewWord();
+                msg.style.color = '';
+            }, 500);
         } else {
-            document.getElementById('message').textContent = 'Try again!';
+            const msg = document.getElementById('message');
+            msg.textContent = '❌ Try again!';
+            msg.style.color = '#e74c3c';
+            playWrong();
+            setTimeout(() => msg.style.color = '', 1000);
         }
     });
     document.getElementById('speak').addEventListener('click', () => speakWord(currentWord));

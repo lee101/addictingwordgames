@@ -12,6 +12,41 @@ let difficulty = 'easy';
 let lives = 3;
 let scores = [];
 
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTone(freq, duration, type = 'sine') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.frequency.value = freq;
+    osc.type = type;
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+}
+
+function playCorrect() {
+    [392, 523.25, 659.25].forEach((f, i) => {
+        setTimeout(() => playTone(f, 0.15), i * 60);
+    });
+}
+
+function playWrong() {
+    playTone(180, 0.4, 'sawtooth');
+}
+
+function playTick() {
+    playTone(800, 0.05, 'square');
+}
+
+function playGameOver() {
+    [440, 392, 349, 293].forEach((f, i) => {
+        setTimeout(() => playTone(f, 0.3, 'triangle'), i * 150);
+    });
+}
+
 function loadHighScore() {
     if (typeof localStorage !== 'undefined') {
         highScore = Number(localStorage.getItem('wordJumbleHighScore')) || 0;
@@ -83,6 +118,7 @@ function hideScores() {
 
 function endGame() {
     clearInterval(timer);
+    playGameOver();
     scores.push(score);
     scores.sort((a, b) => b - a);
     saveScores();
@@ -140,9 +176,12 @@ function startTimer() {
         if (!paused) {
             timeLeft--;
             document.getElementById('timer').textContent = timeLeft;
+            if (timeLeft <= 5 && timeLeft > 0) {
+                playTick();
+            }
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                document.getElementById('message').textContent = `Time's up! The word was ${currentWord}.`;
+                document.getElementById('message').textContent = `⏰ Time's up! The word was ${currentWord}.`;
                 loseLife();
             }
         }
@@ -159,12 +198,14 @@ function checkGuess() {
             document.getElementById('high-score').textContent = highScore;
             saveHighScore();
         }
-        document.getElementById('message').textContent = 'Correct!';
+        document.getElementById('message').textContent = '🎉 Correct!';
         document.querySelector('.container').classList.add('correct');
+        playCorrect();
         pickWord();
         startTimer();
     } else {
-        document.getElementById('message').textContent = 'Try again!';
+        document.getElementById('message').textContent = '❌ Try again!';
+        playWrong();
         loseLife();
     }
 }
