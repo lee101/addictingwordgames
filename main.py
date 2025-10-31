@@ -24,8 +24,14 @@ from loguru import logger
 import ws
 from awg.itch.all_games import all_games
 from gameon_utils import GameOnUtils
-from models import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
-    get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
+# Try to import GCP models, fall back to stubs for self-hosted
+try:
+    from models import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
+        get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
+except ImportError:
+    logger.warning("GCP models not available, using stubs (self-hosted mode)")
+    from models_stub import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
+        get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
 from ws import ws
 
 FACEBOOK_APP_ID = "138831849632195"

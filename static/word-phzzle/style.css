@@ -71,3 +71,36 @@ button:hover {
 .dark #scrambled {
     color: #a78bfa;
 }
+
+.music-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-size: 0.9em;
+    z-index: 1000;
+}
+
+.dark .music-controls {
+    background: rgba(34, 34, 34, 0.95);
+    color: #eee;
+}
+
+.music-controls button {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin: 2px;
+}
+
+.music-controls .song-name {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.dark .music-controls .song-name {
+    color: #aaa;
+}

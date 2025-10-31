@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Infinite Wordle</title>
+    <script src="/static/js/piano-music.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -116,6 +117,26 @@
             color: #555;
             margin: 10px 0;
         }
+        .music-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 0.9em;
+        }
+        .music-controls button {
+            padding: 5px 10px;
+            font-size: 14px;
+            margin: 2px;
+        }
+        .music-controls .song-name {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -128,6 +149,13 @@
 <button id="new-game">New Game</button>
 <button id="show-answer">Show Answer</button>
 <div id="message"></div>
+
+<div class="music-controls">
+    <button id="music-toggle">🎵 Play Music</button>
+    <button id="music-next">⏭️ Next</button>
+    <div class="song-name" id="song-name"></div>
+</div>
+
 <script>
 const words = ["apple","grape","banjo","chief","brave","crane","share","flint","prime","stone","chair","brand","sling","smile","sugar","tiger","bread","cargo","ghost","dream","eagle","level","media","night","ocean","proud","quick","rough","shine","toast"];
 let secret = pickWord();
@@ -251,6 +279,30 @@ document.getElementById('guess').addEventListener('keydown', function(e) {
 document.getElementById('show-answer').onclick = function() {
     document.getElementById('message').textContent = `Answer: ${secret}`;
     this.disabled = true;
+};
+
+// Initialize background music
+const musicGen = new PianoMusicGenerator();
+let musicPlaying = false;
+
+document.getElementById('music-toggle').onclick = function() {
+    if (musicPlaying) {
+        musicGen.stop();
+        this.textContent = '🎵 Play Music';
+        musicPlaying = false;
+    } else {
+        musicGen.start();
+        this.textContent = '🔇 Mute Music';
+        document.getElementById('song-name').textContent = `♪ ${musicGen.getCurrentSongName()}`;
+        musicPlaying = true;
+    }
+};
+
+document.getElementById('music-next').onclick = function() {
+    if (musicPlaying) {
+        musicGen.nextSong();
+        document.getElementById('song-name').textContent = `♪ ${musicGen.getCurrentSongName()}`;
+    }
 };
 </script>
 </body>

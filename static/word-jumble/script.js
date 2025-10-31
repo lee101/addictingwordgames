@@ -256,6 +256,30 @@ if (typeof window !== 'undefined') {
     document.getElementById('lives').textContent = lives;
     pickWord();
     startTimer();
+
+    // Initialize background music
+    const musicGen = new PianoMusicGenerator();
+    let musicPlaying = false;
+
+    document.getElementById('music-toggle').addEventListener('click', function() {
+        if (musicPlaying) {
+            musicGen.stop();
+            this.textContent = '🎵 Play Music';
+            musicPlaying = false;
+        } else {
+            musicGen.start();
+            this.textContent = '🔇 Mute Music';
+            document.getElementById('song-name').textContent = `♪ ${musicGen.getCurrentSongName()}`;
+            musicPlaying = true;
+        }
+    });
+
+    document.getElementById('music-next').addEventListener('click', function() {
+        if (musicPlaying) {
+            musicGen.nextSong();
+            document.getElementById('song-name').textContent = `♪ ${musicGen.getCurrentSongName()}`;
+        }
+    });
 }
 
 // Export for tests if running in Node
