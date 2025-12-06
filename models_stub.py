@@ -1,6 +1,10 @@
 # Stub for GCP NDB models - use SQLite instead for self-hosted
 # This allows main.py to import models without errors even when GCP deps are not installed
 
+class BaseModel:
+    def to_dict(self):
+        return {}
+
 EASY = 2
 MEDIUM = 3
 HARD = 4

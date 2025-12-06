@@ -28,7 +28,7 @@ from gameon_utils import GameOnUtils
 try:
     from models import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
         get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
-except ImportError:
+except (ImportError, TypeError):
     logger.warning("GCP models not available, using stubs (self-hosted mode)")
     from models_stub import DIFFICULTIES, Score, HighScore, Achievement, ACHEIVEMENTS, Game, get_cursor_and_games, User, \
         get_rand_order_page, get_cursor_and_random_games, get_games_by_tag_cursor
@@ -57,6 +57,7 @@ if LOCAL_DEBUG or GameOnUtils.debug:
         'publishable_key': sellerinfo.STRIPE_TEST_KEY
     }
 else:
+    GCLOUD_STATIC_BUCKET_URL = "https://addictingwordgamesstatic.addictingwordgames.com/static"
     stripe_keys = {
         'secret_key': sellerinfo.STRIPE_LIVE_SECRET,
         'publishable_key': sellerinfo.STRIPE_LIVE_KEY

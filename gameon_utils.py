@@ -3,7 +3,10 @@ import json
 import os
 from time import mktime
 
-from models import BaseModel
+try:
+    from models import BaseModel
+except (ImportError, TypeError):
+    from models_stub import BaseModel
 
 
 class GameOnUtils(object):
