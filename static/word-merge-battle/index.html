@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Merge Battle - Addicting Word Games</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1>Word Merge Battle</h1>
+            <div class="music-controls">
+                <button id="music-toggle">🎵 Music</button>
+                <button id="music-next">⏭️</button>
+                <span id="song-name" class="song-name"></span>
+            </div>
+        </header>
+
+        <!-- Battle Arena -->
+        <div class="battle-arena">
+            <!-- Player Side -->
+            <div class="fighter player-side">
+                <div class="fighter-info">
+                    <div class="fighter-avatar player-avatar">⚔️</div>
+                    <div class="fighter-name">PLAYER</div>
+                    <div class="hp-bar-container">
+                        <div class="hp-bar player-hp" id="player-hp"></div>
+                        <span class="hp-text" id="player-hp-text">100/100</span>
+                    </div>
+                    <div class="stats">
+                        <span class="stat">⚡ <span id="player-power">0</span></span>
+                        <span class="stat">🔥 <span id="combo-count">0</span>x</span>
+                    </div>
+                </div>
+                <div class="fighter-sprite player-sprite" id="player-sprite">
+                    <div class="sword">⚔️</div>
+                </div>
+            </div>
+
+            <!-- Battle Effects Zone -->
+            <div class="battle-zone" id="battle-zone">
+                <div class="vs-text">VS</div>
+                <div id="battle-effects"></div>
+                <div class="attack-text" id="attack-text"></div>
+            </div>
+
+            <!-- Enemy Side -->
+            <div class="fighter enemy-side">
+                <div class="fighter-sprite enemy-sprite" id="enemy-sprite">
+                    <div class="enemy-icon">👹</div>
+                </div>
+                <div class="fighter-info">
+                    <div class="fighter-avatar enemy-avatar">👹</div>
+                    <div class="fighter-name" id="enemy-name">WORD GOBLIN</div>
+                    <div class="hp-bar-container">
+                        <div class="hp-bar enemy-hp" id="enemy-hp"></div>
+                        <span class="hp-text" id="enemy-hp-text">100/100</span>
+                    </div>
+                    <div class="stats">
+                        <span class="stat">💀 Level <span id="enemy-level">1</span></span>
+                        <span class="stat">⏱️ <span id="enemy-timer">5.0</span>s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Word Formation Area -->
+        <div class="word-area">
+            <div class="current-word-container">
+                <div class="current-word" id="current-word">
+                    <span class="placeholder-text">Select letters to merge...</span>
+                </div>
+                <div class="word-power" id="word-power"></div>
+            </div>
+            <div class="word-controls">
+                <button id="attack-btn" class="attack-btn" disabled>⚔️ ATTACK!</button>
+                <button id="clear-btn" class="clear-btn">🗑️ Clear</button>
+            </div>
+        </div>
+
+        <!-- Letter Grid -->
+        <div class="grid-container">
+            <div class="letter-grid" id="letter-grid"></div>
+            <button id="shuffle-btn" class="shuffle-btn">🔀 Shuffle (3)</button>
+        </div>
+
+        <!-- Score & Stats -->
+        <div class="game-stats">
+            <div class="stat-box">
+                <div class="stat-label">Score</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Words</div>
+                <div class="stat-value" id="words-found">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Best Combo</div>
+                <div class="stat-value" id="best-combo">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Enemies</div>
+                <div class="stat-value" id="enemies-defeated">0</div>
+            </div>
+        </div>
+
+        <!-- Power-ups -->
+        <div class="powerups" id="powerups">
+            <div class="powerup" id="powerup-heal" data-type="heal" title="Heal 25 HP">
+                <span class="powerup-icon">💚</span>
+                <span class="powerup-count" id="heal-count">1</span>
+            </div>
+            <div class="powerup" id="powerup-shield" data-type="shield" title="Block next attack">
+                <span class="powerup-icon">🛡️</span>
+                <span class="powerup-count" id="shield-count">1</span>
+            </div>
+            <div class="powerup" id="powerup-double" data-type="double" title="Double damage next attack">
+                <span class="powerup-icon">⚡</span>
+                <span class="powerup-count" id="double-count">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="modal" id="game-over-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Game Over!</h2>
+            <div class="final-stats">
+                <p>Final Score: <span id="final-score">0</span></p>
+                <p>Words Created: <span id="final-words">0</span></p>
+                <p>Enemies Defeated: <span id="final-enemies">0</span></p>
+                <p>Best Combo: <span id="final-combo">0</span></p>
+                <p>High Score: <span id="high-score">0</span></p>
+            </div>
+            <button id="play-again-btn" class="play-again-btn">⚔️ Battle Again!</button>
+        </div>
+    </div>
+
+    <!-- Particle Container -->
+    <div id="particles"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
