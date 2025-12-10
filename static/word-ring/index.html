@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Ring Puzzle</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Ring Puzzle</h1>
+        <p class="instructions">Click letters in the ring to form words!</p>
+
+        <div class="ring-container">
+            <div id="letter-ring"></div>
+            <div id="center-letter"></div>
+        </div>
+
+        <div class="word-display">
+            <span id="current-word"></span>
+            <button id="clear-word" title="Clear">&#x232B;</button>
+        </div>
+
+        <div class="controls">
+            <button id="submit-word">Submit Word</button>
+            <button id="shuffle">Shuffle</button>
+            <button id="hint">Hint</button>
+        </div>
+
+        <div class="stats">
+            <p>Score: <span id="score">0</span></p>
+            <p>Words Found: <span id="words-found">0</span> / <span id="total-words">0</span></p>
+            <p>Puzzle: <span id="puzzle-number">1</span></p>
+        </div>
+
+        <div class="found-words">
+            <h3>Found Words</h3>
+            <div id="found-list"></div>
+        </div>
+
+        <div class="navigation">
+            <button id="next-puzzle">Next Puzzle &rarr;</button>
+        </div>
+
+        <p id="message"></p>
+    </div>
+
+    <div id="completion-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Puzzle Complete!</h2>
+            <p>You found all <span id="modal-words">0</span> words!</p>
+            <p>Score: <span id="modal-score">0</span></p>
+            <button id="modal-next">Next Puzzle</button>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">🎵 Play Music</button>
+        <button id="music-next">⏭️ Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
