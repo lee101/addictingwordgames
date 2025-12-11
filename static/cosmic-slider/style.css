@@ -1,0 +1,900 @@
+/* Cosmic Slider - Mystical Puzzle Game Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-glow: #00ffff;
+    --secondary-glow: #ff00ff;
+    --tertiary-glow: #ffff00;
+    --bg-dark: #0a0a1a;
+    --bg-card: rgba(20, 20, 40, 0.9);
+    --tile-bg: linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 100%);
+    --tile-correct: linear-gradient(135deg, #004d4d 0%, #008080 100%);
+    --text-light: #e0e0ff;
+    --gold: #ffd700;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+}
+
+/* Particle Canvas */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Animated Starfield Background */
+.cosmic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.stars, .stars2, .stars3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.stars {
+    background-image:
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, white, transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 230px 80px, white, transparent),
+        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 350px 200px, white, transparent),
+        radial-gradient(2px 2px at 420px 50px, rgba(255,255,255,0.8), transparent);
+    background-size: 500px 500px;
+    animation: twinkle 8s ease-in-out infinite;
+}
+
+.stars2 {
+    background-image:
+        radial-gradient(1px 1px at 50px 100px, var(--primary-glow), transparent),
+        radial-gradient(2px 2px at 150px 50px, var(--secondary-glow), transparent),
+        radial-gradient(1px 1px at 250px 180px, var(--primary-glow), transparent),
+        radial-gradient(2px 2px at 350px 100px, var(--secondary-glow), transparent),
+        radial-gradient(1px 1px at 450px 220px, var(--tertiary-glow), transparent);
+    background-size: 600px 400px;
+    animation: twinkle 12s ease-in-out infinite reverse;
+    opacity: 0.6;
+}
+
+.stars3 {
+    background-image:
+        radial-gradient(3px 3px at 100px 200px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 300px 100px, rgba(255,255,255,0.4), transparent),
+        radial-gradient(3px 3px at 500px 300px, rgba(255,255,255,0.3), transparent);
+    background-size: 700px 500px;
+    animation: drift 60s linear infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-700px); }
+}
+
+/* Game Wrapper */
+.game-wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Header */
+.game-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.game-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--primary-glow));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+@keyframes shimmer {
+    to { background-position: 200% center; }
+}
+
+.rune {
+    display: inline-block;
+    animation: spin 10s linear infinite;
+    font-size: 1.5rem;
+}
+
+.rune:last-child {
+    animation-direction: reverse;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.tagline {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 5px;
+    letter-spacing: 2px;
+}
+
+/* Stats Bar */
+.stats-bar {
+    display: flex;
+    justify-content: space-around;
+    background: var(--bg-card);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--primary-glow);
+    text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.combo-stat .stat-value {
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+    transition: transform 0.2s, color 0.2s;
+}
+
+.combo-stat.active .stat-value {
+    transform: scale(1.3);
+    color: #ff6600;
+}
+
+/* Mode Selector */
+.mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    padding: 8px 16px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    background: transparent;
+    color: var(--text-light);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mode-btn:hover {
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(255, 0, 255, 0.3));
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+}
+
+.mode-btn.special {
+    border-color: rgba(255, 0, 255, 0.3);
+}
+
+.mode-btn.special:hover {
+    border-color: var(--secondary-glow);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+}
+
+.mode-btn.special.active {
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(255, 255, 0, 0.3));
+    border-color: var(--secondary-glow);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+}
+
+/* Puzzle Container */
+.puzzle-container {
+    position: relative;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.puzzle-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 110%;
+    background: radial-gradient(ellipse at center, rgba(0, 255, 255, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* Puzzle Board */
+.puzzle-board {
+    display: grid;
+    gap: 6px;
+    background: var(--bg-card);
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow:
+        0 0 30px rgba(0, 255, 255, 0.2),
+        inset 0 0 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.puzzle-board.size-3 {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 320px;
+}
+
+.puzzle-board.size-4 {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 380px;
+}
+
+.puzzle-board.size-5 {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 420px;
+}
+
+/* Puzzle Tiles */
+.tile {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    background: var(--tile-bg);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    user-select: none;
+}
+
+.tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.tile:hover::before {
+    left: 100%;
+}
+
+.tile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    border-color: var(--primary-glow);
+}
+
+.tile.movable {
+    cursor: pointer;
+}
+
+.tile.movable:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+}
+
+.tile.empty {
+    background: radial-gradient(ellipse at center, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+    border: 2px dashed rgba(0, 255, 255, 0.2);
+    cursor: default;
+}
+
+.tile.empty::before {
+    display: none;
+}
+
+.tile.correct {
+    background: var(--tile-correct);
+    border-color: rgba(0, 255, 200, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 200, 0.3);
+}
+
+.tile.sliding {
+    z-index: 10;
+    transition: transform 0.15s ease-out;
+}
+
+.tile.hint {
+    animation: hint-pulse 0.5s ease-in-out 3;
+    box-shadow: 0 0 30px var(--gold);
+    border-color: var(--gold);
+}
+
+@keyframes hint-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Rune symbols on tiles */
+.tile .rune-symbol {
+    position: absolute;
+    font-size: 0.8rem;
+    opacity: 0.3;
+    top: 5px;
+    right: 5px;
+}
+
+.tile .tile-number {
+    text-shadow: 0 0 10px currentColor;
+    color: var(--primary-glow);
+}
+
+.tile.correct .tile-number {
+    color: #00ffcc;
+}
+
+/* Picture mode tiles */
+.tile.picture-tile {
+    background-size: cover;
+    background-position: center;
+}
+
+.tile.picture-tile .tile-number {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.puzzle-board.reveal-numbers .tile .tile-number {
+    opacity: 1 !important;
+}
+
+/* Portal Overlay (Victory Animation) */
+.portal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    z-index: 20;
+}
+
+.portal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.portal-ring {
+    position: absolute;
+    border: 3px solid var(--primary-glow);
+    border-radius: 50%;
+    animation: portal-spin 4s linear infinite;
+}
+
+.ring1 {
+    width: 200px;
+    height: 200px;
+    border-color: var(--primary-glow);
+    animation-duration: 3s;
+}
+
+.ring2 {
+    width: 150px;
+    height: 150px;
+    border-color: var(--secondary-glow);
+    animation-duration: 2s;
+    animation-direction: reverse;
+}
+
+.ring3 {
+    width: 100px;
+    height: 100px;
+    border-color: var(--tertiary-glow);
+    animation-duration: 1.5s;
+}
+
+@keyframes portal-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.portal-center {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(ellipse at center, white 0%, var(--primary-glow) 30%, var(--secondary-glow) 60%, transparent 100%);
+    border-radius: 50%;
+    animation: portal-pulse 1s ease-in-out infinite;
+}
+
+@keyframes portal-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+.victory-text {
+    position: absolute;
+    bottom: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: white;
+    text-shadow: 0 0 20px var(--primary-glow), 0 0 40px var(--secondary-glow);
+    animation: victory-bounce 0.5s ease infinite alternate;
+}
+
+@keyframes victory-bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
+
+/* Picture Upload */
+.picture-upload {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: var(--bg-card);
+    border-radius: 15px;
+    border: 2px dashed rgba(255, 0, 255, 0.3);
+}
+
+.upload-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
+    border: 2px solid var(--secondary-glow);
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upload-btn:hover {
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.upload-btn input {
+    display: none;
+}
+
+.upload-hint {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 12px 24px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    background: var(--bg-card);
+    color: var(--text-light);
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-btn:hover {
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.control-btn.primary {
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+    border-color: var(--primary-glow);
+}
+
+.control-btn.primary:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/* Power-ups */
+.power-ups {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.power-btn {
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    background: var(--bg-card);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--gold);
+    position: relative;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.power-btn:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.power-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.power-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.power-count {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: var(--gold);
+    color: black;
+    font-size: 0.7rem;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Achievements */
+.achievements {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.achievement-popup {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(255, 165, 0, 0.9));
+    color: black;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    animation: achievement-slide 0.5s ease, achievement-fade 0.5s ease 2.5s forwards;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes achievement-slide {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes achievement-fade {
+    to { opacity: 0; transform: translateX(100px); }
+}
+
+.achievement-popup h4 {
+    margin: 0 0 5px 0;
+    font-size: 0.9rem;
+}
+
+.achievement-popup p {
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Music Controls */
+.music-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--bg-card);
+    padding: 10px 15px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    z-index: 50;
+    flex-wrap: wrap;
+    max-width: 300px;
+}
+
+.music-btn {
+    padding: 8px 12px;
+    border: none;
+    background: rgba(0, 255, 255, 0.1);
+    color: var(--text-light);
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+}
+
+.music-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+}
+
+.music-btn.active {
+    background: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.song-name {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* Instructions */
+.instructions-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    color: var(--primary-glow);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    transition: all 0.3s;
+}
+
+.instructions-toggle:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.instructions-panel {
+    position: fixed;
+    bottom: 70px;
+    left: 20px;
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    max-width: 300px;
+    z-index: 50;
+    display: none;
+    animation: panel-slide 0.3s ease;
+}
+
+.instructions-panel.active {
+    display: block;
+}
+
+@keyframes panel-slide {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.instructions-panel h3 {
+    margin: 0 0 15px 0;
+    color: var(--primary-glow);
+}
+
+.instructions-panel ul {
+    margin: 0 0 15px 0;
+    padding-left: 20px;
+}
+
+.instructions-panel li {
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.close-btn {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--primary-glow);
+    background: transparent;
+    color: var(--primary-glow);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+}
+
+/* Chaos Mode Effects */
+.puzzle-board.chaos-mode {
+    animation: chaos-shake 0.5s ease-in-out;
+}
+
+@keyframes chaos-shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+}
+
+.tile.chaos-swap {
+    animation: chaos-glow 0.3s ease;
+}
+
+@keyframes chaos-glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.8); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 1.8rem;
+    }
+
+    .stats-bar {
+        padding: 10px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+    }
+
+    .mode-btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+
+    .puzzle-board {
+        padding: 10px;
+    }
+
+    .tile {
+        font-size: 1.4rem;
+    }
+
+    .control-btn {
+        padding: 10px 16px;
+        font-size: 0.8rem;
+    }
+
+    .power-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .music-controls {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 12px;
+    }
+}
+
+/* Tile size adjustments */
+.size-4 .tile {
+    font-size: 1.4rem;
+}
+
+.size-5 .tile {
+    font-size: 1.1rem;
+}
+
+/* Screen shake effect */
+.screen-shake {
+    animation: screen-shake 0.3s ease;
+}
+
+@keyframes screen-shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+}
+
+/* Time freeze effect */
+.time-frozen .tile {
+    filter: hue-rotate(180deg);
+}
+
+.time-frozen .puzzle-glow {
+    background: radial-gradient(ellipse at center, rgba(100, 200, 255, 0.3) 0%, transparent 70%);
+}
