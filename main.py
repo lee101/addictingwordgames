@@ -333,6 +333,12 @@ class WordJumbleHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class WordReactorHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-reactor/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -776,6 +782,7 @@ routes = [
     ('/typing-game', TypingGameHandler),
     ('/word-phzzle', WordPhzzleHandler),
     ('/word-jumble', WordJumbleHandler),
+    ('/word-reactor', WordReactorHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
