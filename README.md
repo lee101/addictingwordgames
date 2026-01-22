@@ -1,5 +1,12 @@
 # Addicting Word Games
 
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![License: ISC](https://img.shields.io/badge/license-ISC-green.svg)](https://opensource.org/licenses/ISC)
+[![pytest](https://img.shields.io/badge/testing-pytest-yellow.svg?logo=pytest&logoColor=white)](https://pytest.org/)
+[![Docker](https://img.shields.io/badge/docker-supported-blue.svg?logo=docker&logoColor=white)](https://www.docker.com/)
+[![GitHub](https://img.shields.io/github/stars/lee101/addictingwordgames?style=social)](https://github.com/lee101/addictingwordgames)
+[![Website](https://img.shields.io/badge/website-addictingwordgames.com-brightgreen.svg)](http://www.addictingwordgames.com)
+
 Addicting Word Games uses Twitter Bootstrap, JQuery and Python running on the Google app engine.
 
 http://www.addictingwordgames.com is a puzzle games portal.
