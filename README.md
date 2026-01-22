@@ -8,6 +8,7 @@
 [![Google App Engine](https://img.shields.io/badge/Google%20App%20Engine-deployed-4285F4.svg?logo=google-cloud&logoColor=white)](https://cloud.google.com/appengine)
 [![GitHub](https://img.shields.io/github/stars/lee101/addictingwordgames?style=social)](https://github.com/lee101/addictingwordgames)
 [![Website](https://img.shields.io/badge/website-addictingwordgames.com-brightgreen.svg)](http://www.addictingwordgames.com)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-agent-blueviolet.svg?logo=anthropic&logoColor=white)](https://claude.ai/claude-code)
 
 Addicting Word Games uses Twitter Bootstrap, JQuery and Python running on the Google app engine.
 
