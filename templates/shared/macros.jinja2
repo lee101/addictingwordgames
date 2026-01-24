@@ -207,9 +207,25 @@
     </div>
 {%- endmacro %}
 
+{% macro showspeedspeller() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/speed-speller"
+           title="Speed Speller"><img
+                src="{{ static_url }}/img/speed-speller-logo256.svg"
+                alt="Speed Speller" width="256"
+                height="256"/></a>
+        <a href="/speed-speller"
+           title="Play Speed Speller">Speed Speller</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Listen to words spoken aloud and type them as fast as you can! Test your spelling and speed!</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ showspeedspeller() }}
         {{ showworddetective() }}
         {{ shownetwrck() }}
         {{ showwordsmashing() }}
