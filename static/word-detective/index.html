@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Detective - Guess the Word from Clues</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Detective</h1>
+        <p class="subtitle">Crack the case by guessing the mystery word!</p>
+
+        <div class="game-area">
+            <div class="clue-card">
+                <div class="clue-label">Definition:</div>
+                <div id="definition" class="definition"></div>
+            </div>
+
+            <div class="word-display" id="word-display"></div>
+
+            <div class="input-area">
+                <input type="text" id="guess" placeholder="Enter your guess..." autocomplete="off" />
+                <button id="submit-btn">Guess</button>
+            </div>
+
+            <div class="controls">
+                <button id="hint-btn" class="hint-btn">Reveal Letter (-10 pts)</button>
+                <button id="skip-btn" class="skip-btn">Skip Word</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Attempts</span>
+                    <span id="attempts" class="stat-value">0 / 6</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Score</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Streak</span>
+                    <span id="streak" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Best</span>
+                    <span id="high-score" class="stat-value">0</span>
+                </div>
+            </div>
+
+            <p id="message" class="message"></p>
+        </div>
+
+        <div class="settings">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button id="theme-toggle">Dark Mode</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Read the definition and guess the mystery word</li>
+                <li>The first letter is always revealed</li>
+                <li>You have 6 attempts per word</li>
+                <li>Use hints to reveal more letters (costs 10 points)</li>
+                <li>Fewer attempts = higher score!</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -192,9 +192,25 @@
 
 {%- endmacro %}
 
+{% macro showworddetective() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-detective"
+           title="Word Detective"><img
+                src="{{ static_url }}/img/word-detective-logo256.svg"
+                alt="Word Detective" width="256"
+                height="256"/></a>
+        <a href="/word-detective"
+           title="Play Word Detective">Word Detective</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Crack the case! Guess the mystery word from its definition and first letter. Use hints wisely!</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ showworddetective() }}
         {{ shownetwrck() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}
