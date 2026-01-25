@@ -1,5 +1,15 @@
 # Addicting Word Games
 
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![Flask](https://img.shields.io/badge/flask-framework-black.svg?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![License: ISC](https://img.shields.io/badge/license-ISC-green.svg)](https://opensource.org/licenses/ISC)
+[![pytest](https://img.shields.io/badge/testing-pytest-yellow.svg?logo=pytest&logoColor=white)](https://pytest.org/)
+[![Docker](https://img.shields.io/badge/docker-supported-blue.svg?logo=docker&logoColor=white)](https://www.docker.com/)
+[![Google App Engine](https://img.shields.io/badge/Google%20App%20Engine-deployed-4285F4.svg?logo=google-cloud&logoColor=white)](https://cloud.google.com/appengine)
+[![GitHub](https://img.shields.io/github/stars/lee101/addictingwordgames?style=social)](https://github.com/lee101/addictingwordgames)
+[![Website](https://img.shields.io/badge/website-addictingwordgames.com-brightgreen.svg)](http://www.addictingwordgames.com)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-agent-blueviolet.svg?logo=anthropic&logoColor=white)](https://claude.ai/claude-code)
+
 Addicting Word Games uses Twitter Bootstrap, JQuery and Python running on the Google app engine.
 
 http://www.addictingwordgames.com is a puzzle games portal.

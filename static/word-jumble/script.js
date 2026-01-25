@@ -12,19 +12,27 @@ let difficulty = 'easy';
 let lives = 3;
 let scores = [];
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx = null;
+function getAudioContext() {
+    if (!audioCtx && typeof window !== 'undefined') {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+}
 
 function playTone(freq, duration, type = 'sine') {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
     osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    gain.connect(ctx.destination);
     osc.frequency.value = freq;
     osc.type = type;
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
     osc.start();
-    osc.stop(audioCtx.currentTime + duration);
+    osc.stop(ctx.currentTime + duration);
 }
 
 function playCorrect() {
@@ -227,6 +235,20 @@ function showHint() {
     document.getElementById('message').textContent = `Hint: starts with ${currentWord.charAt(0)}`;
 }
 
+const usedWords = { easy: new Set(), medium: new Set(), hard: new Set() };
+
+function getUniqueWord(wordList, level) {
+    const used = usedWords[level] || new Set();
+    const available = wordList.filter(w => !used.has(w));
+    if (available.length === 0) {
+        used.clear();
+        return wordList[Math.floor(Math.random() * wordList.length)];
+    }
+    const word = available[Math.floor(Math.random() * available.length)];
+    used.add(word);
+    return word;
+}
+
 if (typeof window !== 'undefined') {
     document.getElementById('check').addEventListener('click', checkGuess);
 
@@ -293,6 +315,7 @@ if (typeof module !== 'undefined') {
         setScore,
         easyWords,
         mediumWords,
-        hardWords
+        hardWords,
+        getUniqueWord
     };
 }

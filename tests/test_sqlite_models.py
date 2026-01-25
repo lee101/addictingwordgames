@@ -29,7 +29,7 @@ def test_cli(tmp_path):
     db = SQLiteDB(str(db_path))
     db.insert("users", ["id", "name"], ["u3", "CLI"])
     out = check_output([
-        "python",
+        "python3",
         "sqlite_cli.py",
         "users",
         "--limit",
