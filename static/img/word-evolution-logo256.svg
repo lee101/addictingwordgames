@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4ade80"/>
+      <stop offset="100%" style="stop-color:#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f472b6"/>
+      <stop offset="100%" style="stop-color:#ec4899"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="256" height="256" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Word ladder visual: CAT -> DOG -->
+  <!-- Start word box -->
+  <rect x="40" y="50" width="40" height="45" rx="6" fill="url(#greenGrad)" opacity="0.9"/>
+  <text x="60" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">C</text>
+
+  <rect x="85" y="50" width="40" height="45" rx="6" fill="url(#greenGrad)" opacity="0.9"/>
+  <text x="105" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">A</text>
+
+  <rect x="130" y="50" width="40" height="45" rx="6" fill="url(#greenGrad)" opacity="0.9"/>
+  <text x="150" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">T</text>
+
+  <!-- Arrow down -->
+  <path d="M128 100 L128 115 M120 108 L128 118 L136 108" stroke="#22d3ee" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Middle word (COT) -->
+  <rect x="65" y="120" width="30" height="35" rx="4" fill="rgba(34,211,238,0.3)" stroke="rgba(34,211,238,0.5)" stroke-width="2"/>
+  <text x="80" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#22d3ee">C</text>
+
+  <rect x="100" y="120" width="30" height="35" rx="4" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+  <text x="115" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#fff">O</text>
+
+  <rect x="135" y="120" width="30" height="35" rx="4" fill="rgba(34,211,238,0.3)" stroke="rgba(34,211,238,0.5)" stroke-width="2"/>
+  <text x="150" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#22d3ee">T</text>
+
+  <!-- Arrow down -->
+  <path d="M128 160 L128 175 M120 168 L128 178 L136 168" stroke="#ec4899" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Target word box -->
+  <rect x="40" y="180" width="40" height="45" rx="6" fill="url(#pinkGrad)" opacity="0.9"/>
+  <text x="60" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">D</text>
+
+  <rect x="85" y="180" width="40" height="45" rx="6" fill="url(#pinkGrad)" opacity="0.9"/>
+  <text x="105" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">O</text>
+
+  <rect x="130" y="180" width="40" height="45" rx="6" fill="url(#pinkGrad)" opacity="0.9"/>
+  <text x="150" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff">G</text>
+
+  <!-- DNA helix decoration on the right -->
+  <path d="M195 60 Q210 80 195 100 Q180 120 195 140 Q210 160 195 180" stroke="#4ade80" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M210 60 Q195 80 210 100 Q225 120 210 140 Q195 160 210 180" stroke="#ec4899" stroke-width="3" fill="none" opacity="0.6"/>
+
+  <!-- Connection dots on helix -->
+  <circle cx="202" cy="80" r="3" fill="#22d3ee"/>
+  <circle cx="202" cy="120" r="3" fill="#22d3ee"/>
+  <circle cx="202" cy="160" r="3" fill="#22d3ee"/>
+
+  <!-- Text: WORD -->
+  <text x="100" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#fff">WORD</text>
+
+  <!-- Text: EVOLUTION -->
+  <text x="175" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#4ade80">EVOLUTION</text>
+</svg>

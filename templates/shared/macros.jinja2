@@ -237,9 +237,25 @@
     </div>
 {%- endmacro %}
 
+{% macro showwordevolution() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-evolution"
+           title="Word Evolution"><img
+                src="{{ static_url }}/img/word-evolution-logo256.svg"
+                alt="Word Evolution" width="256"
+                height="256"/></a>
+        <a href="/word-evolution"
+           title="Play Word Evolution">Word Evolution</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Transform one word into another, one letter at a time! Each step must be a valid word. How few steps can you take?</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ showwordevolution() }}
         {{ showwordduel() }}
         {{ showspeedspeller() }}
         {{ showworddetective() }}

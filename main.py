@@ -357,6 +357,12 @@ class WordDuelHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class WordEvolutionHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-evolution/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -804,6 +810,7 @@ routes = [
     ('/word-detective', WordDetectiveHandler),
     ('/speed-speller', SpeedSpellerHandler),
     ('/word-duel', WordDuelHandler),
+    ('/word-evolution', WordEvolutionHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
