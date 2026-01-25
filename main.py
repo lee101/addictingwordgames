@@ -351,6 +351,12 @@ class SpeedSpellerHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class WordDuelHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-duel/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -797,6 +803,7 @@ routes = [
     ('/word-reactor', WordReactorHandler),
     ('/word-detective', WordDetectiveHandler),
     ('/speed-speller', SpeedSpellerHandler),
+    ('/word-duel', WordDuelHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),

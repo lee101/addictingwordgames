@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Duel - Two Player Word Battle</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Duel</h1>
+        <p class="subtitle">Add letters without completing a word!</p>
+
+        <div class="game-area">
+            <div class="players">
+                <div class="player player-1" id="player1-card">
+                    <div class="player-indicator">Player 1</div>
+                    <div class="player-name" id="player1-name">Red</div>
+                    <div class="player-score">Score: <span id="player1-score">0</span></div>
+                </div>
+                <div class="vs">VS</div>
+                <div class="player player-2" id="player2-card">
+                    <div class="player-indicator">Player 2</div>
+                    <div class="player-name" id="player2-name">Blue</div>
+                    <div class="player-score">Score: <span id="player2-score">0</span></div>
+                </div>
+            </div>
+
+            <div class="turn-indicator">
+                <span id="current-turn">Player 1's Turn</span>
+            </div>
+
+            <div class="word-display" id="word-display">
+                <span class="placeholder-text">Add the first letter!</span>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="letter-input" placeholder="Enter a letter..." maxlength="1" autocomplete="off" />
+                <button id="submit-btn">Add Letter</button>
+            </div>
+
+            <div class="game-controls">
+                <button id="challenge-btn" class="challenge-btn" disabled>Challenge</button>
+                <button id="new-round-btn" class="new-round-btn" style="display: none;">New Round</button>
+            </div>
+
+            <p id="message" class="message"></p>
+
+            <div class="round-info">
+                <span>Round: <strong id="round-number">1</strong></span>
+                <span>Letters: <strong id="letter-count">0</strong></span>
+            </div>
+        </div>
+
+        <div class="settings">
+            <label for="game-mode">Mode:</label>
+            <select id="game-mode">
+                <option value="local">Local 2-Player</option>
+                <option value="ai">vs Computer</option>
+            </select>
+            <label for="ai-difficulty">AI:</label>
+            <select id="ai-difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button id="new-game-btn">New Game</button>
+            <button id="theme-toggle">Light Mode</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li><strong>Goal:</strong> Don't be the one to complete a valid word!</li>
+                <li>Players take turns adding one letter at a time</li>
+                <li>Each letter must lead toward a valid word (3+ letters)</li>
+                <li>If you complete a valid word (3+ letters), you LOSE the round</li>
+                <li><strong>Challenge:</strong> Think opponent's letters don't lead to a word? Challenge them!</li>
+                <li>If challenger is right, opponent loses. If wrong, challenger loses.</li>
+                <li>First to 5 points wins the game!</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

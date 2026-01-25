@@ -222,9 +222,25 @@
     </div>
 {%- endmacro %}
 
+{% macro showwordduel() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-duel"
+           title="Word Duel"><img
+                src="{{ static_url }}/img/word-duel-logo256.svg"
+                alt="Word Duel" width="256"
+                height="256"/></a>
+        <a href="/word-duel"
+           title="Play Word Duel">Word Duel</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Two-player word battle! Add letters without completing a word. Challenge your opponent's bluffs!</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ showwordduel() }}
         {{ showspeedspeller() }}
         {{ showworddetective() }}
         {{ shownetwrck() }}
