@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllable Shuffle - Word Puzzle Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Syllable Shuffle</h1>
+        <p class="subtitle">Reassemble scrambled syllables to form words!</p>
+
+        <div class="game-area">
+            <div class="hint-card" id="hint-card">
+                <div class="hint-label">Hint:</div>
+                <div id="hint" class="hint-text"></div>
+            </div>
+
+            <div class="syllable-container">
+                <div class="syllable-bank" id="syllable-bank"></div>
+                <div class="drop-zone-label">Drag syllables here to build the word:</div>
+                <div class="drop-zone" id="drop-zone"></div>
+            </div>
+
+            <div class="controls">
+                <button id="submit-btn" class="primary-btn">Check Answer</button>
+                <button id="clear-btn" class="secondary-btn">Clear</button>
+                <button id="skip-btn" class="ghost-btn">Skip Word</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Score</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Streak</span>
+                    <span id="streak" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Best</span>
+                    <span id="high-score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Level</span>
+                    <span id="level" class="stat-value">1</span>
+                </div>
+            </div>
+
+            <div class="timer-container">
+                <div class="timer-bar" id="timer-bar"></div>
+            </div>
+
+            <p id="message" class="message"></p>
+        </div>
+
+        <div class="settings">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy (2 syllables)</option>
+                <option value="medium" selected>Medium (2-3 syllables)</option>
+                <option value="hard">Hard (3-4 syllables)</option>
+            </select>
+            <label for="timed-mode">
+                <input type="checkbox" id="timed-mode"> Timed Mode
+            </label>
+            <button id="theme-toggle">Light Mode</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Words are broken into syllables and scrambled</li>
+                <li>Drag or click syllables to arrange them in order</li>
+                <li>Use hints to help identify the word</li>
+                <li>Build streaks for bonus points!</li>
+                <li>Enable timed mode for an extra challenge</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

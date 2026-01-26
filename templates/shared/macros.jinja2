@@ -252,9 +252,25 @@
     </div>
 {%- endmacro %}
 
+{% macro showsyllableshuffle() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/syllable-shuffle"
+           title="Syllable Shuffle"><img
+                src="{{ static_url }}/img/syllable-shuffle-logo256.svg"
+                alt="Syllable Shuffle" width="256"
+                height="256"/></a>
+        <a href="/syllable-shuffle"
+           title="Play Syllable Shuffle">Syllable Shuffle</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Words are broken into syllables and scrambled. Drag and drop to reassemble them correctly!</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ showsyllableshuffle() }}
         {{ showwordevolution() }}
         {{ showwordduel() }}
         {{ showspeedspeller() }}
