@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Blocks - Word Tetris Puzzle Game</title>
+    <meta name="description" content="A Tetris-style word puzzle game where letter blocks fall and you must form words horizontally to clear rows. Test your vocabulary and spatial reasoning!">
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Letter Blocks</h1>
+        <p class="subtitle">Word Tetris - Form Words to Clear Rows!</p>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-label">Score</span>
+                <span class="stat-value" id="score">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">High Score</span>
+                <span class="stat-value" id="high-score">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Level</span>
+                <span class="stat-value" id="level">1</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Lines</span>
+                <span class="stat-value" id="lines-cleared">0</span>
+            </div>
+        </div>
+
+        <div class="game-wrapper">
+            <div class="game-area">
+                <div class="next-piece-container">
+                    <span class="next-label">Next</span>
+                    <div class="next-piece" id="next-piece"></div>
+                </div>
+                <div class="board-container">
+                    <canvas id="game-board" width="300" height="600"></canvas>
+                    <div class="game-overlay" id="game-overlay">
+                        <div class="overlay-content">
+                            <h2 id="overlay-title">Letter Blocks</h2>
+                            <p id="overlay-message">Press Start to Play!</p>
+                            <button id="overlay-btn" class="btn primary-btn">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="message-area">
+                    <div id="message" class="message"></div>
+                    <div id="word-found" class="word-found"></div>
+                </div>
+
+                <div class="controls">
+                    <button id="start-btn" class="btn primary-btn">Start Game</button>
+                    <button id="pause-btn" class="btn secondary-btn" disabled>Pause</button>
+                </div>
+
+                <div class="settings">
+                    <div class="setting-row">
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <button id="theme-toggle" class="btn icon-btn" title="Toggle theme">
+                            <span class="theme-icon">🌙</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mobile-controls" id="mobile-controls">
+                    <div class="control-row">
+                        <button class="control-btn" id="rotate-btn">↻</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="control-btn" id="left-btn">←</button>
+                        <button class="control-btn" id="down-btn">↓</button>
+                        <button class="control-btn" id="right-btn">→</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="control-btn wide" id="drop-btn">Drop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li><strong>Form Words:</strong> Arrange falling letter blocks to spell words horizontally (left to right)</li>
+                <li><strong>Clear Rows:</strong> Complete a valid word across the row to clear it and score points</li>
+                <li><strong>Longer Words:</strong> Longer words (4+ letters) score bonus points!</li>
+                <li><strong>Combos:</strong> Clear multiple rows at once for combo multipliers</li>
+                <li><strong>Level Up:</strong> Clear lines to increase level and speed</li>
+            </ul>
+            <h3>Controls</h3>
+            <ul>
+                <li><strong>← →</strong> Move left/right</li>
+                <li><strong>↓</strong> Soft drop</li>
+                <li><strong>↑ / Space</strong> Rotate piece</li>
+                <li><strong>Enter</strong> Hard drop</li>
+                <li><strong>P</strong> Pause game</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle" class="btn icon-btn" title="Toggle music">🎵</button>
+        <button id="music-next" class="btn icon-btn" title="Next song">⏭</button>
+        <span id="song-name" class="song-name"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

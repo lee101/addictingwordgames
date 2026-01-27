@@ -381,6 +381,12 @@ class WordChainHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class LetterBlocksHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/letter-blocks/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -832,6 +838,7 @@ routes = [
     ('/syllable-shuffle', SyllableShuffleHandler),
     ('/word-cascade', WordCascadeHandler),
     ('/word-chain', WordChainHandler),
+    ('/letter-blocks', LetterBlocksHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
