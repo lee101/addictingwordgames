@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Cascade - Typing Speed Challenge</title>
+    <meta name="description" content="Test your typing speed! Words fall from the sky - type them before they hit the ground. Speed increases as you progress!">
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Cascade</h1>
+        <p class="subtitle">Type the falling words before they reach the bottom!</p>
+
+        <div class="game-area">
+            <div class="game-canvas" id="game-canvas">
+                <div class="start-overlay" id="start-overlay">
+                    <button id="start-btn" class="start-btn">Start Game</button>
+                </div>
+                <div class="game-over-overlay" id="game-over-overlay">
+                    <h2>Game Over!</h2>
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <p>Words Caught: <span id="final-words">0</span></p>
+                    <p>Best Combo: <span id="final-combo">0</span></p>
+                    <button id="restart-btn" class="start-btn">Play Again</button>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="word-input"
+                       placeholder="Type falling words here..."
+                       autocomplete="off"
+                       autocapitalize="off"
+                       spellcheck="false"
+                       disabled />
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Score</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Words</span>
+                    <span id="words-caught" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Combo</span>
+                    <span id="combo" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Lives</span>
+                    <span id="lives" class="stat-value">3</span>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+                <span class="progress-label">Level <span id="level">1</span></span>
+            </div>
+
+            <p id="message" class="message"></p>
+        </div>
+
+        <div class="high-score-display">
+            <span>High Score: </span>
+            <span id="high-score">0</span>
+        </div>
+
+        <div class="settings">
+            <div class="setting-row">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="extreme">Extreme</option>
+                </select>
+            </div>
+            <button id="theme-toggle" class="theme-btn">Light Mode</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Words will fall from the top of the screen</li>
+                <li>Type each word before it reaches the bottom</li>
+                <li>Press Enter or Space to submit your word</li>
+                <li>Build combos for bonus points</li>
+                <li>Speed increases as you level up</li>
+                <li>You have 3 lives - lose one each time a word escapes</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

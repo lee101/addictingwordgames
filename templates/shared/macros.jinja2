@@ -267,9 +267,25 @@
     </div>
 {%- endmacro %}
 
+{% macro showwordcascade() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-cascade"
+           title="Word Cascade"><img
+                src="{{ static_url }}/img/word-cascade-logo256.svg"
+                alt="Word Cascade" width="256"
+                height="256"/></a>
+        <a href="/word-cascade"
+           title="Play Word Cascade">Word Cascade</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Words fall from the sky - type them before they hit the ground! Speed increases as you level up!</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ showwordcascade() }}
         {{ showsyllableshuffle() }}
         {{ showwordevolution() }}
         {{ showwordduel() }}

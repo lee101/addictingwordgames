@@ -369,6 +369,12 @@ class SyllableShuffleHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class WordCascadeHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-cascade/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = Game.getAllTitles()
@@ -818,6 +824,7 @@ routes = [
     ('/word-duel', WordDuelHandler),
     ('/word-evolution', WordEvolutionHandler),
     ('/syllable-shuffle', SyllableShuffleHandler),
+    ('/word-cascade', WordCascadeHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),

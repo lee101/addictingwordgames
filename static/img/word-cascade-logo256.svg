@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0c29"/>
+      <stop offset="50%" style="stop-color:#302b63"/>
+      <stop offset="100%" style="stop-color:#24243e"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d9ff"/>
+      <stop offset="100%" style="stop-color:#00ff88"/>
+    </linearGradient>
+    <linearGradient id="wordGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="wordGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f093fb"/>
+      <stop offset="100%" style="stop-color:#f5576c"/>
+    </linearGradient>
+    <linearGradient id="wordGrad3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4facfe"/>
+      <stop offset="100%" style="stop-color:#00f2fe"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="256" height="256" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Decorative lines suggesting falling motion -->
+  <g opacity="0.3" stroke="#00d9ff" stroke-width="1">
+    <line x1="40" y1="20" x2="40" y2="50"/>
+    <line x1="80" y1="10" x2="80" y2="35"/>
+    <line x1="180" y1="15" x2="180" y2="45"/>
+    <line x1="220" y1="25" x2="220" y2="55"/>
+  </g>
+
+  <!-- Falling word boxes -->
+  <g filter="url(#shadow)">
+    <!-- Word 1 - top left -->
+    <rect x="25" y="50" width="70" height="28" rx="6" fill="url(#wordGrad1)"/>
+    <text x="60" y="70" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">TYPE</text>
+
+    <!-- Word 2 - middle right -->
+    <rect x="120" y="85" width="90" height="28" rx="6" fill="url(#wordGrad2)"/>
+    <text x="165" y="105" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">WORDS</text>
+
+    <!-- Word 3 - bottom center -->
+    <rect x="55" y="120" width="65" height="28" rx="6" fill="url(#wordGrad3)"/>
+    <text x="87" y="140" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">FAST</text>
+  </g>
+
+  <!-- Downward arrows suggesting cascade -->
+  <g fill="url(#textGrad)" opacity="0.6">
+    <polygon points="128,155 118,165 123,165 123,175 133,175 133,165 138,165"/>
+    <polygon points="75,160 65,170 70,170 70,180 80,180 80,170 85,170"/>
+    <polygon points="185,158 175,168 180,168 180,178 190,178 190,168 195,168"/>
+  </g>
+
+  <!-- Main title -->
+  <g filter="url(#glow)">
+    <text x="128" y="210" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="url(#textGrad)" text-anchor="middle">WORD</text>
+    <text x="128" y="240" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="url(#textGrad)" text-anchor="middle">CASCADE</text>
+  </g>
+
+  <!-- Danger zone at bottom (subtle red glow) -->
+  <rect x="20" y="245" width="216" height="6" rx="3" fill="#ff6b6b" opacity="0.5"/>
+</svg>
