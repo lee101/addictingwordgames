@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Chain - Link Words Together</title>
+    <meta name="description" content="Create a chain of words where each word must start with the last letter of the previous word. Test your vocabulary and memory!">
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Chain</h1>
+        <p class="subtitle">Link words together - each word starts with the last letter of the previous!</p>
+
+        <div class="game-area">
+            <div class="chain-display" id="chain-display">
+                <div class="chain-scroll" id="chain-scroll">
+                    <div class="chain-placeholder">Press Start to begin!</div>
+                </div>
+            </div>
+
+            <div class="current-letter-display">
+                <span class="label">Next word must start with:</span>
+                <span class="letter" id="required-letter">-</span>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="word-input"
+                       placeholder="Type your word..."
+                       autocomplete="off"
+                       autocapitalize="off"
+                       spellcheck="false"
+                       disabled />
+                <button id="submit-btn" class="submit-btn" disabled>Add</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Chain</span>
+                    <span id="chain-length" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Score</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Time</span>
+                    <span id="timer" class="stat-value">60</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Best</span>
+                    <span id="high-score" class="stat-value">0</span>
+                </div>
+            </div>
+
+            <p id="message" class="message"></p>
+
+            <div class="game-controls">
+                <button id="start-btn" class="start-btn">Start Game</button>
+                <button id="hint-btn" class="hint-btn" disabled>Hint (-10 pts)</button>
+            </div>
+        </div>
+
+        <div class="settings">
+            <div class="setting-row">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy (90s)</option>
+                    <option value="medium" selected>Medium (60s)</option>
+                    <option value="hard">Hard (45s)</option>
+                    <option value="endless">Endless</option>
+                </select>
+            </div>
+            <button id="theme-toggle" class="theme-btn">Light Mode</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Enter a word that starts with the highlighted letter</li>
+                <li>Each new word must start with the last letter of your previous word</li>
+                <li>No repeated words allowed in the same chain</li>
+                <li>Longer words = more points (length x 10)</li>
+                <li>Build the longest chain before time runs out!</li>
+                <li>Use hints if you're stuck (costs 10 points)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
