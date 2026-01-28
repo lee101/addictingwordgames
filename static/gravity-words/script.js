@@ -679,6 +679,12 @@ function init() {
         difficulty = e.target.value;
     });
 
+    // Help toggle
+    document.getElementById('help-btn').addEventListener('click', () => {
+        const helpText = document.getElementById('help-text');
+        helpText.classList.toggle('hidden');
+    });
+
     // Keyboard input
     document.addEventListener('keydown', (e) => {
         if (!gameRunning || gamePaused) return;

@@ -34,6 +34,7 @@
             <div class="controls">
                 <button id="start-btn">Start Game</button>
                 <button id="pause-btn" disabled>Pause</button>
+                <button id="help-btn">❓ Help</button>
                 <select id="difficulty">
                     <option value="easy">Easy</option>
                     <option value="medium" selected>Medium</option>
@@ -41,6 +42,14 @@
                 </select>
             </div>
             <p id="message"></p>
+            <div id="help-text" class="help-text hidden">
+                <strong>How to Play:</strong><br>
+                • Type letters to catch them as they fall<br>
+                • Press <kbd>Enter</kbd> to submit a word (3+ letters)<br>
+                • Press <kbd>Backspace</kbd> to remove last letter<br>
+                • Press <kbd>Escape</kbd> to clear all letters<br>
+                • Form valid words for bonus points!
+            </div>
             <div id="valid-words" class="valid-words-display"></div>
         </div>
     </div>
