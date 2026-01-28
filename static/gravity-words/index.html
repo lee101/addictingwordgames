@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravity Words</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="container">
+            <h1>Gravity Words</h1>
+            <p class="subtitle">Type letters to catch them before they fall!</p>
+            <div class="stats">
+                <span>Score: <strong id="score">0</strong></span>
+                <span>Combo: <strong id="combo">0</strong>x</span>
+                <span>Words: <strong id="words-formed">0</strong></span>
+                <span>Best: <strong id="high-score">0</strong></span>
+            </div>
+            <div class="lives-display">
+                <span id="lives">❤️❤️❤️</span>
+            </div>
+            <div class="canvas-container">
+                <canvas id="game-canvas" width="600" height="400"></canvas>
+                <div id="current-word" class="current-word"></div>
+            </div>
+            <div class="word-bank">
+                <span>Current letters: </span>
+                <span id="collected-letters" class="collected-letters"></span>
+                <button id="submit-word">Submit Word</button>
+                <button id="clear-letters">Clear</button>
+            </div>
+            <div class="controls">
+                <button id="start-btn">Start Game</button>
+                <button id="pause-btn" disabled>Pause</button>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <p id="message"></p>
+            <div id="valid-words" class="valid-words-display"></div>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">🎵 Play Music</button>
+        <button id="music-next">⏭️ Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Game Over!</h2>
+            <p>Final Score: <strong id="final-score">0</strong></p>
+            <p>Words Formed: <strong id="final-words">0</strong></p>
+            <p>Best Combo: <strong id="best-combo">0</strong>x</p>
+            <button id="play-again">Play Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
