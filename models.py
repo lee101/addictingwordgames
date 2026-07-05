@@ -196,6 +196,35 @@ class Photo(BaseModel):
             return cls.query(cls.title == title).get()
 
 
+class FlashGame(BaseModel):
+    """Datastore model representing an archived Flash game."""
+
+    title = ndb.StringProperty(required=True)
+    description = ndb.TextProperty()
+    developer = ndb.StringProperty()
+    tags = ndb.StringProperty(repeated=True)
+    actionscript_version = ndb.IntegerProperty(default=3)
+    storage_path = ndb.StringProperty(required=True)
+    thumbnail_url = ndb.StringProperty()
+    file_size = ndb.IntegerProperty()
+    play_count = ndb.IntegerProperty(default=0)
+    is_active = ndb.BooleanProperty(default=True)
+    created_at = ndb.DateTimeProperty(auto_now_add=True)
+    updated_at = ndb.DateTimeProperty(auto_now=True)
+
+    @classmethod
+    def get_by_game_id(cls, game_id):
+        with client.context():
+            return cls.get_by_id(game_id)
+
+    @classmethod
+    def create(cls, game_id, **kwargs):
+        with client.context():
+            entity = cls(id=game_id, **kwargs)
+            entity.put()
+            return entity
+
+
 def get_cursor_and_games(cursor):
     with client.context():
         curs = Cursor(urlsafe=cursor)
