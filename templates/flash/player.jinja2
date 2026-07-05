@@ -1,0 +1,58 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ game.title }} - Flash Player</title>
+    <meta name="description" content="Play {{ game.title }} in your browser using the Ruffle Flash emulator.">
+    {{ macros.headers(ws, highscores, achievements) }}
+    <link rel="stylesheet" href="{{ static_url }}/css/flash-library.css">
+</head>
+<body class="flash-player-body">
+{{ macros.templates() }}
+<div id="pagebody" class="flash-player__page">
+    {{ macros.topbar() }}
+    <main class="flash-player__content">
+        <a class="flash-player__backlink" href="/flash-library">&#8592; Back to Flash library</a>
+        <header class="flash-player__heading">
+            <h1 class="flash-player__title">{{ game.title }}</h1>
+            <div class="flash-player__meta">
+                <span>{{ game.source }}</span>
+                <span>{{ game.width }}&times;{{ game.height }} px</span>
+                <span>ActionScript {% for version in actionscripts %}{{ version }}{% if not loop.last %}/{% endif %}{% endfor %}</span>
+            </div>
+        </header>
+        <section class="flash-player__layout">
+            <div>
+                <div id="flash-player-stage" class="flash-player__stage"
+                     data-stream-url="{{ stream_url }}"
+                     data-width="{{ game.width }}"
+                     data-height="{{ game.height }}"
+                     data-actionscripts="{{ actionscripts|join(',') }}"
+                     data-aspect="{{ game.aspect_ratio }}">
+                </div>
+                <div class="flash-player__controls">
+                    <button type="button" class="flash-player__button" id="flash-player-reload">Reload</button>
+                    <button type="button" class="flash-player__button" id="flash-player-fullscreen">Fullscreen</button>
+                    <button type="button" class="flash-player__button" id="flash-player-aspect">Toggle aspect</button>
+                </div>
+            </div>
+            <aside class="flash-player__description">
+                <p>{{ game.description }}</p>
+                <p><strong>Tags:</strong>
+                    {% for tag in game.tags %}
+                        {{ tag|replace('-', ' ')|title }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            </aside>
+        </section>
+    </main>
+    {{ macros.footer() }}
+</div>
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+<script>
+    window.flashPlayerBootstrap = {{ player_state|safe }};
+</script>
+<script src="{{ static_url }}/js/flash-player.js"></script>
+</body>
+</html>

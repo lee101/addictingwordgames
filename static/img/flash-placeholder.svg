@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240" role="img" aria-labelledby="title desc">
+  <title id="title">Flash game placeholder</title>
+  <desc id="desc">Minimal placeholder artwork used for Flash titles without bespoke art.</desc>
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5d82f4" />
+      <stop offset="100%" stop-color="#8f53ff" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="240" fill="url(#gradient)" rx="24" ry="24" />
+  <g fill="#ffffff" opacity="0.9">
+    <path d="M140 70h40c8 0 14 6 14 14v72c0 8-6 14-14 14h-40c-8 0-14-6-14-14V84c0-8 6-14 14-14zm0 12c-1 0-2 1-2 2v72c0 1 1 2 2 2h40c1 0 2-1 2-2V84c0-1-1-2-2-2h-40z" />
+    <path d="M171 92c7 0 13 6 13 13 0 3-1 6-3 8l-11 16h11c3 0 6 3 6 6s-3 6-6 6h-24c-2 0-4-1-5-3-1-1-1-4 1-6l15-22h-9c-4 0-7-3-7-6 0-4 3-6 7-6h12z" />
+  </g>
+</svg>

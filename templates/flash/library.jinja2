@@ -1,0 +1,101 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Flash Game Library - Play Classic Flash Games</title>
+    <meta name="description" content="Browse and play a curated library of classic Flash games with modern Ruffle playback support.">
+    {{ macros.headers(ws, highscores, achievements) }}
+    <link rel="stylesheet" href="{{ static_url }}/css/flash-library.css">
+</head>
+<body class="flash-library-body">
+{{ macros.templates() }}
+<div id="pagebody" class="flash-library__page">
+    {{ macros.topbar() }}
+    <main class="flash-library__content">
+        <header class="flash-library__header">
+            <h1 class="flash-library__title">Flash Game Library</h1>
+            <p class="flash-library__subtitle">Search, filter, and rediscover iconic Flash experiences preserved with the Ruffle emulator. Stream games instantly in your browser with no plugins required.</p>
+        </header>
+        <section class="flash-library__filters">
+            <form id="flash-search-form" class="flash-library__form" autocomplete="off">
+                <div class="flash-library__search-row">
+                    <label for="flash-search-input">Search flash games</label>
+                    <input type="search" id="flash-search-input" class="flash-library__search-input" name="q" placeholder="Search by title or description" value="{{ initial_filters.query }}">
+                </div>
+                <div class="flash-library__filter-grid">
+                    <div class="flash-library__filter-group">
+                        <h2>Tags</h2>
+                        <div class="flash-library__tag-list" id="flash-tag-filter">
+                            {% for tag in available_tags %}
+                                <label class="flash-library__tag">
+                                    <input type="checkbox" value="{{ tag }}" {% if tag in initial_filters.tags %}checked{% endif %}>
+                                    <span class="flash-library__tag-label">{{ tag|replace('-', ' ')|title }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="flash-library__filter-group">
+                        <h2>Source</h2>
+                        <select id="flash-source-select" class="flash-library__source-select" name="source">
+                            <option value="">All sources</option>
+                            {% for source in available_sources %}
+                                <option value="{{ source }}" {% if initial_filters.source == source %}selected{% endif %}>{{ source }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="flash-library__actions">
+                    <button type="button" id="flash-clear-button" class="btn btn-default">Clear filters</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </section>
+        <section class="flash-library__results-card" id="flash-library-root">
+            <div class="flash-library__result-meta">
+                <div class="flash-library__count" id="flash-result-count">
+                    {% if initial_pagination.total == 1 %}
+                        1 game found
+                    {% else %}
+                        {{ initial_pagination.total }} games found
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flash-library__cards" id="flash-results">
+                {% if initial_results %}
+                    {% for game in initial_results %}
+                        <article class="flash-card">
+                            <a class="flash-card__link" href="{{ game.play_url }}">
+                                <div class="flash-card__thumb">
+                                    <img src="{{ game.thumbnail }}" alt="{{ game.title }} thumbnail" loading="lazy">
+                                </div>
+                                <div class="flash-card__body">
+                                    <h3 class="flash-card__title">{{ game.title }}</h3>
+                                    <p class="flash-card__desc">{{ game.short_description }}</p>
+                                    <div class="flash-card__meta">
+                                        <span class="flash-card__source">{{ game.source }}</span>
+                                        <ul class="flash-card__tags">
+                                            {% for tag in game.tags %}
+                                                <li class="flash-card__tag">{{ tag|replace('-', ' ')|title }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <div class="flash-library__empty">No games match your filters yet. Try removing a filter or searching for a different keyword.</div>
+                {% endif %}
+            </div>
+            <nav class="flash-library__pagination" id="flash-pagination"></nav>
+        </section>
+    </main>
+    {{ macros.footer() }}
+</div>
+<script>
+    window.flashLibraryBootstrap = {{ initial_state|safe }};
+</script>
+<script src="{{ static_url }}/js/flash-library.js"></script>
+</body>
+</html>

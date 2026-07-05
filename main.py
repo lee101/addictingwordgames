@@ -10,6 +10,7 @@ import stripe
 from webapp2_extras import sessions
 
 import awgutils
+import flash_library
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
 import sellerinfo
@@ -604,6 +605,169 @@ class TagHandler(BaseHandler):
         self.render('/templates/tag.jinja2', extraParams)
 
 
+def _dedupe_preserve_order(values):
+    seen = set()
+    ordered = []
+    for value in values:
+        if value is None:
+            continue
+        cleaned = str(value).strip()
+        if not cleaned:
+            continue
+        key = cleaned.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        ordered.append(cleaned)
+    return ordered
+
+
+def _format_flash_result(game_dict):
+    formatted = dict(game_dict)
+    formatted['play_url'] = f"/flash-library/play/{formatted['id']}"
+    formatted['stream_url'] = f"/flash/stream/{formatted['id']}"
+    return formatted
+
+
+class FlashLibraryPageHandler(BaseHandler):
+    def get(self):
+        query = self.request.get('q', '').strip()
+        tags_param = self.request.get('tags', '').strip()
+        raw_tags = []
+        if tags_param:
+            raw_tags.extend(tags_param.split(','))
+        else:
+            raw_tags.extend(self.request.get_all('tag'))
+        tags = _dedupe_preserve_order(raw_tags)
+        source = self.request.get('source', '').strip()
+        try:
+            page = int(self.request.get('page', '1') or 1)
+        except ValueError:
+            page = 1
+
+        search_result = flash_library.search_games(query=query, tags=tags, source=source, page=page)
+        formatted_results = [_format_flash_result(game) for game in search_result['results']]
+
+        available_tags = flash_library.list_tags()
+        available_sources = flash_library.list_sources()
+
+        initial_state = {
+            'filters': {
+                'query': query,
+                'tags': tags,
+                'source': source,
+                'page': search_result['page'],
+                'pageSize': search_result['page_size'],
+            },
+            'results': formatted_results,
+            'pagination': {
+                'page': search_result['page'],
+                'pages': search_result['pages'],
+                'total': search_result['total'],
+                'page_size': search_result['page_size'],
+            },
+            'availableTags': available_tags,
+            'availableSources': available_sources,
+        }
+
+        template_params = {
+            'available_tags': available_tags,
+            'available_sources': available_sources,
+            'initial_filters': {
+                'query': query,
+                'tags': tags,
+                'source': source,
+            },
+            'initial_results': formatted_results,
+            'initial_pagination': {
+                'page': search_result['page'],
+                'pages': search_result['pages'],
+                'total': search_result['total'],
+            },
+            'initial_state': json.dumps(initial_state),
+        }
+        self.render('/templates/flash/library.jinja2', template_params)
+
+
+class FlashLibrarySearchHandler(BaseHandler):
+    def get(self):
+        query = self.request.get('q', '').strip()
+        tags_param = self.request.get('tags', '').strip()
+        tags = _dedupe_preserve_order(tags_param.split(',')) if tags_param else []
+        source = self.request.get('source', '').strip()
+        try:
+            page = int(self.request.get('page', '1') or 1)
+        except ValueError:
+            page = 1
+
+        search_result = flash_library.search_games(query=query, tags=tags, source=source, page=page)
+        formatted_results = [_format_flash_result(game) for game in search_result['results']]
+        payload = {
+            'results': formatted_results,
+            'filters': {
+                'query': query,
+                'tags': tags,
+                'source': source,
+                'page': search_result['page'],
+                'pageSize': search_result['page_size'],
+            },
+            'pagination': {
+                'page': search_result['page'],
+                'pages': search_result['pages'],
+                'total': search_result['total'],
+                'page_size': search_result['page_size'],
+            },
+            'availableTags': flash_library.list_tags(),
+            'availableSources': flash_library.list_sources(),
+        }
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(payload))
+
+
+class FlashPlayerPageHandler(BaseHandler):
+    def get(self, game_id):
+        playback_context = flash_library.build_playback_context(game_id)
+        if not playback_context:
+            self.abort(404)
+        game = playback_context['game']
+        player_state = {
+            'streamUrl': playback_context['stream_url'],
+            'aspectRatio': playback_context['aspect_ratio'],
+            'actionscripts': playback_context['actionscripts'],
+            'width': game.get('width'),
+            'height': game.get('height'),
+        }
+        template_params = {
+            'game': game,
+            'stream_url': playback_context['stream_url'],
+            'actionscripts': playback_context['actionscripts'],
+            'player_state': json.dumps(player_state),
+        }
+        self.render('/templates/flash/player.jinja2', template_params)
+
+
+class FlashStreamHandler(webapp2.RequestHandler):
+    def get(self, game_id):
+        game = flash_library.get_game(game_id)
+        if not game:
+            self.abort(404)
+        stream_path = game.get('stream_path')
+        if not stream_path:
+            self.abort(404)
+        stream_path = str(stream_path)
+        if stream_path.startswith('http://') or stream_path.startswith('https://'):
+            self.redirect(stream_path)
+            return
+        filename = os.path.basename(stream_path)
+        static_path = os.path.join(os.path.dirname(__file__), 'static', 'flash', filename)
+        if not os.path.exists(static_path):
+            self.abort(404)
+        self.response.headers['Content-Type'] = 'application/x-shockwave-flash'
+        self.response.headers['Cache-Control'] = 'public, max-age=3600'
+        with open(static_path, 'rb') as stream_handle:
+            self.response.body = stream_handle.read()
+
+
 class UploadUserGameHandler(BaseHandler):
     def get(self):
         if not self.require_login():
@@ -918,6 +1082,10 @@ class StaticFileHandler(webapp2.RequestHandler):
 
 routes = [
     ('/', MainHandler),
+    ('/flash-library', FlashLibraryPageHandler),
+    ('/flash-library/play/(.*)', FlashPlayerPageHandler),
+    ('/api/flash-library', FlashLibrarySearchHandler),
+    ('/flash/stream/(.*)', FlashStreamHandler),
     ('/scores', ScoresHandler),
     ('/achievements', AchievementsHandler),
     ('/login', LoginHandler),
