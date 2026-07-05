@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>itch.io Flash Games</title>
+  <entry>
+    <id>https://example.itch.io/letter-quest</id>
+    <title>Letter Quest</title>
+    <link href="https://example.itch.io/letter-quest" />
+    <summary>Spell words to defeat monsters.</summary>
+  </entry>
+</feed>
