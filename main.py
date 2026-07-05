@@ -347,6 +347,12 @@ class WordSearchHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class GravityWordsHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/gravity-words/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = list(games.keys())
@@ -793,6 +799,7 @@ routes = [
     ('/word-jumble', WordJumbleHandler),
     ('/cross-word', CrossWordHandler),
     ('/word-search', WordSearchHandler),
+    ('/gravity-words', GravityWordsHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
