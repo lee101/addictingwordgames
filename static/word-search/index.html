@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="container">
+            <h1>Word Search</h1>
+            <div class="stats">
+                <span>Found: <strong id="found-count">0</strong>/<strong id="total-count">0</strong></span>
+                <span>Time: <strong id="timer">0</strong>s</span>
+                <span>Score: <strong id="score">0</strong></span>
+                <span>Best: <strong id="high-score">0</strong></span>
+            </div>
+            <div class="controls">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy (8x8)</option>
+                    <option value="medium">Medium (10x10)</option>
+                    <option value="hard">Hard (12x12)</option>
+                </select>
+                <button id="new-game">New Game</button>
+                <button id="hint">Hint</button>
+            </div>
+            <div id="grid-container">
+                <div id="grid"></div>
+                <svg id="line-overlay"></svg>
+            </div>
+            <div class="word-list">
+                <h3>Find these words:</h3>
+                <ul id="words"></ul>
+            </div>
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">🎵 Play Music</button>
+        <button id="music-next">⏭️ Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -341,6 +341,12 @@ class CrossWordHandler(BaseHandler):
         self.render('/templates/cross-word.jinja2')
 
 
+class WordSearchHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-search/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = list(games.keys())
@@ -786,6 +792,7 @@ routes = [
     ('/word-phzzle', WordPhzzleHandler),
     ('/word-jumble', WordJumbleHandler),
     ('/cross-word', CrossWordHandler),
+    ('/word-search', WordSearchHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
