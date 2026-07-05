@@ -2,45 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Word Jumble</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="/static/js/piano-music.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Jumble - Addicting Word Games</title>
+    <script src="https://addictingwordgamesstatic.addictingwordgames.com/static/js/game-audio.js"></script>
+    <link rel="stylesheet" href="https://addictingwordgamesstatic.addictingwordgames.com/static/word-jumble/style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="game-container">
         <h1>Word Jumble</h1>
-        <p id="scrambled"></p>
-        <input type="text" id="guess" placeholder="Your guess" autofocus>
-        <button id="check">Check Guess</button>
-        <button id="skip">Skip</button>
-        <p id="message"></p>
-        <p>Score: <span id="score">0</span></p>
-        <p>Lives: <span id="lives">3</span></p>
-        <p>High score: <span id="high-score">0</span></p>
-        <p>Time: <span id="timer">0</span>s</p>
-        <label for="difficulty">Difficulty:</label>
-        <select id="difficulty">
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-            <option value="auto">Auto</option>
-        </select>
-        <button id="pause">Pause</button>
-        <button id="hint">Hint</button>
-        <button id="show-scores">Scores</button>
-    </div>
-    <div id="scoreboard" class="hidden">
-        <h2>High Scores</h2>
-        <ul id="scores-list"></ul>
-        <button id="close-scores">Close</button>
+        <p class="subtitle">Unscramble the letters to find the word!</p>
+
+        <div id="scrambled"></div>
+
+        <input type="text" id="guess" placeholder="Type your guess..." autocomplete="off" autofocus>
+
+        <div class="btn-row">
+            <button id="check" class="btn primary">Check</button>
+            <button id="skip" class="btn">Skip</button>
+            <button id="hint" class="btn">Hint</button>
+        </div>
+
+        <div id="message"></div>
+
+        <div class="stats">
+            <div class="stat">
+                <span class="label">Score</span>
+                <span class="value" id="score">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Lives</span>
+                <span class="value lives" id="lives">3</span>
+            </div>
+            <div class="stat">
+                <span class="label">Best</span>
+                <span class="value" id="high-score">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Time</span>
+                <span class="value timer" id="timer">30</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <select id="category" class="category-select">
+                <option value="general">General</option>
+                <option value="animals">Animals</option>
+                <option value="food">Food</option>
+                <option value="tech">Technology</option>
+            </select>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+                <option value="auto">Auto</option>
+            </select>
+            <button id="pause" class="btn small">Pause</button>
+            <button id="show-scores" class="btn small">Scores</button>
+            <button id="theme-toggle" class="btn small">Theme</button>
+        </div>
+        <div id="progress-container"><div id="progress-bar"></div></div>
+        <div class="streak">Streak: <span id="streak">0</span></div>
+        <div id="speed-bonus" class="speed-bonus"></div>
     </div>
 
+    <div id="scoreboard" class="modal hidden">
+        <div class="modal-content">
+            <h2>High Scores</h2>
+            <ul id="scores-list"></ul>
+            <button id="close-scores" class="btn primary">Close</button>
+        </div>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreen-btn">Fullscreen</button>
     <div class="music-controls">
-        <button id="music-toggle">🎵 Play Music</button>
-        <button id="music-next">⏭️ Next</button>
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
         <div class="song-name" id="song-name"></div>
+        <div class="volume-row"><label>SFX</label><input type="range" id="sfx-vol" min="0" max="100" value="70"></div>
+        <div class="volume-row"><label>Music</label><input type="range" id="music-vol" min="0" max="100" value="50"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="https://addictingwordgamesstatic.addictingwordgames.com/static/word-jumble/script.js"></script>
 </body>
 </html>

@@ -1,34 +1,69 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Word Phzzle</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="/static/js/piano-music.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Phzzle - Addicting Word Games</title>
+    <script src="https://addictingwordgamesstatic.addictingwordgames.com/static/js/game-audio.js"></script>
+    <link rel="stylesheet" href="https://addictingwordgamesstatic.addictingwordgames.com/static/word-phzzle/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1 id="scrambled"></h1>
-        <input id="guess" placeholder="Your guess" autocomplete="off" />
-        <button id="check">Check</button>
-        <button id="speak">Speak</button>
-        <button id="hint">Hint</button>
-        <select id="difficulty">
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-        </select>
-        <button id="theme-toggle">Theme</button>
-        <p>Score: <span id="score">0</span></p>
-        <p id="message"></p>
+    <div class="game-container">
+        <h1>Word Phzzle</h1>
+        <p class="subtitle">Rearrange the letters to discover the hidden word!</p>
+
+        <div id="scrambled"></div>
+
+        <input type="text" id="guess" placeholder="Type your answer..." autocomplete="off" autofocus>
+
+        <div class="btn-row">
+            <button id="check" class="btn primary">Check</button>
+            <button id="hint" class="btn">Hint</button>
+            <button id="speak" class="btn">Speak</button>
+        </div>
+
+        <div id="message"></div>
+
+        <div class="stats">
+            <div class="stat">
+                <span class="label">Score</span>
+                <span class="value" id="score">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Streak</span>
+                <span class="value streak" id="streak">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Best</span>
+                <span class="value" id="best">0</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <select id="category" class="category-select">
+                <option value="general">General</option>
+                <option value="nature">Nature</option>
+                <option value="objects">Objects</option>
+            </select>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <button id="theme-toggle" class="btn small">Dark Mode</button>
+        </div>
+        <div id="speed-bonus" class="speed-bonus"></div>
     </div>
 
+    <button class="fullscreen-btn" id="fullscreen-btn">Fullscreen</button>
     <div class="music-controls">
-        <button id="music-toggle">🎵 Play Music</button>
-        <button id="music-next">⏭️ Next</button>
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
         <div class="song-name" id="song-name"></div>
+        <div class="volume-row"><label>SFX</label><input type="range" id="sfx-vol" min="0" max="100" value="70"></div>
+        <div class="volume-row"><label>Music</label><input type="range" id="music-vol" min="0" max="100" value="50"></div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script src="https://addictingwordgamesstatic.addictingwordgames.com/static/word-phzzle/script.js"></script>
 </body>
 </html>

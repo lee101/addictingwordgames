@@ -321,21 +321,29 @@ class TypingGameHandler(BaseHandler):
         self.render('/templates/typing-game.jinja2')
 
 
-class WordPhzzleHandler(webapp2.RequestHandler):
+class TypingTowerDefenseHandler(BaseHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template("/static/word-phzzle/index.html")
-        self.response.write(template.render())
+        self.render('/templates/typing-tower-defense.jinja2')
 
 
-class WordJumbleHandler(webapp2.RequestHandler):
+class WordPhzzleHandler(BaseHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template("/static/word-jumble/index.html")
-        self.response.write(template.render())
+        self.render('/static/word-phzzle/index.html')
+
+
+class WordJumbleHandler(BaseHandler):
+    def get(self):
+        self.render('/static/word-jumble/index.html')
+
+
+class CrossWordHandler(BaseHandler):
+    def get(self):
+        self.render('/templates/cross-word.jinja2')
 
 
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
-        titles = Game.getAllTitles()
+        titles = list(games.keys())
         self.response.headers['Content-Type'] = 'text/xml'
         template = JINJA_ENVIRONMENT.get_template("/templates/sitemap.xml")
         self.response.write(template.render({'titles': titles}))
@@ -774,8 +782,10 @@ routes = [
     ('/contact', ContactHandler),
     ('/wordle', InfiniteWordleHandler),
     ('/typing-game', TypingGameHandler),
+    ('/typing-tower-defense', TypingTowerDefenseHandler),
     ('/word-phzzle', WordPhzzleHandler),
     ('/word-jumble', WordJumbleHandler),
+    ('/cross-word', CrossWordHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
@@ -790,7 +800,7 @@ routes = [
     ('/api/buy', ChargeForBuyHandler),
     # ('/gomochi', MochiGamesCrawler),
     ('/loadgames', LoadGamesHandler),
-    ('/sitemap', SitemapHandler),
+    ('/sitemap.xml', SitemapHandler),
 ]
 
 # Add static file handler for local development

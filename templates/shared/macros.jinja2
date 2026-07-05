@@ -134,17 +134,83 @@
     </div>
 {%- endmacro %}
 
-{% macro showreadingtimegame() -%}
+{% macro showjoydrop() -%}
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/joy-drop"
-           title="20 Questions with AI"><img
+           title="Joy Drop"><img
                 src="{{ static_url }}/img/joydrop-sun-logo.png"
                 alt="Joy Drop" width="256"
                 height="256" style="padding: 25px"/></a>
         <a href="/play-game/joy-drop"
-           title="Play Reading Time">Joy Drop</a>
+           title="Play Joy Drop">Joy Drop</a>
 
         <p class="small-description-text small-description-text-featured">Drag, drop and resize with touch - creative art creator for kids</p>
+    </div>
+{%- endmacro %}
+
+{% macro showtypingtowerdefense() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/typing-tower-defense"
+           title="Typing Tower Defense"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Typing Tower Defense" width="200"
+                height="200"/></a>
+        <a href="/typing-tower-defense"
+           title="Play Typing Tower Defense">Typing Tower Defense</a>
+        <span class="game-badge">NEW</span>
+        <p class="small-description-text small-description-text-featured">Type words to destroy enemies! Build Arrow, Cannon, and Frost towers. Survive increasingly difficult waves!</p>
+    </div>
+{%- endmacro %}
+
+{% macro showtypinggame() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/typing-game"
+           title="Typing Game"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Typing Game" width="200"
+                height="200"/></a>
+        <a href="/typing-game"
+           title="Play Typing Game">Typing Game</a>
+        <p class="small-description-text small-description-text-featured">Type falling letters before they hit the ground! Build combos and level up for higher scores.</p>
+    </div>
+{%- endmacro %}
+
+{% macro showwordle() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/wordle"
+           title="Infinite Wordle"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Infinite Wordle" width="200"
+                height="200"/></a>
+        <a href="/wordle"
+           title="Play Infinite Wordle">Infinite Wordle</a>
+        <p class="small-description-text small-description-text-featured">Unlimited Wordle puzzles! Guess the 5-letter word in 6 tries. Track your streak and compete for the best score!</p>
+    </div>
+{%- endmacro %}
+
+{% macro showwordphzzle() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/word-phzzle"
+           title="Word Phzzle"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Word Phzzle" width="200"
+                height="200"/></a>
+        <a href="/word-phzzle"
+           title="Play Word Phzzle">Word Phzzle</a>
+        <p class="small-description-text small-description-text-featured">Unscramble letters to form words! Multiple difficulty levels with dark mode support.</p>
+    </div>
+{%- endmacro %}
+
+{% macro showwordjumble() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/word-jumble"
+           title="Word Jumble"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Word Jumble" width="200"
+                height="200"/></a>
+        <a href="/word-jumble"
+           title="Play Word Jumble">Word Jumble</a>
+        <p class="small-description-text small-description-text-featured">Race against the clock! Unscramble words before time runs out. Features lives, hints, and high score tracking.</p>
     </div>
 {%- endmacro %}
 
@@ -195,6 +261,11 @@
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
+        {{ showtypingtowerdefense() }}
+        {{ showtypinggame() }}
+        {{ showwordle() }}
+        {{ showwordphzzle() }}
+        {{ showwordjumble() }}
         {{ shownetwrck() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}
@@ -202,6 +273,7 @@
         {{ showbigmultiplayerchess() }}
         {{ showquestionsgame() }}
         {{ showreadingtimegame() }}
+        {{ showjoydrop() }}
         {% set num_adds_shown = 0 %}
         {% for game in games %}
             {#            {% if awgutils.shouldShowAddBefore(game) %}#}

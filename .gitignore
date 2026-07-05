@@ -41,3 +41,6 @@ secrets
 .settings
 .venv
 wordgames.db
+monitors/
+*.supervisor.conf
+supervisord.conf

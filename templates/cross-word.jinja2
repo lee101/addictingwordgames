@@ -1,0 +1,850 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Crossword - Addicting Word Games</title>
+    {{ macros.headers(ws, highscores, achievements) }}
+    <script src="{{ static_url }}/js/game-audio.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .game-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 2em; margin: 10px 0; text-align: center; }
+        .subtitle { color: #a0aec0; margin-bottom: 15px; font-size: 0.9em; text-align: center; }
+        .game-layout { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+        .grid-container { flex: 0 0 auto; }
+        #crossword-grid {
+            display: grid;
+            gap: 2px;
+            background: #2d3748;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .cell {
+            width: 36px; height: 36px;
+            background: #fff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #1a1a2e;
+            cursor: pointer;
+            position: relative;
+            text-transform: uppercase;
+        }
+        .cell.blocked { background: #1a1a2e; cursor: default; }
+        .cell.selected { background: #68d391; }
+        .cell.highlighted { background: #bee3f8; }
+        .cell.correct { background: #c6f6d5; }
+        .cell.revealed { background: #fefcbf; color: #744210; }
+        .cell-number {
+            position: absolute;
+            top: 2px; left: 3px;
+            font-size: 0.5em;
+            font-weight: normal;
+            color: #666;
+        }
+        .clues-container { flex: 1; min-width: 280px; max-width: 400px; }
+        .clues-section { margin-bottom: 20px; }
+        .clues-section h3 { margin: 0 0 10px; color: #68d391; font-size: 1em; }
+        .clue-list { list-style: none; padding: 0; margin: 0; }
+        .clue-item {
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.15s;
+        }
+        .clue-item:hover { background: rgba(255,255,255,0.1); }
+        .clue-item.active { background: rgba(104,211,145,0.2); border-left: 3px solid #68d391; }
+        .clue-item.solved { color: #68d391; text-decoration: line-through; opacity: 0.7; }
+        .clue-number { font-weight: bold; color: #68d391; margin-right: 8px; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            background: #4a5568;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #5a6578; transform: translateY(-2px); }
+        .btn.primary { background: #68d391; color: #1a1a2e; }
+        .btn.primary:hover { background: #48bb78; }
+        select {
+            padding: 10px 16px;
+            font-size: 1em;
+            background: #4a5568;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        #message { text-align: center; font-size: 1.2em; font-weight: bold; margin: 15px 0; min-height: 30px; }
+        #message.success { color: #68d391; }
+        #message.error { color: #fc8181; }
+        .stats { display: flex; justify-content: center; gap: 30px; margin: 15px 0; font-size: 0.95em; }
+        .stats span { color: #a0aec0; }
+        .stats strong { color: #fff; }
+        .music-controls {
+            position: fixed; bottom: 20px; right: 20px;
+            background: rgba(45,55,72,0.95); padding: 12px;
+            border-radius: 10px; font-size: 0.85em; z-index: 100;
+        }
+        .music-controls button {
+            padding: 6px 12px; margin: 2px;
+            background: #4a5568; color: #fff;
+            border: none; border-radius: 5px; cursor: pointer;
+        }
+        .music-controls button:hover { background: #5a6578; }
+        .music-controls .song-name { color: #a0aec0; margin-top: 6px; font-size: 0.85em; }
+        .volume-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+        .volume-row input { width: 70px; }
+        .volume-row label { font-size: 0.75em; color: #a0aec0; width: 28px; }
+        .fullscreen-btn {
+            position: fixed; top: 10px; right: 10px;
+            padding: 8px 14px; background: rgba(0,0,0,0.7);
+            border: 1px solid #4a5568; border-radius: 6px;
+            color: #fff; cursor: pointer; z-index: 100; font-size: 0.9em;
+        }
+        .fullscreen-btn:hover { background: rgba(74,85,104,0.9); }
+        :fullscreen .game-container { max-width: 100%; }
+        :fullscreen #pagebody > *:not(.game-container):not(.music-controls):not(.fullscreen-btn) { display: none; }
+        @keyframes pop { 50% { transform: scale(1.1); } }
+        @keyframes shake { 25%,75% { transform: translateX(-3px); } 50% { transform: translateX(3px); } }
+        .pop { animation: pop 0.2s; }
+        .shake { animation: shake 0.3s; }
+    </style>
+</head>
+<body>
+{{ macros.templates() }}
+<div id="pagebody">
+    {{ macros.topbar() }}
+    <div class="game-container">
+        <h1>Crossword</h1>
+        <p class="subtitle">Fill in the grid using the clues. Click a cell or clue to start typing!</p>
+
+        <div class="controls">
+            <select id="difficulty">
+                <option value="easy">Easy (8x8)</option>
+                <option value="medium" selected>Medium (10x10)</option>
+                <option value="hard">Hard (12x12)</option>
+            </select>
+            <button class="btn primary" id="new-game">New Game</button>
+            <button class="btn" id="check-btn">Check</button>
+            <button class="btn" id="reveal-btn">Reveal Word</button>
+            <button class="btn" id="clear-btn">Clear</button>
+        </div>
+
+        <div class="stats">
+            <span>Words: <strong id="words-solved">0</strong>/<strong id="words-total">0</strong></span>
+            <span>Time: <strong id="timer">0:00</strong></span>
+        </div>
+
+        <div id="message"></div>
+
+        <div class="game-layout">
+            <div class="grid-container">
+                <div id="crossword-grid"></div>
+            </div>
+            <div class="clues-container">
+                <div class="clues-section">
+                    <h3>Across</h3>
+                    <ul class="clue-list" id="across-clues"></ul>
+                </div>
+                <div class="clues-section">
+                    <h3>Down</h3>
+                    <ul class="clue-list" id="down-clues"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreen-btn">Fullscreen</button>
+    <div class="music-controls">
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
+        <div class="song-name" id="song-name"></div>
+        <div class="volume-row"><label>SFX</label><input type="range" id="sfx-vol" min="0" max="100" value="70"></div>
+        <div class="volume-row"><label>Music</label><input type="range" id="music-vol" min="0" max="100" value="50"></div>
+    </div>
+    {{ macros.footer() }}
+</div>
+<script>
+(function(){
+    const audio = new GameAudio();
+
+    // Word database with clues
+    const WORDS = {
+        easy: [
+            {word:'CAT',clue:'Feline pet'},
+            {word:'DOG',clue:'Loyal pet that barks'},
+            {word:'SUN',clue:'Star at center of solar system'},
+            {word:'HAT',clue:'Head covering'},
+            {word:'RUN',clue:'Move quickly on foot'},
+            {word:'BIG',clue:'Large in size'},
+            {word:'RED',clue:'Color of blood'},
+            {word:'CUP',clue:'Drinking vessel'},
+            {word:'PEN',clue:'Writing instrument'},
+            {word:'BOX',clue:'Container with sides'},
+            {word:'BED',clue:'Furniture for sleeping'},
+            {word:'CAR',clue:'Four-wheeled vehicle'},
+            {word:'EGG',clue:'Oval laid by birds'},
+            {word:'FAN',clue:'Cooling device'},
+            {word:'JAM',clue:'Fruit spread'},
+            {word:'KEY',clue:'Opens a lock'},
+            {word:'MAP',clue:'Shows geography'},
+            {word:'NET',clue:'Mesh material'},
+            {word:'OWL',clue:'Nocturnal bird'},
+            {word:'PIE',clue:'Baked dessert'},
+            {word:'RAT',clue:'Rodent with long tail'},
+            {word:'SKY',clue:'Above the earth'},
+            {word:'TOY',clue:'Plaything'},
+            {word:'VAN',clue:'Large vehicle'},
+            {word:'WEB',clue:'Spider creation'},
+            {word:'ZOO',clue:'Animal park'},
+            {word:'ARM',clue:'Body limb'},
+            {word:'BAT',clue:'Flying mammal'},
+            {word:'COW',clue:'Farm animal for milk'},
+            {word:'DRY',clue:'Not wet'},
+            {word:'EAR',clue:'Hearing organ'},
+            {word:'FLY',clue:'Winged insect'},
+            {word:'GUM',clue:'Chewy candy'},
+            {word:'HOP',clue:'Jump on one foot'},
+            {word:'ICE',clue:'Frozen water'},
+            {word:'JOB',clue:'Work position'},
+            {word:'LOG',clue:'Tree trunk piece'},
+            {word:'MUD',clue:'Wet earth'},
+            {word:'NUT',clue:'Hard-shelled seed'},
+            {word:'OAK',clue:'Strong tree'},
+            {word:'PIG',clue:'Farm animal that oinks'},
+            {word:'RUG',clue:'Floor covering'},
+            {word:'SAD',clue:'Unhappy feeling'},
+            {word:'TEN',clue:'Number after nine'},
+            {word:'USE',clue:'Employ for purpose'},
+            {word:'WAX',clue:'Candle material'},
+            {word:'YAM',clue:'Sweet potato'},
+            {word:'ZIP',clue:'Fastener sound'}
+        ],
+        medium: [
+            {word:'APPLE',clue:'Red or green fruit'},
+            {word:'BEACH',clue:'Sandy shore'},
+            {word:'CHAIR',clue:'Seat with back'},
+            {word:'DREAM',clue:'Sleep vision'},
+            {word:'EAGLE',clue:'Bird of prey'},
+            {word:'FLAME',clue:'Fire\'s glow'},
+            {word:'GRAPE',clue:'Wine fruit'},
+            {word:'HOUSE',clue:'Place to live'},
+            {word:'IMAGE',clue:'Picture or photo'},
+            {word:'JUICE',clue:'Fruit drink'},
+            {word:'KNIFE',clue:'Cutting tool'},
+            {word:'LEMON',clue:'Sour yellow fruit'},
+            {word:'MUSIC',clue:'Organized sound'},
+            {word:'NIGHT',clue:'Dark time'},
+            {word:'OCEAN',clue:'Large body of water'},
+            {word:'PIANO',clue:'Keyboard instrument'},
+            {word:'QUEEN',clue:'Female monarch'},
+            {word:'RIVER',clue:'Flowing water body'},
+            {word:'STORM',clue:'Severe weather'},
+            {word:'TIGER',clue:'Striped big cat'},
+            {word:'UNCLE',clue:'Parent\'s brother'},
+            {word:'VOICE',clue:'Speaking sound'},
+            {word:'WATER',clue:'H2O'},
+            {word:'BRAIN',clue:'Thinking organ'},
+            {word:'CLOCK',clue:'Time keeper'},
+            {word:'DANCE',clue:'Move to music'},
+            {word:'EARTH',clue:'Our planet'},
+            {word:'FLOWER',clue:'Plant bloom'},
+            {word:'GRASS',clue:'Green lawn plant'},
+            {word:'HEART',clue:'Pumping organ'},
+            {word:'ISLAND',clue:'Land in water'},
+            {word:'JELLY',clue:'Wobbly dessert'},
+            {word:'LIGHT',clue:'Illumination'},
+            {word:'MONTH',clue:'Calendar division'},
+            {word:'NORTH',clue:'Compass direction'},
+            {word:'PAINT',clue:'Color coating'},
+            {word:'RADIO',clue:'Audio broadcast device'},
+            {word:'SNAKE',clue:'Legless reptile'},
+            {word:'TABLE',clue:'Furniture surface'},
+            {word:'TRAIN',clue:'Rail vehicle'},
+            {word:'UNDER',clue:'Below'},
+            {word:'WHALE',clue:'Large sea mammal'},
+            {word:'YOUTH',clue:'Young age'},
+            {word:'ZEBRA',clue:'Striped horse'},
+            {word:'BRAVE',clue:'Courageous'},
+            {word:'CLOUD',clue:'Sky formation'},
+            {word:'DRINK',clue:'Liquid to consume'},
+            {word:'EMPTY',clue:'Nothing inside'}
+        ],
+        hard: [
+            {word:'ABSTRACT',clue:'Not concrete'},
+            {word:'BIRTHDAY',clue:'Annual celebration'},
+            {word:'CHAMPION',clue:'Winner'},
+            {word:'DAUGHTER',clue:'Female child'},
+            {word:'ELEPHANT',clue:'Large gray mammal'},
+            {word:'FOOTBALL',clue:'Popular sport'},
+            {word:'GORGEOUS',clue:'Beautiful'},
+            {word:'HANDBOOK',clue:'Reference guide'},
+            {word:'ICEBERG',clue:'Floating ice mass'},
+            {word:'JEALOUSY',clue:'Envious feeling'},
+            {word:'KEYBOARD',clue:'Typing device'},
+            {word:'LANGUAGE',clue:'Communication system'},
+            {word:'MOUNTAIN',clue:'Tall landform'},
+            {word:'NOTEBOOK',clue:'Writing pad'},
+            {word:'OPPOSITE',clue:'Contrary'},
+            {word:'PLATFORM',clue:'Raised surface'},
+            {word:'QUESTION',clue:'Query'},
+            {word:'RESEARCH',clue:'Investigation'},
+            {word:'SANDWICH',clue:'Bread meal'},
+            {word:'TOGETHER',clue:'As one'},
+            {word:'UMBRELLA',clue:'Rain protection'},
+            {word:'VACATION',clue:'Time off'},
+            {word:'WHENEVER',clue:'At any time'},
+            {word:'YOURSELF',clue:'You, personally'},
+            {word:'ALLERGIC',clue:'Having sensitivity'},
+            {word:'BACTERIA',clue:'Microscopic organisms'},
+            {word:'CALENDAR',clue:'Date tracker'},
+            {word:'DECISION',clue:'Choice made'},
+            {word:'EXERCISE',clue:'Physical activity'},
+            {word:'FRAGMENT',clue:'Small piece'},
+            {word:'GRADIENT',clue:'Gradual change'},
+            {word:'HOSPITAL',clue:'Medical facility'},
+            {word:'IGNORANT',clue:'Lacking knowledge'},
+            {word:'JUDGMENT',clue:'Legal ruling'},
+            {word:'KINDNESS',clue:'Being nice'},
+            {word:'LAUGHTER',clue:'Sound of joy'},
+            {word:'MECHANIC',clue:'Car fixer'},
+            {word:'NAVIGATE',clue:'Find your way'},
+            {word:'OBSTACLE',clue:'Something in the way'},
+            {word:'PATIENCE',clue:'Ability to wait'},
+            {word:'QUANTITY',clue:'Amount'},
+            {word:'ROMANTIC',clue:'Loving'},
+            {word:'STRENGTH',clue:'Power'},
+            {word:'THOUSAND',clue:'10 x 100'},
+            {word:'UNIVERSE',clue:'All of space'},
+            {word:'VITAMINS',clue:'Nutritional supplements'},
+            {word:'WORKSHOP',clue:'Training session'},
+            {word:'YOUTHFUL',clue:'Young in spirit'}
+        ]
+    };
+
+    const GRID_SIZES = {easy: 8, medium: 10, hard: 12};
+
+    let grid = [];
+    let gridSize = 10;
+    let placedWords = [];
+    let selectedCell = null;
+    let direction = 'across';
+    let currentClue = null;
+    let solvedWords = new Set();
+    let timerInterval = null;
+    let seconds = 0;
+    let difficulty = 'medium';
+
+    // Volume & fullscreen
+    document.getElementById('sfx-vol').oninput = e => audio.setSfxVolume(e.target.value/100);
+    document.getElementById('music-vol').oninput = e => audio.setMusicVolume(e.target.value/100);
+    document.getElementById('fullscreen-btn').onclick = () => {
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+    };
+    document.addEventListener('fullscreenchange', () => {
+        document.getElementById('fullscreen-btn').textContent = document.fullscreenElement ? 'Exit' : 'Fullscreen';
+    });
+
+    function initGrid(size) {
+        grid = [];
+        for(let r = 0; r < size; r++) {
+            grid[r] = [];
+            for(let c = 0; c < size; c++) {
+                grid[r][c] = {letter: null, number: null, across: null, down: null, input: ''};
+            }
+        }
+    }
+
+    function canPlace(word, row, col, dir) {
+        const len = word.length;
+        if(dir === 'across') {
+            if(col + len > gridSize) return false;
+            if(col > 0 && grid[row][col-1].letter) return false;
+            if(col + len < gridSize && grid[row][col+len].letter) return false;
+        } else {
+            if(row + len > gridSize) return false;
+            if(row > 0 && grid[row-1][col].letter) return false;
+            if(row + len < gridSize && grid[row+len][col].letter) return false;
+        }
+
+        let hasIntersection = placedWords.length === 0;
+        for(let i = 0; i < len; i++) {
+            const r = dir === 'across' ? row : row + i;
+            const c = dir === 'across' ? col + i : col;
+            const cell = grid[r][c];
+
+            if(cell.letter) {
+                if(cell.letter !== word[i]) return false;
+                hasIntersection = true;
+            } else {
+                if(dir === 'across') {
+                    if(r > 0 && grid[r-1][c].letter) return false;
+                    if(r < gridSize-1 && grid[r+1][c].letter) return false;
+                } else {
+                    if(c > 0 && grid[r][c-1].letter) return false;
+                    if(c < gridSize-1 && grid[r][c+1].letter) return false;
+                }
+            }
+        }
+        return hasIntersection;
+    }
+
+    function placeWord(wordObj, row, col, dir) {
+        const word = wordObj.word;
+        for(let i = 0; i < word.length; i++) {
+            const r = dir === 'across' ? row : row + i;
+            const c = dir === 'across' ? col + i : col;
+            grid[r][c].letter = word[i];
+            if(dir === 'across') grid[r][c].across = placedWords.length;
+            else grid[r][c].down = placedWords.length;
+        }
+        placedWords.push({...wordObj, row, col, dir, solved: false});
+    }
+
+    function shuffle(arr) {
+        for(let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function generateCrossword() {
+        const words = shuffle([...WORDS[difficulty]]).sort((a,b) => b.word.length - a.word.length);
+        initGrid(gridSize);
+        placedWords = [];
+
+        // Place first word in center
+        const first = words[0];
+        const startRow = Math.floor(gridSize/2);
+        const startCol = Math.floor((gridSize - first.word.length)/2);
+        placeWord(first, startRow, startCol, 'across');
+
+        // Try to place remaining words
+        for(let i = 1; i < words.length && placedWords.length < 12; i++) {
+            const wordObj = words[i];
+            const word = wordObj.word;
+            let placed = false;
+
+            // Try to intersect with existing words
+            for(let r = 0; r < gridSize && !placed; r++) {
+                for(let c = 0; c < gridSize && !placed; c++) {
+                    for(const dir of ['across', 'down']) {
+                        if(canPlace(word, r, c, dir)) {
+                            placeWord(wordObj, r, c, dir);
+                            placed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Assign numbers
+        let num = 1;
+        for(let r = 0; r < gridSize; r++) {
+            for(let c = 0; c < gridSize; c++) {
+                const cell = grid[r][c];
+                if(!cell.letter) continue;
+                const needsNumber =
+                    (c === 0 || !grid[r][c-1].letter) && c < gridSize-1 && grid[r][c+1]?.letter ||
+                    (r === 0 || !grid[r-1][c].letter) && r < gridSize-1 && grid[r+1]?.[c]?.letter;
+                if(needsNumber) {
+                    cell.number = num++;
+                }
+            }
+        }
+
+        // Update word numbers
+        placedWords.forEach(w => {
+            w.number = grid[w.row][w.col].number;
+        });
+    }
+
+    function renderGrid() {
+        const container = document.getElementById('crossword-grid');
+        container.style.gridTemplateColumns = `repeat(${gridSize}, 36px)`;
+        container.innerHTML = '';
+
+        for(let r = 0; r < gridSize; r++) {
+            for(let c = 0; c < gridSize; c++) {
+                const cell = grid[r][c];
+                const div = document.createElement('div');
+                div.className = 'cell' + (cell.letter ? '' : ' blocked');
+                div.dataset.row = r;
+                div.dataset.col = c;
+
+                if(cell.letter) {
+                    if(cell.number) {
+                        const numSpan = document.createElement('span');
+                        numSpan.className = 'cell-number';
+                        numSpan.textContent = cell.number;
+                        div.appendChild(numSpan);
+                    }
+                    const letterSpan = document.createElement('span');
+                    letterSpan.className = 'cell-letter';
+                    letterSpan.textContent = cell.input || '';
+                    div.appendChild(letterSpan);
+                    div.onclick = () => selectCell(r, c);
+                }
+                container.appendChild(div);
+            }
+        }
+    }
+
+    function renderClues() {
+        const acrossUl = document.getElementById('across-clues');
+        const downUl = document.getElementById('down-clues');
+        acrossUl.innerHTML = '';
+        downUl.innerHTML = '';
+
+        placedWords.filter(w => w.dir === 'across').sort((a,b) => a.number - b.number).forEach(w => {
+            const li = document.createElement('li');
+            li.className = 'clue-item' + (w.solved ? ' solved' : '');
+            li.innerHTML = `<span class="clue-number">${w.number}.</span>${w.clue}`;
+            li.onclick = () => selectClue(w);
+            li.dataset.idx = placedWords.indexOf(w);
+            acrossUl.appendChild(li);
+        });
+
+        placedWords.filter(w => w.dir === 'down').sort((a,b) => a.number - b.number).forEach(w => {
+            const li = document.createElement('li');
+            li.className = 'clue-item' + (w.solved ? ' solved' : '');
+            li.innerHTML = `<span class="clue-number">${w.number}.</span>${w.clue}`;
+            li.onclick = () => selectClue(w);
+            li.dataset.idx = placedWords.indexOf(w);
+            downUl.appendChild(li);
+        });
+    }
+
+    function selectCell(r, c) {
+        if(!grid[r][c].letter) return;
+
+        // Toggle direction if clicking same cell
+        if(selectedCell && selectedCell.r === r && selectedCell.c === c) {
+            direction = direction === 'across' ? 'down' : 'across';
+        }
+
+        selectedCell = {r, c};
+        audio.click();
+
+        // Find current word
+        currentClue = null;
+        for(const w of placedWords) {
+            if(w.dir === direction) {
+                const inWord = direction === 'across'
+                    ? (r === w.row && c >= w.col && c < w.col + w.word.length)
+                    : (c === w.col && r >= w.row && r < w.row + w.word.length);
+                if(inWord) { currentClue = w; break; }
+            }
+        }
+
+        // If no word in current direction, try other
+        if(!currentClue) {
+            direction = direction === 'across' ? 'down' : 'across';
+            for(const w of placedWords) {
+                if(w.dir === direction) {
+                    const inWord = direction === 'across'
+                        ? (r === w.row && c >= w.col && c < w.col + w.word.length)
+                        : (c === w.col && r >= w.row && r < w.row + w.word.length);
+                    if(inWord) { currentClue = w; break; }
+                }
+            }
+        }
+
+        highlightCells();
+    }
+
+    function selectClue(w) {
+        direction = w.dir;
+        selectedCell = {r: w.row, c: w.col};
+        currentClue = w;
+        audio.click();
+        highlightCells();
+    }
+
+    function highlightCells() {
+        document.querySelectorAll('.cell').forEach(el => {
+            el.classList.remove('selected', 'highlighted');
+        });
+        document.querySelectorAll('.clue-item').forEach(el => {
+            el.classList.remove('active');
+        });
+
+        if(!selectedCell) return;
+
+        const selEl = document.querySelector(`.cell[data-row="${selectedCell.r}"][data-col="${selectedCell.c}"]`);
+        if(selEl) selEl.classList.add('selected');
+
+        if(currentClue) {
+            for(let i = 0; i < currentClue.word.length; i++) {
+                const r = currentClue.dir === 'across' ? currentClue.row : currentClue.row + i;
+                const c = currentClue.dir === 'across' ? currentClue.col + i : currentClue.col;
+                const el = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+                if(el && !(r === selectedCell.r && c === selectedCell.c)) el.classList.add('highlighted');
+            }
+
+            const idx = placedWords.indexOf(currentClue);
+            document.querySelector(`.clue-item[data-idx="${idx}"]`)?.classList.add('active');
+        }
+    }
+
+    function handleKeyPress(e) {
+        if(!selectedCell) return;
+
+        const key = e.key.toUpperCase();
+
+        if(key === 'BACKSPACE') {
+            e.preventDefault();
+            grid[selectedCell.r][selectedCell.c].input = '';
+            updateCell(selectedCell.r, selectedCell.c);
+            moveToPrev();
+            audio.click();
+            return;
+        }
+
+        if(key === 'ARROWUP') { e.preventDefault(); moveSelection(0, -1); return; }
+        if(key === 'ARROWDOWN') { e.preventDefault(); moveSelection(0, 1); return; }
+        if(key === 'ARROWLEFT') { e.preventDefault(); moveSelection(-1, 0); return; }
+        if(key === 'ARROWRIGHT') { e.preventDefault(); moveSelection(1, 0); return; }
+        if(key === 'TAB') { e.preventDefault(); nextWord(e.shiftKey); return; }
+
+        if(key.length === 1 && key >= 'A' && key <= 'Z') {
+            e.preventDefault();
+            grid[selectedCell.r][selectedCell.c].input = key;
+            updateCell(selectedCell.r, selectedCell.c);
+            audio.type();
+            moveToNext();
+            checkWordComplete();
+        }
+    }
+
+    function updateCell(r, c) {
+        const el = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"] .cell-letter`);
+        if(el) el.textContent = grid[r][c].input;
+    }
+
+    function moveToNext() {
+        if(!currentClue) return;
+        let {r, c} = selectedCell;
+        if(direction === 'across') c++;
+        else r++;
+
+        const maxR = currentClue.dir === 'down' ? currentClue.row + currentClue.word.length : currentClue.row + 1;
+        const maxC = currentClue.dir === 'across' ? currentClue.col + currentClue.word.length : currentClue.col + 1;
+
+        if(r < maxR && c < maxC && grid[r]?.[c]?.letter) {
+            selectedCell = {r, c};
+            highlightCells();
+        }
+    }
+
+    function moveToPrev() {
+        if(!currentClue) return;
+        let {r, c} = selectedCell;
+        if(direction === 'across') c--;
+        else r--;
+
+        if(r >= currentClue.row && c >= currentClue.col && grid[r]?.[c]?.letter) {
+            selectedCell = {r, c};
+            highlightCells();
+        }
+    }
+
+    function moveSelection(dc, dr) {
+        let {r, c} = selectedCell;
+        r += dr; c += dc;
+        while(r >= 0 && r < gridSize && c >= 0 && c < gridSize) {
+            if(grid[r][c].letter) {
+                selectCell(r, c);
+                return;
+            }
+            r += dr; c += dc;
+        }
+    }
+
+    function nextWord(reverse = false) {
+        if(!currentClue) return;
+        const words = placedWords.filter(w => !w.solved);
+        if(words.length === 0) return;
+        const idx = words.indexOf(currentClue);
+        const next = reverse
+            ? words[(idx - 1 + words.length) % words.length]
+            : words[(idx + 1) % words.length];
+        selectClue(next);
+    }
+
+    function checkWordComplete() {
+        if(!currentClue || currentClue.solved) return;
+
+        let complete = true;
+        let correct = true;
+        for(let i = 0; i < currentClue.word.length; i++) {
+            const r = currentClue.dir === 'across' ? currentClue.row : currentClue.row + i;
+            const c = currentClue.dir === 'across' ? currentClue.col + i : currentClue.col;
+            if(!grid[r][c].input) complete = false;
+            if(grid[r][c].input !== currentClue.word[i]) correct = false;
+        }
+
+        if(complete && correct) {
+            currentClue.solved = true;
+            solvedWords.add(currentClue);
+            audio.correct();
+
+            // Mark cells
+            for(let i = 0; i < currentClue.word.length; i++) {
+                const r = currentClue.dir === 'across' ? currentClue.row : currentClue.row + i;
+                const c = currentClue.dir === 'across' ? currentClue.col + i : currentClue.col;
+                const el = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+                if(el) el.classList.add('correct');
+            }
+
+            renderClues();
+            updateStats();
+
+            if(solvedWords.size === placedWords.length) {
+                clearInterval(timerInterval);
+                showMessage('Congratulations! Puzzle complete!', 'success');
+                audio.victory();
+            } else {
+                nextWord();
+            }
+        }
+    }
+
+    function checkPuzzle() {
+        let errors = 0;
+        for(let r = 0; r < gridSize; r++) {
+            for(let c = 0; c < gridSize; c++) {
+                const cell = grid[r][c];
+                if(cell.letter && cell.input && cell.input !== cell.letter) {
+                    errors++;
+                    const el = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+                    if(el) { el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 300); }
+                }
+            }
+        }
+        if(errors === 0) {
+            showMessage('All filled letters are correct!', 'success');
+            audio.correct();
+        } else {
+            showMessage(`${errors} incorrect letter${errors > 1 ? 's' : ''}`, 'error');
+            audio.wrong();
+        }
+    }
+
+    function revealWord() {
+        if(!currentClue) return;
+        for(let i = 0; i < currentClue.word.length; i++) {
+            const r = currentClue.dir === 'across' ? currentClue.row : currentClue.row + i;
+            const c = currentClue.dir === 'across' ? currentClue.col + i : currentClue.col;
+            grid[r][c].input = currentClue.word[i];
+            updateCell(r, c);
+            const el = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+            if(el) el.classList.add('revealed');
+        }
+        currentClue.solved = true;
+        solvedWords.add(currentClue);
+        renderClues();
+        updateStats();
+        audio.click();
+        nextWord();
+    }
+
+    function clearGrid() {
+        for(let r = 0; r < gridSize; r++) {
+            for(let c = 0; c < gridSize; c++) {
+                grid[r][c].input = '';
+            }
+        }
+        placedWords.forEach(w => w.solved = false);
+        solvedWords.clear();
+        renderGrid();
+        renderClues();
+        updateStats();
+        audio.click();
+    }
+
+    function showMessage(text, type) {
+        const el = document.getElementById('message');
+        el.textContent = text;
+        el.className = type;
+        setTimeout(() => { el.textContent = ''; el.className = ''; }, 3000);
+    }
+
+    function updateStats() {
+        document.getElementById('words-solved').textContent = solvedWords.size;
+        document.getElementById('words-total').textContent = placedWords.length;
+    }
+
+    function updateTimer() {
+        seconds++;
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function newGame() {
+        difficulty = document.getElementById('difficulty').value;
+        gridSize = GRID_SIZES[difficulty];
+        selectedCell = null;
+        currentClue = null;
+        solvedWords.clear();
+        seconds = 0;
+
+        clearInterval(timerInterval);
+        generateCrossword();
+        renderGrid();
+        renderClues();
+        updateStats();
+        updateTimer();
+        timerInterval = setInterval(updateTimer, 1000);
+
+        // Select first word
+        if(placedWords.length > 0) selectClue(placedWords[0]);
+        audio.click();
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+    document.getElementById('new-game').onclick = newGame;
+    document.getElementById('check-btn').onclick = checkPuzzle;
+    document.getElementById('reveal-btn').onclick = revealWord;
+    document.getElementById('clear-btn').onclick = clearGrid;
+    document.getElementById('difficulty').onchange = newGame;
+
+    let musicPlaying = false;
+    document.getElementById('music-toggle').onclick = function() {
+        if(musicPlaying) { audio.stopMusic(); this.textContent = 'Play Music'; }
+        else { audio.startMusic(); this.textContent = 'Mute'; document.getElementById('song-name').textContent = audio.getSongName(); }
+        musicPlaying = !musicPlaying;
+    };
+    document.getElementById('music-next').onclick = function() {
+        if(musicPlaying) { audio.nextSong(); document.getElementById('song-name').textContent = audio.getSongName(); }
+    };
+
+    newGame();
+})();
+</script>
+</body>
+</html>

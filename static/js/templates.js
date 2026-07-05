@@ -4,8 +4,8 @@ var colno = null;
 var output = "";
 try {
 var macro_t_1 = runtime.makeMacro(
-["game"], 
-[], 
+["game"],
+[],
 function (l_game, kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -35,8 +35,8 @@ context.addExport("showgame");
 context.setVariable("showgame", macro_t_1);
 output += "\n\n";
 var macro_t_2 = runtime.makeMacro(
-["game"], 
-[], 
+["game"],
+[],
 function (l_game, kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -67,8 +67,8 @@ context.addExport("tagsFor");
 context.setVariable("tagsFor", macro_t_2);
 output += "\n\n\n";
 var macro_t_7 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -83,8 +83,8 @@ context.addExport("showwordsmashing");
 context.setVariable("showwordsmashing", macro_t_7);
 output += "\n\n";
 var macro_t_8 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -99,8 +99,8 @@ context.addExport("shownetwrck");
 context.setVariable("shownetwrck", macro_t_8);
 output += "\n\n";
 var macro_t_9 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -115,8 +115,8 @@ context.addExport("showrewordgame");
 context.setVariable("showrewordgame", macro_t_9);
 output += "\n\n";
 var macro_t_10 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -131,8 +131,8 @@ context.addExport("showmultiplicationmaster");
 context.setVariable("showmultiplicationmaster", macro_t_10);
 output += "\n\n";
 var macro_t_11 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -147,8 +147,8 @@ context.addExport("showbigmultiplayerchess");
 context.setVariable("showbigmultiplayerchess", macro_t_11);
 output += "\n\n";
 var macro_t_12 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -163,8 +163,8 @@ context.addExport("showquestionsgame");
 context.setVariable("showquestionsgame", macro_t_12);
 output += "\n\n";
 var macro_t_13 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -179,24 +179,104 @@ context.addExport("showreadingtimegame");
 context.setVariable("showreadingtimegame", macro_t_13);
 output += "\n\n";
 var macro_t_14 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
-output += "<div class=\"game game-featured mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/play-game/joy-drop\"\n           title=\"20 Questions with AI\"><img\n                src=\"";
+output += "<div class=\"game game-featured mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/play-game/joy-drop\"\n           title=\"Joy Drop\"><img\n                src=\"";
 output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "static_url"), env.autoesc);
-output += "/img/joydrop-sun-logo.png\"\n                alt=\"Joy Drop\" width=\"256\"\n                height=\"256\" style=\"padding: 25px\"/></a>\n        <a href=\"/play-game/joy-drop\"\n           title=\"Play Reading Time\">Joy Drop</a>\n\n        <p class=\"small-description-text small-description-text-featured\">Drag, drop and resize with touch - creative art creator for kids</p>\n    </div>";
+output += "/img/joydrop-sun-logo.png\"\n                alt=\"Joy Drop\" width=\"256\"\n                height=\"256\" style=\"padding: 25px\"/></a>\n        <a href=\"/play-game/joy-drop\"\n           title=\"Play Joy Drop\">Joy Drop</a>\n\n        <p class=\"small-description-text small-description-text-featured\">Drag, drop and resize with touch - creative art creator for kids</p>\n    </div>";
 frame = frame.pop();
 return new runtime.SafeString(output);
 });
-context.addExport("showreadingtimegame");
-context.setVariable("showreadingtimegame", macro_t_14);
+context.addExport("showjoydrop");
+context.setVariable("showjoydrop", macro_t_14);
 output += "\n\n";
 var macro_t_15 = runtime.makeMacro(
-[], 
-[], 
+[],
+[],
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div class=\"game game-featured game-self-hosted mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/typing-tower-defense\"\n           title=\"Typing Tower Defense\"><img\n                src=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "static_url"), env.autoesc);
+output += "/img/addicting-word-games-icon200.png\"\n                alt=\"Typing Tower Defense\" width=\"200\"\n                height=\"200\"/></a>\n        <a href=\"/typing-tower-defense\"\n           title=\"Play Typing Tower Defense\">Typing Tower Defense</a>\n        <span class=\"game-badge\">NEW</span>\n        <p class=\"small-description-text small-description-text-featured\">Type words to destroy enemies! Build Arrow, Cannon, and Frost towers. Survive increasingly difficult waves!</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showtypingtowerdefense");
+context.setVariable("showtypingtowerdefense", macro_t_15);
+output += "\n\n";
+var macro_t_16 = runtime.makeMacro(
+[],
+[],
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div class=\"game game-featured game-self-hosted mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/typing-game\"\n           title=\"Typing Game\"><img\n                src=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "static_url"), env.autoesc);
+output += "/img/addicting-word-games-icon200.png\"\n                alt=\"Typing Game\" width=\"200\"\n                height=\"200\"/></a>\n        <a href=\"/typing-game\"\n           title=\"Play Typing Game\">Typing Game</a>\n        <p class=\"small-description-text small-description-text-featured\">Type falling letters before they hit the ground! Build combos and level up for higher scores.</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showtypinggame");
+context.setVariable("showtypinggame", macro_t_16);
+output += "\n\n";
+var macro_t_17 = runtime.makeMacro(
+[],
+[],
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div class=\"game game-featured game-self-hosted mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/wordle\"\n           title=\"Infinite Wordle\"><img\n                src=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "static_url"), env.autoesc);
+output += "/img/addicting-word-games-icon200.png\"\n                alt=\"Infinite Wordle\" width=\"200\"\n                height=\"200\"/></a>\n        <a href=\"/wordle\"\n           title=\"Play Infinite Wordle\">Infinite Wordle</a>\n        <p class=\"small-description-text small-description-text-featured\">Unlimited Wordle puzzles! Guess the 5-letter word in 6 tries. Track your streak and compete for the best score!</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showwordle");
+context.setVariable("showwordle", macro_t_17);
+output += "\n\n";
+var macro_t_18 = runtime.makeMacro(
+[],
+[],
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div class=\"game game-featured game-self-hosted mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/word-phzzle\"\n           title=\"Word Phzzle\"><img\n                src=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "static_url"), env.autoesc);
+output += "/img/addicting-word-games-icon200.png\"\n                alt=\"Word Phzzle\" width=\"200\"\n                height=\"200\"/></a>\n        <a href=\"/word-phzzle\"\n           title=\"Play Word Phzzle\">Word Phzzle</a>\n        <p class=\"small-description-text small-description-text-featured\">Unscramble letters to form words! Multiple difficulty levels with dark mode support.</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showwordphzzle");
+context.setVariable("showwordphzzle", macro_t_18);
+output += "\n\n";
+var macro_t_19 = runtime.makeMacro(
+[],
+[],
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
+output += "<div class=\"game game-featured game-self-hosted mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/word-jumble\"\n           title=\"Word Jumble\"><img\n                src=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "static_url"), env.autoesc);
+output += "/img/addicting-word-games-icon200.png\"\n                alt=\"Word Jumble\" width=\"200\"\n                height=\"200\"/></a>\n        <a href=\"/word-jumble\"\n           title=\"Play Word Jumble\">Word Jumble</a>\n        <p class=\"small-description-text small-description-text-featured\">Race against the clock! Unscramble words before time runs out. Features lives, hints, and high score tracking.</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showwordjumble");
+context.setVariable("showwordjumble", macro_t_19);
+output += "\n\n";
+var macro_t_20 = runtime.makeMacro(
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -209,7 +289,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "</h2>\n\n            <iframe src=\"https://p.addictingwordgames.com/cats-pgw7qq/";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"url", env.autoesc), env.autoesc);
 output += "\" frameborder=\"0\" width=\"100%\" height=\"100%\"></iframe>\n            ";
-output += runtime.suppressValue((lineno = 157, colno = 32, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "shareBtnsHorizontal"), "shareBtnsHorizontal", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
+output += runtime.suppressValue((lineno = 223, colno = 32, runtime.callWrap(runtime.contextOrFrameLookup(context, frame, "shareBtnsHorizontal"), "shareBtnsHorizontal", [runtime.contextOrFrameLookup(context, frame, "url")])), env.autoesc);
 output += "\n            ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"description", env.autoesc)) {
 output += "\n                <div class=\"game-panel-description\">\n                    <p>";
@@ -225,7 +305,7 @@ output += "</p>\n                </div>\n            ";
 ;
 }
 output += "\n            ";
-output += runtime.suppressValue((lineno = 170, colno = 20, runtime.callWrap(macro_t_2, "tagsFor", [runtime.contextOrFrameLookup(context, frame, "game")])), env.autoesc);
+output += runtime.suppressValue((lineno = 236, colno = 20, runtime.callWrap(macro_t_2, "tagsFor", [runtime.contextOrFrameLookup(context, frame, "game")])), env.autoesc);
 output += "\n        </div>\n    ";
 ;
 }
@@ -233,11 +313,11 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showmaingame");
-context.setVariable("showmaingame", macro_t_15);
+context.setVariable("showmaingame", macro_t_20);
 output += "\n\n";
-var macro_t_16 = runtime.makeMacro(
-["num_adds_shown"], 
-[], 
+var macro_t_21 = runtime.makeMacro(
+["num_adds_shown"],
+[],
 function (l_num_adds_shown, kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -251,51 +331,63 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showadd");
-context.setVariable("showadd", macro_t_16);
+context.setVariable("showadd", macro_t_21);
 output += "\n\n";
-var macro_t_17 = runtime.makeMacro(
-[], 
-[], 
+var macro_t_22 = runtime.makeMacro(
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
 output += "<div id=\"games\">\n        ";
-output += runtime.suppressValue((lineno = 196, colno = 21, runtime.callWrap(macro_t_15, "showmaingame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 262, colno = 21, runtime.callWrap(macro_t_20, "showmaingame", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 197, colno = 20, runtime.callWrap(macro_t_8, "shownetwrck", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 263, colno = 31, runtime.callWrap(macro_t_15, "showtypingtowerdefense", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 198, colno = 25, runtime.callWrap(macro_t_7, "showwordsmashing", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 264, colno = 23, runtime.callWrap(macro_t_16, "showtypinggame", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 199, colno = 33, runtime.callWrap(macro_t_10, "showmultiplicationmaster", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 265, colno = 19, runtime.callWrap(macro_t_17, "showwordle", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 200, colno = 23, runtime.callWrap(macro_t_9, "showrewordgame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 266, colno = 23, runtime.callWrap(macro_t_18, "showwordphzzle", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 201, colno = 32, runtime.callWrap(macro_t_11, "showbigmultiplayerchess", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 267, colno = 23, runtime.callWrap(macro_t_19, "showwordjumble", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 202, colno = 26, runtime.callWrap(macro_t_12, "showquestionsgame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 268, colno = 20, runtime.callWrap(macro_t_8, "shownetwrck", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 203, colno = 28, runtime.callWrap(macro_t_14, "showreadingtimegame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 269, colno = 25, runtime.callWrap(macro_t_7, "showwordsmashing", [])), env.autoesc);
 output += "\n        ";
-var t_18;
-t_18 = 0;
-frame.set("num_adds_shown", t_18);
+output += runtime.suppressValue((lineno = 270, colno = 33, runtime.callWrap(macro_t_10, "showmultiplicationmaster", [])), env.autoesc);
+output += "\n        ";
+output += runtime.suppressValue((lineno = 271, colno = 23, runtime.callWrap(macro_t_9, "showrewordgame", [])), env.autoesc);
+output += "\n        ";
+output += runtime.suppressValue((lineno = 272, colno = 32, runtime.callWrap(macro_t_11, "showbigmultiplayerchess", [])), env.autoesc);
+output += "\n        ";
+output += runtime.suppressValue((lineno = 273, colno = 26, runtime.callWrap(macro_t_12, "showquestionsgame", [])), env.autoesc);
+output += "\n        ";
+output += runtime.suppressValue((lineno = 274, colno = 28, runtime.callWrap(macro_t_13, "showreadingtimegame", [])), env.autoesc);
+output += "\n        ";
+output += runtime.suppressValue((lineno = 275, colno = 20, runtime.callWrap(macro_t_14, "showjoydrop", [])), env.autoesc);
+output += "\n        ";
+var t_23;
+t_23 = 0;
+frame.set("num_adds_shown", t_23);
 if(!frame.parent) {
-context.setVariable("num_adds_shown", t_18);
+context.setVariable("num_adds_shown", t_23);
 context.addExport("num_adds_shown");
 }
 output += "\n        ";
 frame = frame.push();
-var t_21 = runtime.contextOrFrameLookup(context, frame, "games");
-if(t_21) {for(var t_19=0; t_19 < t_21.length; t_19++) {
-var t_22 = t_21[t_19];
-frame.set("game", t_22);
+var t_26 = runtime.contextOrFrameLookup(context, frame, "games");
+if(t_26) {for(var t_24=0; t_24 < t_26.length; t_24++) {
+var t_27 = t_26[t_24];
+frame.set("game", t_27);
 output += "\n            ";
 output += "\n            ";
 output += "\n            ";
 output += "\n            ";
 output += "\n            ";
-output += runtime.suppressValue((lineno = 210, colno = 21, runtime.callWrap(macro_t_1, "showgame", [t_22])), env.autoesc);
+output += runtime.suppressValue((lineno = 282, colno = 21, runtime.callWrap(macro_t_1, "showgame", [t_27])), env.autoesc);
 output += "\n        ";
 ;
 }
@@ -306,17 +398,17 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showgames");
-context.setVariable("showgames", macro_t_17);
+context.setVariable("showgames", macro_t_22);
 output += "\n\n";
-var macro_t_23 = runtime.makeMacro(
-[], 
-[], 
+var macro_t_28 = runtime.makeMacro(
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
 output += "<object type=\"application/x-shockwave-flash\"\n            data=\"";
-output += runtime.suppressValue((lineno = 217, colno = 37, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getSWFUrl", env.autoesc), "awgutils[\"getSWFUrl\"]", [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"urltitle", env.autoesc)])), env.autoesc);
+output += runtime.suppressValue((lineno = 289, colno = 37, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getSWFUrl", env.autoesc), "awgutils[\"getSWFUrl\"]", [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"urltitle", env.autoesc)])), env.autoesc);
 output += "\"\n            id=\"\"\n            style=\"margin:0 10px;width:";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"width", env.autoesc), env.autoesc);
 output += "px;height:";
@@ -326,11 +418,11 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("renderswf");
-context.setVariable("renderswf", macro_t_23);
+context.setVariable("renderswf", macro_t_28);
 output += "\n\n";
-var macro_t_24 = runtime.makeMacro(
-[], 
-[], 
+var macro_t_29 = runtime.makeMacro(
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -347,11 +439,11 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("topbar");
-context.setVariable("topbar", macro_t_24);
+context.setVariable("topbar", macro_t_29);
 output += "\n\n";
-var macro_t_25 = runtime.makeMacro(
-["ws", "highscores", "achievements"], 
-[], 
+var macro_t_30 = runtime.makeMacro(
+["ws", "highscores", "achievements"],
+[],
 function (l_ws, l_highscores, l_achievements, kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -388,11 +480,11 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("headers");
-context.setVariable("headers", macro_t_25);
+context.setVariable("headers", macro_t_30);
 output += "\n\n";
-var macro_t_26 = runtime.makeMacro(
-[], 
-[], 
+var macro_t_31 = runtime.makeMacro(
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -402,11 +494,11 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("templates");
-context.setVariable("templates", macro_t_26);
+context.setVariable("templates", macro_t_31);
 output += "\n\n";
-var macro_t_27 = runtime.makeMacro(
-[], 
-[], 
+var macro_t_32 = runtime.makeMacro(
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -416,11 +508,11 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("loadmorebutton");
-context.setVariable("loadmorebutton", macro_t_27);
+context.setVariable("loadmorebutton", macro_t_32);
 output += "\n\n";
-var macro_t_28 = runtime.makeMacro(
-[], 
-[], 
+var macro_t_33 = runtime.makeMacro(
+[],
+[],
 function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -466,10 +558,10 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("footer");
-context.setVariable("footer", macro_t_28);
-var macro_t_29 = runtime.makeMacro(
-["url"], 
-[], 
+context.setVariable("footer", macro_t_33);
+var macro_t_34 = runtime.makeMacro(
+["url"],
+[],
 function (l_url, kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
@@ -484,7 +576,7 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("shareBtnsHorizontal");
-context.setVariable("shareBtnsHorizontal", macro_t_29);
+context.setVariable("shareBtnsHorizontal", macro_t_34);
 output += "\n\n";
 cb(null, output);
 ;
