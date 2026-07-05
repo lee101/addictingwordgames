@@ -1,7 +1,26 @@
+import os
+
+os.environ.setdefault("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python")
+
+from google.auth.credentials import AnonymousCredentials
+from google.auth.exceptions import DefaultCredentialsError
 from google.cloud import ndb
 from google.cloud.ndb import Cursor
 
-client = ndb.Client()
+
+def _create_ndb_client():
+    try:
+        return ndb.Client()
+    except DefaultCredentialsError:
+        os.environ.setdefault("GOOGLE_CLOUD_PROJECT", "addictingwordgames-dev")
+        os.environ.setdefault("DATASTORE_EMULATOR_HOST", "localhost:8081")
+        return ndb.Client(
+            project=os.environ["GOOGLE_CLOUD_PROJECT"],
+            credentials=AnonymousCredentials(),
+        )
+
+
+client = _create_ndb_client()
 
 
 class BaseModel(ndb.Model):

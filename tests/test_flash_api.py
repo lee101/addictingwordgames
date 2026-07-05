@@ -44,7 +44,7 @@ def flash_repo(monkeypatch):
 
 def _dispatch(path: str, headers=None, environ=None):
     request = webapp2.Request.blank(path, headers=headers, environ=environ)
-    return main.app.get_response(request)
+    return request.get_response(main.app)
 
 
 def _json(response):
@@ -164,6 +164,41 @@ def test_flash_search_empty_results(flash_repo):
     assert payload['next_page_token'] is None
 
 
+def test_flash_search_excludes_non_swf_and_placeholder_records(flash_repo):
+    flash_repo.add(
+        FlashGameEntity(
+            game_id="real",
+            title="Real Flash Word Game",
+            description="Actual SWF game",
+            tags=["word"],
+            storage_path="https://cdn.example.com/real.swf",
+        )
+    )
+    flash_repo.add(
+        FlashGameEntity(
+            game_id="html5",
+            title="HTML5 Word Game",
+            description="Not a Flash binary",
+            tags=["word"],
+            storage_path="https://cdn.example.com/html5/index.html",
+        )
+    )
+    flash_repo.add(
+        FlashGameEntity(
+            game_id="placeholder",
+            title="Placeholder Flash Game",
+            description="Placeholder asset",
+            tags=["word"],
+            storage_path="placeholder.swf",
+        )
+    )
+
+    response = _dispatch('/api/flash/search?q=word')
+    assert response.status_int == 200
+    payload = _json(response)
+    assert [result['id'] for result in payload['results']] == ['real']
+
+
 def test_flash_metadata_returns_expected_payload(flash_repo):
     flash_repo.add(
         FlashGameEntity(
@@ -193,6 +228,21 @@ def test_flash_metadata_not_found_returns_404(flash_repo):
     assert response.status_int == 404
     payload = _json(response)
     assert payload['error']['code'] == 404
+
+
+def test_flash_metadata_rejects_non_swf_records(flash_repo):
+    flash_repo.add(
+        FlashGameEntity(
+            game_id="html5",
+            title="HTML5 Game",
+            description="Not Flash",
+            tags=["html5"],
+            storage_path="https://cdn.example.com/game.html",
+        )
+    )
+
+    response = _dispatch('/api/flash/html5')
+    assert response.status_int == 404
 
 
 def test_flash_stream_requires_token(flash_repo):

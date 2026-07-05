@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Flash Game Library - Play Classic Flash Games</title>
-    <meta name="description" content="Browse and play a curated library of classic Flash games with modern Ruffle playback support.">
+    <title>Flash Game Library - Discovered SWF Games</title>
+    <meta name="description" content="Browse and play discovered Flash SWF games with modern Ruffle playback support.">
     {{ macros.headers(ws, highscores, achievements) }}
     <link rel="stylesheet" href="{{ static_url }}/css/flash-library.css">
 </head>
@@ -15,7 +15,7 @@
     <main class="flash-library__content">
         <header class="flash-library__header">
             <h1 class="flash-library__title">Flash Game Library</h1>
-            <p class="flash-library__subtitle">Search, filter, and rediscover iconic Flash experiences preserved with the Ruffle emulator. Stream games instantly in your browser with no plugins required.</p>
+            <p class="flash-library__subtitle">Search and play discovered SWF-backed Flash games preserved with the Ruffle emulator.</p>
         </header>
         <section class="flash-library__filters">
             <form id="flash-search-form" class="flash-library__form" autocomplete="off">
@@ -85,7 +85,7 @@
                         </article>
                     {% endfor %}
                 {% else %}
-                    <div class="flash-library__empty">No games match your filters yet. Try removing a filter or searching for a different keyword.</div>
+                    <div class="flash-library__empty">No discovered Flash games match these filters yet.</div>
                 {% endif %}
             </div>
             <nav class="flash-library__pagination" id="flash-pagination"></nav>

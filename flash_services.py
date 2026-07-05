@@ -16,6 +16,16 @@ from typing import List, Optional, Sequence, Tuple
 from models import FlashGame, client as ndb_client
 
 
+def is_flash_storage_path(storage_path: Optional[str]) -> bool:
+    """Return true only for real SWF-backed Flash assets."""
+    if not storage_path:
+        return False
+    path = storage_path.split("?", 1)[0].split("#", 1)[0].strip().lower()
+    if path.endswith("/placeholder.swf") or path == "placeholder.swf":
+        return False
+    return path.endswith(".swf")
+
+
 def _env_int(name: str, default: int) -> int:
     value = os.environ.get(name)
     if value is None:
@@ -123,12 +133,18 @@ class FlashGameRepository:
     def list_active_games(self) -> List[FlashGameEntity]:
         with self._client.context():
             models = FlashGame.query(FlashGame.is_active == True).fetch()  # noqa: E712
-        return [FlashGameEntity.from_model(model) for model in models]
+        return [
+            FlashGameEntity.from_model(model)
+            for model in models
+            if is_flash_storage_path(model.storage_path)
+        ]
 
     def get(self, game_id: str) -> Optional[FlashGameEntity]:
         with self._client.context():
             model = FlashGame.get_by_id(game_id)
         if not model:
+            return None
+        if not model.is_active or not is_flash_storage_path(model.storage_path):
             return None
         return FlashGameEntity.from_model(model)
 
@@ -161,6 +177,8 @@ class FlashSearchService:
         tag_filter = self._normalise_tags(tags)
         candidates = []
         for game in self._repository.list_active_games():
+            if not game.is_active or not is_flash_storage_path(game.storage_path):
+                continue
             if tag_filter and not self._has_all_tags(game, tag_filter):
                 continue
             score = self._score_game(game, tokens)
@@ -270,7 +288,7 @@ class FlashStreamService:
 
     def get_stream_payload(self, game_id: str) -> dict:
         game = self._repository.get(game_id)
-        if not game or not game.is_active:
+        if not game or not game.is_active or not is_flash_storage_path(game.storage_path):
             raise FlashGameNotFoundError(f"No Flash game found for id '{game_id}'.")
 
         expires_at = int(time.time()) + self._expiry_seconds
@@ -349,5 +367,6 @@ __all__ = [
     "flash_repository",
     "flash_search_service",
     "flash_stream_service",
+    "is_flash_storage_path",
     "stream_rate_limiter",
 ]

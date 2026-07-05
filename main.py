@@ -322,7 +322,11 @@ class FlashMetadataHandler(ApiHandler):
             return
 
         game = flash_services.flash_repository.get(game_id)
-        if not game or not game.is_active:
+        if (
+            not game
+            or not game.is_active
+            or not flash_services.is_flash_storage_path(game.storage_path)
+        ):
             self.render_error(404, f"Flash game '{game_id}' was not found.")
             return
 
@@ -331,7 +335,7 @@ class FlashMetadataHandler(ApiHandler):
         self.render_json(payload)
 
 
-class FlashStreamHandler(ApiHandler):
+class FlashApiStreamHandler(ApiHandler):
     AUTH_HEADER = 'X-Flash-Token'
 
     def get(self, game_id):
@@ -746,7 +750,7 @@ class FlashPlayerPageHandler(BaseHandler):
         self.render('/templates/flash/player.jinja2', template_params)
 
 
-class FlashStreamHandler(webapp2.RequestHandler):
+class FlashLibraryStreamHandler(webapp2.RequestHandler):
     def get(self, game_id):
         game = flash_library.get_game(game_id)
         if not game:
@@ -758,6 +762,8 @@ class FlashStreamHandler(webapp2.RequestHandler):
         if stream_path.startswith('http://') or stream_path.startswith('https://'):
             self.redirect(stream_path)
             return
+        if not flash_services.is_flash_storage_path(stream_path):
+            self.abort(404)
         filename = os.path.basename(stream_path)
         static_path = os.path.join(os.path.dirname(__file__), 'static', 'flash', filename)
         if not os.path.exists(static_path):
@@ -1085,7 +1091,7 @@ routes = [
     ('/flash-library', FlashLibraryPageHandler),
     ('/flash-library/play/(.*)', FlashPlayerPageHandler),
     ('/api/flash-library', FlashLibrarySearchHandler),
-    ('/flash/stream/(.*)', FlashStreamHandler),
+    ('/flash/stream/(.*)', FlashLibraryStreamHandler),
     ('/scores', ScoresHandler),
     ('/achievements', AchievementsHandler),
     ('/login', LoginHandler),
@@ -1116,7 +1122,7 @@ routes = [
     ('/edit-user-game/(\d+)', EditUserGameHandler),
     ('/delete-user-game/(\d+)', DeleteUserGameHandler),
     (r'/api/flash/search', FlashSearchHandler),
-    (r'/api/flash/([^/]+)/stream', FlashStreamHandler),
+    (r'/api/flash/([^/]+)/stream', FlashApiStreamHandler),
     (r'/api/flash/([^/]+)', FlashMetadataHandler),
     ('/api/create-user', CreateUserHandler),
     ('/api/get-user', GetUserHandler),
