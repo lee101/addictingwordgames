@@ -42,3 +42,11 @@ indexes:
   - name: user
   - name: difficulty
     direction: desc
+
+- kind: FlashGame
+  properties:
+  - name: tags
+  - name: crawled_at
+    direction: desc
+  - name: created
+    direction: desc
