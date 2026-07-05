@@ -214,6 +214,48 @@
     </div>
 {%- endmacro %}
 
+{% macro showwordsearch() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/word-search"
+           title="Word Search"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Word Search" width="200"
+                height="200"/></a>
+        <a href="/word-search"
+           title="Play Word Search">Word Search</a>
+        <span class="game-badge">NEW</span>
+        <p class="small-description-text small-description-text-featured">Find hidden words in letter grids with hints, timers, and difficulty levels.</p>
+    </div>
+{%- endmacro %}
+
+{% macro showgravitywords() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/gravity-words"
+           title="Gravity Words"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Gravity Words" width="200"
+                height="200"/></a>
+        <a href="/gravity-words"
+           title="Play Gravity Words">Gravity Words</a>
+        <span class="game-badge">NEW</span>
+        <p class="small-description-text small-description-text-featured">Catch falling letters, build valid words, chain combos, and survive the drop.</p>
+    </div>
+{%- endmacro %}
+
+{% macro showtypingrace() -%}
+    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
+        <a class="game-link" href="/typing-race"
+           title="Typing Race"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Typing Race" width="200"
+                height="200"/></a>
+        <a href="/typing-race"
+           title="Play Typing Race">Typing Race</a>
+        <span class="game-badge">NEW</span>
+        <p class="small-description-text small-description-text-featured">Race the clock with real-time WPM, accuracy, difficulty, and duration settings.</p>
+    </div>
+{%- endmacro %}
+
 {% macro showmaingame() -%}
     {% if game %}
         <div class="game game-panel mdl-shadow--4dp"
@@ -266,6 +308,9 @@
         {{ showwordle() }}
         {{ showwordphzzle() }}
         {{ showwordjumble() }}
+        {{ showwordsearch() }}
+        {{ showgravitywords() }}
+        {{ showtypingrace() }}
         {{ shownetwrck() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}
@@ -623,4 +668,3 @@
         </li>
     </ul>
 {%- endmacro %}
-

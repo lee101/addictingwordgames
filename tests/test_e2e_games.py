@@ -65,6 +65,9 @@ class TestE2EGames:
             ('Infinite Wordle', '/wordle'),
             ('Word Phzzle', '/word-phzzle'),
             ('Word Jumble', '/word-jumble'),
+            ('Word Search', '/word-search'),
+            ('Gravity Words', '/gravity-words'),
+            ('Typing Race', '/typing-race'),
         ]
         for name, url in games:
             assert name in body, f'{name} not found on homepage'
@@ -157,6 +160,55 @@ class TestE2EGames:
         assert 'Hint' in body
         assert 'Pause' in body
 
+    # Word Search tests
+    def test_word_search_loads(self):
+        status, body = fetch('/word-search')
+        assert status == 200
+        assert 'Word Search' in body
+
+    def test_word_search_has_game_elements(self):
+        status, body = fetch('/word-search')
+        assert status == 200
+        assert 'grid' in body
+        assert 'words' in body
+        assert 'difficulty' in body
+        assert 'Score' in body
+        assert 'Found' in body
+        assert 'Hint' in body
+
+    # Gravity Words tests
+    def test_gravity_words_loads(self):
+        status, body = fetch('/gravity-words')
+        assert status == 200
+        assert 'Gravity Words' in body
+        assert 'game-canvas' in body
+
+    def test_gravity_words_has_game_elements(self):
+        status, body = fetch('/gravity-words')
+        assert status == 200
+        assert 'collected-letters' in body
+        assert 'submit-word' in body
+        assert 'Score' in body
+        assert 'Combo' in body
+        assert 'id="lives"' in body
+        assert 'Help' in body
+
+    # Typing Race tests
+    def test_typing_race_loads(self):
+        status, body = fetch('/typing-race')
+        assert status == 200
+        assert 'Typing Race' in body
+
+    def test_typing_race_has_game_elements(self):
+        status, body = fetch('/typing-race')
+        assert status == 200
+        assert 'input-field' in body
+        assert 'current-word' in body
+        assert 'duration' in body
+        assert 'Score' in body
+        assert 'WPM' in body
+        assert 'Accuracy' in body
+
     # Static file tests
     def test_game_audio_js_loads(self):
         status, body = fetch('/static/js/game-audio.js')
@@ -176,6 +228,9 @@ class TestE2EGames:
             '/wordle',
             '/word-phzzle',
             '/word-jumble',
+            '/word-search',
+            '/gravity-words',
+            '/typing-race',
         ]
         for url in games:
             status, body = fetch(url)

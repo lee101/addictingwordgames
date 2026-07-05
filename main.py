@@ -353,6 +353,12 @@ class GravityWordsHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class TypingRaceHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/typing-race/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = list(games.keys())
@@ -800,6 +806,7 @@ routes = [
     ('/cross-word', CrossWordHandler),
     ('/word-search', WordSearchHandler),
     ('/gravity-words', GravityWordsHandler),
+    ('/typing-race', TypingRaceHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),

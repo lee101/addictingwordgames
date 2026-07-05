@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Race</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Typing Race</h1>
+        <p class="subtitle">Type the words as fast as you can!</p>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-label">Score</span>
+                <span class="stat-value" id="score">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">WPM</span>
+                <span class="stat-value" id="wpm">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Accuracy</span>
+                <span class="stat-value" id="accuracy">100%</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Time</span>
+                <span class="stat-value" id="timer">60</span>
+            </div>
+        </div>
+
+        <div class="high-score-bar">
+            <span>Best Score: <span id="high-score">0</span></span>
+            <span>Best WPM: <span id="high-wpm">0</span></span>
+        </div>
+
+        <div class="game-area">
+            <div class="words-display" id="words-display">
+                <span class="word active" id="current-word"></span>
+                <span class="word upcoming" id="next-words"></span>
+            </div>
+
+            <input type="text" id="input-field" placeholder="Type here to start..." autofocus autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+
+            <div class="typed-indicator" id="typed-indicator"></div>
+        </div>
+
+        <div class="controls">
+            <button id="start-btn" class="btn primary">Start Game</button>
+            <button id="restart-btn" class="btn secondary" style="display: none;">Restart</button>
+
+            <div class="settings">
+                <label for="difficulty">Difficulty:</label>
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+
+                <label for="duration">Duration:</label>
+                <select id="duration">
+                    <option value="30">30s</option>
+                    <option value="60" selected>60s</option>
+                    <option value="120">120s</option>
+                </select>
+            </div>
+        </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">🎵 Play Music</button>
+        <button id="music-next">⏭️ Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+        <div class="game-over-modal" id="game-over-modal">
+            <div class="modal-content">
+                <h2>Game Over!</h2>
+                <div class="final-stats">
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <p>Words Per Minute: <span id="final-wpm">0</span></p>
+                    <p>Accuracy: <span id="final-accuracy">0%</span></p>
+                    <p>Words Typed: <span id="final-words">0</span></p>
+                    <p class="new-record" id="new-record" style="display: none;">New Record!</p>
+                </div>
+                <button id="play-again-btn" class="btn primary">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
