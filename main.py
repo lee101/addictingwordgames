@@ -194,7 +194,16 @@ class BaseHandler(webapp2.RequestHandler):
         '''
         todo implement user played/notplayed
         '''
-        titles = Game.getAllTitles()
+        if LOCAL_DEBUG or GameOnUtils.debug:
+            titles = [game.get('urltitle') for game in flat_games if game.get('urltitle')]
+            if not titles:
+                return '/'
+            return '/play-game/' + choice(titles)
+        try:
+            titles = Game.getAllTitles()
+        except Exception as err:
+            logger.warning(f"Unable to load random game titles: {err}")
+            return '/'
         if len(titles) == 0:
             return '/'
         randchoice = choice(titles)
@@ -492,6 +501,42 @@ class GravityWordsHandler(webapp2.RequestHandler):
 class TypingRaceHandler(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template("/static/typing-race/index.html")
+        self.response.write(template.render())
+
+
+class WordReactorHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-reactor/index.html")
+        self.response.write(template.render())
+
+
+class WordDetectiveHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-detective/index.html")
+        self.response.write(template.render())
+
+
+class SpeedSpellerHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/speed-speller/index.html")
+        self.response.write(template.render())
+
+
+class WordDuelHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-duel/index.html")
+        self.response.write(template.render())
+
+
+class WordEvolutionHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-evolution/index.html")
+        self.response.write(template.render())
+
+
+class SyllableShuffleHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/syllable-shuffle/index.html")
         self.response.write(template.render())
 
 
@@ -1112,6 +1157,12 @@ routes = [
     ('/word-search', WordSearchHandler),
     ('/gravity-words', GravityWordsHandler),
     ('/typing-race', TypingRaceHandler),
+    ('/word-reactor', WordReactorHandler),
+    ('/word-detective', WordDetectiveHandler),
+    ('/speed-speller', SpeedSpellerHandler),
+    ('/word-duel', WordDuelHandler),
+    ('/word-evolution', WordEvolutionHandler),
+    ('/syllable-shuffle', SyllableShuffleHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),

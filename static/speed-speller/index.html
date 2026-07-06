@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Speller - Listen and Type Fast!</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/static/js/piano-music.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Speed Speller</h1>
+        <p class="subtitle">Listen carefully and type what you hear!</p>
+
+        <div class="game-area">
+            <div class="timer-bar">
+                <div id="timer-fill" class="timer-fill"></div>
+            </div>
+
+            <div class="audio-controls">
+                <button id="play-word" class="play-btn">
+                    <span class="play-icon">&#128266;</span>
+                    <span class="play-text">Play Word</span>
+                </button>
+                <button id="replay-word" class="replay-btn" disabled>
+                    <span class="replay-icon">&#128260;</span>
+                    <span class="replay-text">Replay</span>
+                </button>
+            </div>
+
+            <div class="word-hint" id="word-hint"></div>
+
+            <div class="input-area">
+                <input type="text" id="guess" placeholder="Type the word you hear..." autocomplete="off" disabled />
+                <button id="submit-btn" disabled>Check</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">Score</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Streak</span>
+                    <span id="streak" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Best</span>
+                    <span id="high-score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">WPM</span>
+                    <span id="wpm" class="stat-value">0</span>
+                </div>
+            </div>
+
+            <p id="message" class="message"></p>
+
+            <div class="lives-container">
+                <span class="lives-label">Lives:</span>
+                <span id="lives" class="lives">
+                    <span class="heart">&#10084;</span>
+                    <span class="heart">&#10084;</span>
+                    <span class="heart">&#10084;</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="settings">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <label for="speed">Speed:</label>
+            <select id="speed">
+                <option value="slow">Slow</option>
+                <option value="normal" selected>Normal</option>
+                <option value="fast">Fast</option>
+            </select>
+            <button id="theme-toggle">Dark Mode</button>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Play</h3>
+            <ul>
+                <li>Click "Play Word" to hear a word spoken aloud</li>
+                <li>Type the word exactly as you heard it</li>
+                <li>You have limited time based on difficulty</li>
+                <li>Faster typing = more points!</li>
+                <li>Build streaks for bonus points</li>
+                <li>You have 3 lives - don't lose them all!</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="music-controls">
+        <button id="music-toggle">Play Music</button>
+        <button id="music-next">Next</button>
+        <div class="song-name" id="song-name"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

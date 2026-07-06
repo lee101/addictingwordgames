@@ -300,6 +300,96 @@
 
 {%- endmacro %}
 
+{% macro showworddetective() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-detective"
+           title="Word Detective"><img
+                src="{{ static_url }}/img/word-detective-logo256.svg"
+                alt="Word Detective" width="256"
+                height="256"/></a>
+        <a href="/word-detective"
+           title="Play Word Detective">Word Detective</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Crack the case! Guess the mystery word from its definition and first letter. Use hints wisely!</p>
+    </div>
+{%- endmacro %}
+
+{% macro showspeedspeller() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/speed-speller"
+           title="Speed Speller"><img
+                src="{{ static_url }}/img/speed-speller-logo256.svg"
+                alt="Speed Speller" width="256"
+                height="256"/></a>
+        <a href="/speed-speller"
+           title="Play Speed Speller">Speed Speller</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Listen to words spoken aloud and type them as fast as you can! Test your spelling and speed!</p>
+    </div>
+{%- endmacro %}
+
+{% macro showwordduel() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-duel"
+           title="Word Duel"><img
+                src="{{ static_url }}/img/word-duel-logo256.svg"
+                alt="Word Duel" width="256"
+                height="256"/></a>
+        <a href="/word-duel"
+           title="Play Word Duel">Word Duel</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Two-player word battle! Add letters without completing a word. Challenge your opponent's bluffs!</p>
+    </div>
+{%- endmacro %}
+
+{% macro showwordevolution() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-evolution"
+           title="Word Evolution"><img
+                src="{{ static_url }}/img/word-evolution-logo256.svg"
+                alt="Word Evolution" width="256"
+                height="256"/></a>
+        <a href="/word-evolution"
+           title="Play Word Evolution">Word Evolution</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Transform one word into another, one letter at a time! Each step must be a valid word. How few steps can you take?</p>
+    </div>
+{%- endmacro %}
+
+{% macro showsyllableshuffle() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/syllable-shuffle"
+           title="Syllable Shuffle"><img
+                src="{{ static_url }}/img/syllable-shuffle-logo256.svg"
+                alt="Syllable Shuffle" width="256"
+                height="256"/></a>
+        <a href="/syllable-shuffle"
+           title="Play Syllable Shuffle">Syllable Shuffle</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Words are broken into syllables and scrambled. Drag and drop to reassemble them correctly!</p>
+    </div>
+{%- endmacro %}
+
+{% macro showwordreactor() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-reactor"
+           title="Word Reactor"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Word Reactor" width="200"
+                height="200"/></a>
+        <a href="/word-reactor"
+           title="Play Word Reactor">Word Reactor</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Chain words under pressure before the reactor overheats.</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
@@ -311,6 +401,12 @@
         {{ showwordsearch() }}
         {{ showgravitywords() }}
         {{ showtypingrace() }}
+        {{ showwordreactor() }}
+        {{ showsyllableshuffle() }}
+        {{ showwordevolution() }}
+        {{ showwordduel() }}
+        {{ showspeedspeller() }}
+        {{ showworddetective() }}
         {{ shownetwrck() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}

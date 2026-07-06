@@ -1,0 +1,584 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    transition: background 0.3s, color 0.3s;
+}
+
+.container {
+    max-width: 550px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+    margin: 0 0 5px 0;
+    font-size: 2.5em;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+    margin: 0 0 25px 0;
+    font-size: 0.95em;
+}
+
+.game-area {
+    margin-bottom: 20px;
+}
+
+.hint-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid #a855f7;
+}
+
+.hint-label {
+    font-size: 0.75em;
+    color: #a855f7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.hint-text {
+    font-size: 1.05em;
+    line-height: 1.4;
+    color: #fff;
+    font-style: italic;
+}
+
+.syllable-container {
+    margin-bottom: 20px;
+}
+
+.syllable-bank {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    min-height: 70px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+}
+
+.drop-zone-label {
+    font-size: 0.85em;
+    color: #888;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.drop-zone {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    min-height: 80px;
+    padding: 15px;
+    background: rgba(168, 85, 247, 0.1);
+    border-radius: 12px;
+    border: 2px dashed rgba(168, 85, 247, 0.4);
+    transition: all 0.3s;
+}
+
+.drop-zone.has-syllables {
+    border-style: solid;
+    background: rgba(168, 85, 247, 0.15);
+}
+
+.drop-zone:empty::before {
+    content: 'Drop syllables here';
+    color: #666;
+    font-style: italic;
+    align-self: center;
+}
+
+.syllable {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border-radius: 12px;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    border: 2px solid transparent;
+}
+
+.syllable:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+}
+
+.syllable:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.syllable.dragging {
+    opacity: 0.5;
+    transform: scale(1.1);
+}
+
+.syllable.touch-dragging {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.6);
+}
+
+.syllable.correct {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    animation: pop 0.3s ease;
+}
+
+.syllable.revealed {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    cursor: default;
+}
+
+.syllable.pop {
+    animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+
+@keyframes celebrate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+.celebrate {
+    animation: celebrate 0.6s ease;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.primary-btn, .secondary-btn, .ghost-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 14px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: white;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+}
+
+.secondary-btn {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+}
+
+.secondary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+}
+
+.ghost-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #aaa;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ghost-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.stat {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.7em;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #a855f7;
+}
+
+.timer-container {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.timer-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 4px;
+    transition: width 0.1s linear;
+}
+
+.timer-bar.warning {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.timer-bar.danger {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+    animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.message {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    min-height: 30px;
+    margin: 10px 0;
+    transition: color 0.3s;
+}
+
+.message.success {
+    color: #34d399;
+}
+
+.message.error {
+    color: #f87171;
+}
+
+.message.info {
+    color: #60a5fa;
+}
+
+.settings {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.settings label {
+    color: #aaa;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.settings input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+#difficulty {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    cursor: pointer;
+}
+
+#theme-toggle {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.1);
+    color: #aaa;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.instructions {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 0.85em;
+}
+
+.instructions h3 {
+    margin: 0 0 10px 0;
+    color: #a855f7;
+    font-size: 1em;
+}
+
+.instructions ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #aaa;
+}
+
+.instructions li {
+    margin-bottom: 5px;
+}
+
+.music-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    font-size: 0.85em;
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.music-controls button {
+    padding: 8px 12px;
+    font-size: 0.9em;
+    margin: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #aaa;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.music-controls button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.music-controls .song-name {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 8px;
+    text-align: center;
+}
+
+/* Light theme */
+body.light {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%);
+    color: #333;
+}
+
+body.light .container {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+body.light h1 {
+    background: linear-gradient(135deg, #9333ea, #db2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+body.light .subtitle {
+    color: #666;
+}
+
+body.light .hint-card {
+    background: rgba(168, 85, 247, 0.1);
+}
+
+body.light .hint-text {
+    color: #333;
+}
+
+body.light .syllable-bank {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+body.light .drop-zone {
+    background: rgba(168, 85, 247, 0.08);
+    border-color: rgba(168, 85, 247, 0.3);
+}
+
+body.light .drop-zone.has-syllables {
+    background: rgba(168, 85, 247, 0.12);
+}
+
+body.light .drop-zone:empty::before {
+    color: #999;
+}
+
+body.light .stat {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body.light .stat-label {
+    color: #666;
+}
+
+body.light .timer-container {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.light .ghost-btn {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #666;
+}
+
+body.light #difficulty {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #333;
+}
+
+body.light #theme-toggle {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #666;
+}
+
+body.light .instructions {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body.light .instructions ul {
+    color: #666;
+}
+
+body.light .music-controls {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light .music-controls button {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #666;
+}
+
+body.light .music-controls button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+/* Mobile responsive */
+@media (max-width: 520px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .syllable {
+        padding: 10px 16px;
+        font-size: 1.1em;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .primary-btn, .secondary-btn, .ghost-btn {
+        width: 100%;
+    }
+
+    .settings {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .music-controls {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        text-align: center;
+    }
+}

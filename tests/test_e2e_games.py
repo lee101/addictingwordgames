@@ -68,6 +68,12 @@ class TestE2EGames:
             ('Word Search', '/word-search'),
             ('Gravity Words', '/gravity-words'),
             ('Typing Race', '/typing-race'),
+            ('Word Reactor', '/word-reactor'),
+            ('Word Detective', '/word-detective'),
+            ('Speed Speller', '/speed-speller'),
+            ('Word Duel', '/word-duel'),
+            ('Word Evolution', '/word-evolution'),
+            ('Syllable Shuffle', '/syllable-shuffle'),
         ]
         for name, url in games:
             assert name in body, f'{name} not found on homepage'
@@ -209,6 +215,49 @@ class TestE2EGames:
         assert 'WPM' in body
         assert 'Accuracy' in body
 
+    # Newly merged word games
+    def test_word_reactor_loads(self):
+        status, body = fetch('/word-reactor')
+        assert status == 200
+        assert 'Word Reactor' in body
+        assert 'reactor' in body
+        assert 'target' in body
+
+    def test_word_detective_loads(self):
+        status, body = fetch('/word-detective')
+        assert status == 200
+        assert 'Word Detective' in body
+        assert 'definition' in body
+        assert 'attempts' in body
+
+    def test_speed_speller_loads(self):
+        status, body = fetch('/speed-speller')
+        assert status == 200
+        assert 'Speed Speller' in body
+        assert 'play-word' in body
+        assert 'guess' in body
+
+    def test_word_duel_loads(self):
+        status, body = fetch('/word-duel')
+        assert status == 200
+        assert 'Word Duel' in body
+        assert 'letter-input' in body
+        assert 'challenge-btn' in body
+
+    def test_word_evolution_loads(self):
+        status, body = fetch('/word-evolution')
+        assert status == 200
+        assert 'Word Evolution' in body
+        assert 'start-word' in body
+        assert 'target-word' in body
+
+    def test_syllable_shuffle_loads(self):
+        status, body = fetch('/syllable-shuffle')
+        assert status == 200
+        assert 'Syllable Shuffle' in body
+        assert 'syllable-bank' in body
+        assert 'drop-zone' in body
+
     # Static file tests
     def test_game_audio_js_loads(self):
         status, body = fetch('/static/js/game-audio.js')
@@ -231,6 +280,11 @@ class TestE2EGames:
             '/word-search',
             '/gravity-words',
             '/typing-race',
+            '/word-detective',
+            '/speed-speller',
+            '/word-duel',
+            '/word-evolution',
+            '/syllable-shuffle',
         ]
         for url in games:
             status, body = fetch(url)
