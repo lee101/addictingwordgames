@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import sys
 import pytest
 
 from sqlite_models import SQLiteDB
@@ -29,7 +30,7 @@ def test_cli(tmp_path):
     db = SQLiteDB(str(db_path))
     db.insert("users", ["id", "name"], ["u3", "CLI"])
     out = check_output([
-        "python",
+        sys.executable,
         "sqlite_cli.py",
         "users",
         "--limit",
