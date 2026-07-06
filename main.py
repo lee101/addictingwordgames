@@ -540,6 +540,12 @@ class SyllableShuffleHandler(webapp2.RequestHandler):
         self.response.write(template.render())
 
 
+class WordRingHandler(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template("/static/word-ring/index.html")
+        self.response.write(template.render())
+
+
 class SitemapHandler(webapp2.RequestHandler):
     def get(self):
         titles = list(games.keys())
@@ -1163,15 +1169,16 @@ routes = [
     ('/word-duel', WordDuelHandler),
     ('/word-evolution', WordEvolutionHandler),
     ('/syllable-shuffle', SyllableShuffleHandler),
+    ('/word-ring', WordRingHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
     ('/games/(.*)', TagHandler),
     ('/upload-user-game', UploadUserGameHandler),
     ('/my-games', MyGamesHandler),
     ('/user-games', UserGamesHandler),
-    ('/play-user-game/(\d+)', PlayUploadedGameHandler),
-    ('/edit-user-game/(\d+)', EditUserGameHandler),
-    ('/delete-user-game/(\d+)', DeleteUserGameHandler),
+    (r'/play-user-game/(\d+)', PlayUploadedGameHandler),
+    (r'/edit-user-game/(\d+)', EditUserGameHandler),
+    (r'/delete-user-game/(\d+)', DeleteUserGameHandler),
     (r'/api/flash/search', FlashSearchHandler),
     (r'/api/flash/([^/]+)/stream', FlashApiStreamHandler),
     (r'/api/flash/([^/]+)', FlashMetadataHandler),

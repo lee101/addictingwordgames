@@ -390,6 +390,21 @@
     </div>
 {%- endmacro %}
 
+{% macro showwordring() -%}
+    <div class="game game-featured mdl-shadow--4dp">
+        <a class="game-link" href="/word-ring"
+           title="Word Ring Puzzle"><img
+                src="{{ static_url }}/img/addicting-word-games-icon200.png"
+                alt="Word Ring Puzzle" width="200"
+                height="200"/></a>
+        <a href="/word-ring"
+           title="Play Word Ring Puzzle">Word Ring Puzzle</a>
+
+        <p class="small-description-text small-description-text-featured">
+            Build words from a ring of letters and clear each puzzle.</p>
+    </div>
+{%- endmacro %}
+
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
@@ -407,6 +422,7 @@
         {{ showwordduel() }}
         {{ showspeedspeller() }}
         {{ showworddetective() }}
+        {{ showwordring() }}
         {{ shownetwrck() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}

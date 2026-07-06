@@ -484,72 +484,90 @@ function (kwargs) {
 frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
+output += "<div class=\"game game-featured mdl-shadow--4dp\">\n        <a class=\"game-link\" href=\"/word-ring\"\n           title=\"Word Ring Puzzle\"><img\n                src=\"";
+output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "static_url"), env.autoesc);
+output += "/img/addicting-word-games-icon200.png\"\n                alt=\"Word Ring Puzzle\" width=\"200\"\n                height=\"200\"/></a>\n        <a href=\"/word-ring\"\n           title=\"Play Word Ring Puzzle\">Word Ring Puzzle</a>\n\n        <p class=\"small-description-text small-description-text-featured\">\n            Build words from a ring of letters and clear each puzzle.</p>\n    </div>";
+frame = frame.pop();
+return new runtime.SafeString(output);
+});
+context.addExport("showwordring");
+context.setVariable("showwordring", macro_t_31);
+output += "\n\n";
+var macro_t_32 = runtime.makeMacro(
+[],
+[],
+function (kwargs) {
+frame = frame.push();
+kwargs = kwargs || {};
+var output= "";
 output += "<div id=\"games\">\n        ";
-output += runtime.suppressValue((lineno = 394, colno = 21, runtime.callWrap(macro_t_23, "showmaingame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 409, colno = 21, runtime.callWrap(macro_t_23, "showmaingame", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 395, colno = 31, runtime.callWrap(macro_t_15, "showtypingtowerdefense", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 410, colno = 31, runtime.callWrap(macro_t_15, "showtypingtowerdefense", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 396, colno = 23, runtime.callWrap(macro_t_16, "showtypinggame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 411, colno = 23, runtime.callWrap(macro_t_16, "showtypinggame", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 397, colno = 19, runtime.callWrap(macro_t_17, "showwordle", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 412, colno = 19, runtime.callWrap(macro_t_17, "showwordle", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 398, colno = 23, runtime.callWrap(macro_t_18, "showwordphzzle", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 413, colno = 23, runtime.callWrap(macro_t_18, "showwordphzzle", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 399, colno = 23, runtime.callWrap(macro_t_19, "showwordjumble", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 414, colno = 23, runtime.callWrap(macro_t_19, "showwordjumble", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 400, colno = 23, runtime.callWrap(macro_t_20, "showwordsearch", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 415, colno = 23, runtime.callWrap(macro_t_20, "showwordsearch", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 401, colno = 25, runtime.callWrap(macro_t_21, "showgravitywords", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 416, colno = 25, runtime.callWrap(macro_t_21, "showgravitywords", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 402, colno = 23, runtime.callWrap(macro_t_22, "showtypingrace", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 417, colno = 23, runtime.callWrap(macro_t_22, "showtypingrace", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 403, colno = 24, runtime.callWrap(macro_t_30, "showwordreactor", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 418, colno = 24, runtime.callWrap(macro_t_30, "showwordreactor", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 404, colno = 28, runtime.callWrap(macro_t_29, "showsyllableshuffle", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 419, colno = 28, runtime.callWrap(macro_t_29, "showsyllableshuffle", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 405, colno = 26, runtime.callWrap(macro_t_28, "showwordevolution", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 420, colno = 26, runtime.callWrap(macro_t_28, "showwordevolution", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 406, colno = 21, runtime.callWrap(macro_t_27, "showwordduel", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 421, colno = 21, runtime.callWrap(macro_t_27, "showwordduel", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 407, colno = 25, runtime.callWrap(macro_t_26, "showspeedspeller", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 422, colno = 25, runtime.callWrap(macro_t_26, "showspeedspeller", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 408, colno = 26, runtime.callWrap(macro_t_25, "showworddetective", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 423, colno = 26, runtime.callWrap(macro_t_25, "showworddetective", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 409, colno = 20, runtime.callWrap(macro_t_8, "shownetwrck", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 424, colno = 21, runtime.callWrap(macro_t_31, "showwordring", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 410, colno = 25, runtime.callWrap(macro_t_7, "showwordsmashing", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 425, colno = 20, runtime.callWrap(macro_t_8, "shownetwrck", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 411, colno = 33, runtime.callWrap(macro_t_10, "showmultiplicationmaster", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 426, colno = 25, runtime.callWrap(macro_t_7, "showwordsmashing", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 412, colno = 23, runtime.callWrap(macro_t_9, "showrewordgame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 427, colno = 33, runtime.callWrap(macro_t_10, "showmultiplicationmaster", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 413, colno = 32, runtime.callWrap(macro_t_11, "showbigmultiplayerchess", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 428, colno = 23, runtime.callWrap(macro_t_9, "showrewordgame", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 414, colno = 26, runtime.callWrap(macro_t_12, "showquestionsgame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 429, colno = 32, runtime.callWrap(macro_t_11, "showbigmultiplayerchess", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 415, colno = 28, runtime.callWrap(macro_t_13, "showreadingtimegame", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 430, colno = 26, runtime.callWrap(macro_t_12, "showquestionsgame", [])), env.autoesc);
 output += "\n        ";
-output += runtime.suppressValue((lineno = 416, colno = 20, runtime.callWrap(macro_t_14, "showjoydrop", [])), env.autoesc);
+output += runtime.suppressValue((lineno = 431, colno = 28, runtime.callWrap(macro_t_13, "showreadingtimegame", [])), env.autoesc);
 output += "\n        ";
-var t_32;
-t_32 = 0;
-frame.set("num_adds_shown", t_32);
+output += runtime.suppressValue((lineno = 432, colno = 20, runtime.callWrap(macro_t_14, "showjoydrop", [])), env.autoesc);
+output += "\n        ";
+var t_33;
+t_33 = 0;
+frame.set("num_adds_shown", t_33);
 if(!frame.parent) {
-context.setVariable("num_adds_shown", t_32);
+context.setVariable("num_adds_shown", t_33);
 context.addExport("num_adds_shown");
 }
 output += "\n        ";
 frame = frame.push();
-var t_35 = runtime.contextOrFrameLookup(context, frame, "games");
-if(t_35) {for(var t_33=0; t_33 < t_35.length; t_33++) {
-var t_36 = t_35[t_33];
-frame.set("game", t_36);
+var t_36 = runtime.contextOrFrameLookup(context, frame, "games");
+if(t_36) {for(var t_34=0; t_34 < t_36.length; t_34++) {
+var t_37 = t_36[t_34];
+frame.set("game", t_37);
 output += "\n            ";
 output += "\n            ";
 output += "\n            ";
 output += "\n            ";
 output += "\n            ";
-output += runtime.suppressValue((lineno = 423, colno = 21, runtime.callWrap(macro_t_1, "showgame", [t_36])), env.autoesc);
+output += runtime.suppressValue((lineno = 439, colno = 21, runtime.callWrap(macro_t_1, "showgame", [t_37])), env.autoesc);
 output += "\n        ";
 ;
 }
@@ -560,9 +578,9 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("showgames");
-context.setVariable("showgames", macro_t_31);
+context.setVariable("showgames", macro_t_32);
 output += "\n\n";
-var macro_t_37 = runtime.makeMacro(
+var macro_t_38 = runtime.makeMacro(
 [],
 [],
 function (kwargs) {
@@ -570,7 +588,7 @@ frame = frame.push();
 kwargs = kwargs || {};
 var output= "";
 output += "<object type=\"application/x-shockwave-flash\"\n            data=\"";
-output += runtime.suppressValue((lineno = 430, colno = 37, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getSWFUrl", env.autoesc), "awgutils[\"getSWFUrl\"]", [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"urltitle", env.autoesc)])), env.autoesc);
+output += runtime.suppressValue((lineno = 446, colno = 37, runtime.callWrap(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "awgutils")),"getSWFUrl", env.autoesc), "awgutils[\"getSWFUrl\"]", [runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"urltitle", env.autoesc)])), env.autoesc);
 output += "\"\n            id=\"\"\n            style=\"margin:0 10px;width:";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "game")),"width", env.autoesc), env.autoesc);
 output += "px;height:";
@@ -580,9 +598,9 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("renderswf");
-context.setVariable("renderswf", macro_t_37);
+context.setVariable("renderswf", macro_t_38);
 output += "\n\n";
-var macro_t_38 = runtime.makeMacro(
+var macro_t_39 = runtime.makeMacro(
 [],
 [],
 function (kwargs) {
@@ -606,9 +624,9 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("topbar");
-context.setVariable("topbar", macro_t_38);
+context.setVariable("topbar", macro_t_39);
 output += "\n\n";
-var macro_t_39 = runtime.makeMacro(
+var macro_t_40 = runtime.makeMacro(
 ["ws", "highscores", "achievements"],
 [],
 function (l_ws, l_highscores, l_achievements, kwargs) {
@@ -647,9 +665,9 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("headers");
-context.setVariable("headers", macro_t_39);
+context.setVariable("headers", macro_t_40);
 output += "\n\n";
-var macro_t_40 = runtime.makeMacro(
+var macro_t_41 = runtime.makeMacro(
 [],
 [],
 function (kwargs) {
@@ -661,9 +679,9 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("templates");
-context.setVariable("templates", macro_t_40);
+context.setVariable("templates", macro_t_41);
 output += "\n\n";
-var macro_t_41 = runtime.makeMacro(
+var macro_t_42 = runtime.makeMacro(
 [],
 [],
 function (kwargs) {
@@ -675,9 +693,9 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("loadmorebutton");
-context.setVariable("loadmorebutton", macro_t_41);
+context.setVariable("loadmorebutton", macro_t_42);
 output += "\n\n";
-var macro_t_42 = runtime.makeMacro(
+var macro_t_43 = runtime.makeMacro(
 [],
 [],
 function (kwargs) {
@@ -725,8 +743,8 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("footer");
-context.setVariable("footer", macro_t_42);
-var macro_t_43 = runtime.makeMacro(
+context.setVariable("footer", macro_t_43);
+var macro_t_44 = runtime.makeMacro(
 ["url"],
 [],
 function (l_url, kwargs) {
@@ -743,7 +761,7 @@ frame = frame.pop();
 return new runtime.SafeString(output);
 });
 context.addExport("shareBtnsHorizontal");
-context.setVariable("shareBtnsHorizontal", macro_t_43);
+context.setVariable("shareBtnsHorizontal", macro_t_44);
 output += "\n";
 cb(null, output);
 ;

@@ -1,0 +1,461 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+}
+
+h1 {
+    color: #4a4a8a;
+    margin-bottom: 5px;
+    font-size: 2rem;
+}
+
+.instructions {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.ring-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin: 0 auto 20px;
+}
+
+#letter-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.letter-btn {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 3px solid #667eea;
+    background: #fff;
+    color: #4a4a8a;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.letter-btn:hover {
+    background: #667eea;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.letter-btn.selected {
+    background: #764ba2;
+    color: #fff;
+    transform: scale(1.15);
+    border-color: #764ba2;
+    box-shadow: 0 0 15px rgba(118, 75, 162, 0.5);
+}
+
+.letter-btn.used {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+#center-letter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    text-transform: uppercase;
+}
+
+#center-letter:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+#center-letter.selected {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 0 25px rgba(118, 75, 162, 0.6);
+}
+
+#center-letter.used {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.word-display {
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 50px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#current-word {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4a4a8a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    min-width: 100px;
+}
+
+#clear-word {
+    background: #ff6b6b;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#clear-word:hover {
+    background: #ee5a5a;
+    transform: scale(1.1);
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.controls button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+
+#submit-word {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+}
+
+#submit-word:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#shuffle {
+    background: #ffd93d;
+    color: #333;
+}
+
+#shuffle:hover {
+    background: #ffc107;
+    transform: translateY(-2px);
+}
+
+#hint {
+    background: #6bcb77;
+    color: #fff;
+}
+
+#hint:hover {
+    background: #5ab366;
+    transform: translateY(-2px);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stats p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.stats span {
+    color: #4a4a8a;
+    font-weight: bold;
+}
+
+.found-words {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.found-words h3 {
+    margin: 0 0 10px;
+    color: #4a4a8a;
+    font-size: 1rem;
+}
+
+#found-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.found-word {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    animation: pop 0.3s ease;
+}
+
+.navigation {
+    margin-bottom: 15px;
+}
+
+#next-puzzle {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#next-puzzle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4);
+}
+
+#message {
+    min-height: 25px;
+    color: #666;
+    font-weight: 500;
+    margin: 0;
+}
+
+#message.success {
+    color: #6bcb77;
+}
+
+#message.error {
+    color: #ff6b6b;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-content h2 {
+    color: #4a4a8a;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+#modal-next {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.2s ease;
+}
+
+#modal-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Music Controls */
+.music-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.music-controls button {
+    background: #667eea;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.music-controls button:hover {
+    background: #764ba2;
+}
+
+.song-name {
+    font-size: 0.75rem;
+    color: #666;
+    max-width: 120px;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes celebrate {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.05) rotate(-2deg); }
+    50% { transform: scale(1.1); }
+    75% { transform: scale(1.05) rotate(2deg); }
+    100% { transform: scale(1); }
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
+
+.celebrate {
+    animation: celebrate 0.5s ease;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .ring-container {
+        width: 240px;
+        height: 240px;
+    }
+
+    .letter-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+
+    #center-letter {
+        width: 55px;
+        height: 55px;
+        font-size: 1.6rem;
+    }
+
+    #current-word {
+        font-size: 1.4rem;
+    }
+
+    .controls button {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+    }
+
+    .music-controls {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 10px;
+    }
+}

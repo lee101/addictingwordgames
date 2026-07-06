@@ -74,6 +74,7 @@ class TestE2EGames:
             ('Word Duel', '/word-duel'),
             ('Word Evolution', '/word-evolution'),
             ('Syllable Shuffle', '/syllable-shuffle'),
+            ('Word Ring Puzzle', '/word-ring'),
         ]
         for name, url in games:
             assert name in body, f'{name} not found on homepage'
@@ -258,6 +259,13 @@ class TestE2EGames:
         assert 'syllable-bank' in body
         assert 'drop-zone' in body
 
+    def test_word_ring_loads(self):
+        status, body = fetch('/word-ring')
+        assert status == 200
+        assert 'Word Ring Puzzle' in body
+        assert 'letter-ring' in body
+        assert 'submit-word' in body
+
     # Static file tests
     def test_game_audio_js_loads(self):
         status, body = fetch('/static/js/game-audio.js')
@@ -285,6 +293,7 @@ class TestE2EGames:
             '/word-duel',
             '/word-evolution',
             '/syllable-shuffle',
+            '/word-ring',
         ]
         for url in games:
             status, body = fetch(url)
