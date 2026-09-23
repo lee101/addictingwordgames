@@ -1,13 +1,13 @@
 {% macro showgame(game) -%}
     <div class="game mdl-shadow--4dp">
-        <a class="game-link" href="https://{{ game.url }}"
-           title="{{ game.title }}" style="min-height: 270px; min-width: 270px"><img class="game-image"
-                src="{{ game.image }}"
-                alt="{{ game.title }}"/></a>
-        <a href="https://{{ game.url }}"
-           title="{{ game.title }}">{{ game.title }}</a>
+        <a class="game-link" href="https://{{ game.url|e }}" rel="noopener"
+           title="{{ game.title|e }}"><img class="game-image"
+                src="{{ game.image|e }}"
+                alt="{{ game.title|e }}" width="270" height="214" loading="lazy" decoding="async"/></a>
+        <a href="https://{{ game.url|e }}" rel="noopener"
+           title="{{ game.title|e }}">{{ game.title|e }}</a>
 
-        <p class="small-description-text">{{ game.description }}</p>
+        <p class="small-description-text">{{ game.description|e }}</p>
 
     </div>
 {%- endmacro %}
@@ -148,111 +148,14 @@
     </div>
 {%- endmacro %}
 
-{% macro showtypingtowerdefense() -%}
+{% macro showselfhosted(g, i) -%}
     <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/typing-tower-defense"
-           title="Typing Tower Defense"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Typing Tower Defense" width="200"
-                height="200"/></a>
-        <a href="/typing-tower-defense"
-           title="Play Typing Tower Defense">Typing Tower Defense</a>
-        <span class="game-badge">NEW</span>
-        <p class="small-description-text small-description-text-featured">Type words to destroy enemies! Build Arrow, Cannon, and Frost towers. Survive increasingly difficult waves!</p>
-    </div>
-{%- endmacro %}
-
-{% macro showtypinggame() -%}
-    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/typing-game"
-           title="Typing Game"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Typing Game" width="200"
-                height="200"/></a>
-        <a href="/typing-game"
-           title="Play Typing Game">Typing Game</a>
-        <p class="small-description-text small-description-text-featured">Type falling letters before they hit the ground! Build combos and level up for higher scores.</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordle() -%}
-    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/wordle"
-           title="Infinite Wordle"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Infinite Wordle" width="200"
-                height="200"/></a>
-        <a href="/wordle"
-           title="Play Infinite Wordle">Infinite Wordle</a>
-        <p class="small-description-text small-description-text-featured">Unlimited Wordle puzzles! Guess the 5-letter word in 6 tries. Track your streak and compete for the best score!</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordphzzle() -%}
-    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/word-phzzle"
-           title="Word Phzzle"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Word Phzzle" width="200"
-                height="200"/></a>
-        <a href="/word-phzzle"
-           title="Play Word Phzzle">Word Phzzle</a>
-        <p class="small-description-text small-description-text-featured">Unscramble letters to form words! Multiple difficulty levels with dark mode support.</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordjumble() -%}
-    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/word-jumble"
-           title="Word Jumble"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Word Jumble" width="200"
-                height="200"/></a>
-        <a href="/word-jumble"
-           title="Play Word Jumble">Word Jumble</a>
-        <p class="small-description-text small-description-text-featured">Race against the clock! Unscramble words before time runs out. Features lives, hints, and high score tracking.</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordsearch() -%}
-    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/word-search"
-           title="Word Search"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Word Search" width="200"
-                height="200"/></a>
-        <a href="/word-search"
-           title="Play Word Search">Word Search</a>
-        <span class="game-badge">NEW</span>
-        <p class="small-description-text small-description-text-featured">Find hidden words in letter grids with hints, timers, and difficulty levels.</p>
-    </div>
-{%- endmacro %}
-
-{% macro showgravitywords() -%}
-    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/gravity-words"
-           title="Gravity Words"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Gravity Words" width="200"
-                height="200"/></a>
-        <a href="/gravity-words"
-           title="Play Gravity Words">Gravity Words</a>
-        <span class="game-badge">NEW</span>
-        <p class="small-description-text small-description-text-featured">Catch falling letters, build valid words, chain combos, and survive the drop.</p>
-    </div>
-{%- endmacro %}
-
-{% macro showtypingrace() -%}
-    <div class="game game-featured game-self-hosted mdl-shadow--4dp">
-        <a class="game-link" href="/typing-race"
-           title="Typing Race"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Typing Race" width="200"
-                height="200"/></a>
-        <a href="/typing-race"
-           title="Play Typing Race">Typing Race</a>
-        <span class="game-badge">NEW</span>
-        <p class="small-description-text small-description-text-featured">Race the clock with real-time WPM, accuracy, difficulty, and duration settings.</p>
+        <a class="game-link" href="{{ g.path }}" title="Play {{ g.title }}"><img class="game-tile"
+                src="{{ g.tile }}" alt="{{ g.title }} game" width="256" height="256"{% if i > 4 %} loading="lazy"{% endif %} decoding="async"/></a>
+        <a class="game-title" href="{{ g.path }}">{{ g.title }}</a>
+        {% if g.new %}<span class="game-badge">NEW</span>{% endif %}
+        <p class="small-description-text small-description-text-featured">{{ g.tagline }}</p>
+        <a class="game-play" href="{{ g.path }}" aria-label="Play {{ g.title }} now">Play now</a>
     </div>
 {%- endmacro %}
 
@@ -300,129 +203,10 @@
 
 {%- endmacro %}
 
-{% macro showworddetective() -%}
-    <div class="game game-featured mdl-shadow--4dp">
-        <a class="game-link" href="/word-detective"
-           title="Word Detective"><img
-                src="{{ static_url }}/img/word-detective-logo256.svg"
-                alt="Word Detective" width="256"
-                height="256"/></a>
-        <a href="/word-detective"
-           title="Play Word Detective">Word Detective</a>
-
-        <p class="small-description-text small-description-text-featured">
-            Crack the case! Guess the mystery word from its definition and first letter. Use hints wisely!</p>
-    </div>
-{%- endmacro %}
-
-{% macro showspeedspeller() -%}
-    <div class="game game-featured mdl-shadow--4dp">
-        <a class="game-link" href="/speed-speller"
-           title="Speed Speller"><img
-                src="{{ static_url }}/img/speed-speller-logo256.svg"
-                alt="Speed Speller" width="256"
-                height="256"/></a>
-        <a href="/speed-speller"
-           title="Play Speed Speller">Speed Speller</a>
-
-        <p class="small-description-text small-description-text-featured">
-            Listen to words spoken aloud and type them as fast as you can! Test your spelling and speed!</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordduel() -%}
-    <div class="game game-featured mdl-shadow--4dp">
-        <a class="game-link" href="/word-duel"
-           title="Word Duel"><img
-                src="{{ static_url }}/img/word-duel-logo256.svg"
-                alt="Word Duel" width="256"
-                height="256"/></a>
-        <a href="/word-duel"
-           title="Play Word Duel">Word Duel</a>
-
-        <p class="small-description-text small-description-text-featured">
-            Two-player word battle! Add letters without completing a word. Challenge your opponent's bluffs!</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordevolution() -%}
-    <div class="game game-featured mdl-shadow--4dp">
-        <a class="game-link" href="/word-evolution"
-           title="Word Evolution"><img
-                src="{{ static_url }}/img/word-evolution-logo256.svg"
-                alt="Word Evolution" width="256"
-                height="256"/></a>
-        <a href="/word-evolution"
-           title="Play Word Evolution">Word Evolution</a>
-
-        <p class="small-description-text small-description-text-featured">
-            Transform one word into another, one letter at a time! Each step must be a valid word. How few steps can you take?</p>
-    </div>
-{%- endmacro %}
-
-{% macro showsyllableshuffle() -%}
-    <div class="game game-featured mdl-shadow--4dp">
-        <a class="game-link" href="/syllable-shuffle"
-           title="Syllable Shuffle"><img
-                src="{{ static_url }}/img/syllable-shuffle-logo256.svg"
-                alt="Syllable Shuffle" width="256"
-                height="256"/></a>
-        <a href="/syllable-shuffle"
-           title="Play Syllable Shuffle">Syllable Shuffle</a>
-
-        <p class="small-description-text small-description-text-featured">
-            Words are broken into syllables and scrambled. Drag and drop to reassemble them correctly!</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordreactor() -%}
-    <div class="game game-featured mdl-shadow--4dp">
-        <a class="game-link" href="/word-reactor"
-           title="Word Reactor"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Word Reactor" width="200"
-                height="200"/></a>
-        <a href="/word-reactor"
-           title="Play Word Reactor">Word Reactor</a>
-
-        <p class="small-description-text small-description-text-featured">
-            Chain words under pressure before the reactor overheats.</p>
-    </div>
-{%- endmacro %}
-
-{% macro showwordring() -%}
-    <div class="game game-featured mdl-shadow--4dp">
-        <a class="game-link" href="/word-ring"
-           title="Word Ring Puzzle"><img
-                src="{{ static_url }}/img/addicting-word-games-icon200.png"
-                alt="Word Ring Puzzle" width="200"
-                height="200"/></a>
-        <a href="/word-ring"
-           title="Play Word Ring Puzzle">Word Ring Puzzle</a>
-
-        <p class="small-description-text small-description-text-featured">
-            Build words from a ring of letters and clear each puzzle.</p>
-    </div>
-{%- endmacro %}
-
 {% macro showgames() -%}
     <div id="games">
         {{ showmaingame() }}
-        {{ showtypingtowerdefense() }}
-        {{ showtypinggame() }}
-        {{ showwordle() }}
-        {{ showwordphzzle() }}
-        {{ showwordjumble() }}
-        {{ showwordsearch() }}
-        {{ showgravitywords() }}
-        {{ showtypingrace() }}
-        {{ showwordreactor() }}
-        {{ showsyllableshuffle() }}
-        {{ showwordevolution() }}
-        {{ showwordduel() }}
-        {{ showspeedspeller() }}
-        {{ showworddetective() }}
-        {{ showwordring() }}
+        {% for g in awgutils.SELF_HOSTED_GAMES.values() %}{{ showselfhosted(g, loop.index) }}{% endfor %}
         {{ shownetwrck() }}
         {{ showwordsmashing() }}
         {{ showmultiplicationmaster() }}
@@ -454,9 +238,7 @@
 {% macro topbar() -%}
     <div id="main">
         <div id="logo">
-            <h1 class="header"><a href="/" title="Addicting Word Games">Addicting<span
-                    style="color:gray;display:inline-block;"> Word Games</span></a>
-            </h1>
+            <a class="header brand" href="/" title="Addicting Word Games home"><img src="{{ static_url }}/img/tiles/wordle.svg" alt="" width="36" height="36">Addicting <span>Word Games</span></a>
 
             {#            <div class="header-share">#}
             {#                <div class="fb-like" data-href="https://www.facebook.com/addictingwordgames" data-width="400px"#}
@@ -471,10 +253,14 @@
                 <a id="buy" href="/buy" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
                    style="display: none;">$1.99 Buy All Games</a>
             </div>
-            <div class="site-nav">
+            <nav class="site-nav" aria-label="Main">
+                <a href="/#games" class="site-nav__link">All Games</a>
+                <a href="/wordle" class="site-nav__link">Wordle</a>
+                <a href="/typing-game" class="site-nav__link">Typing</a>
+                <a href="/word-search" class="site-nav__link">Word Search</a>
                 <a href="/flash-library"
-                   class="site-nav__link{% if '/flash-library' in url %} site-nav__link--active{% endif %}">Flash Library</a>
-            </div>
+                   class="site-nav__link{% if '/flash-library' in url %} site-nav__link--active{% endif %}">Classic Flash Games</a>
+            </nav>
             <div class="clear"></div>
         </div>
         {#        <!-- <div id="login">#}
@@ -488,10 +274,11 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet"
-          href="https://code.getmdl.io/1.3.0/material.cyan-pink.min.css"/>
+          href="https://cdn.jsdelivr.net/npm/material-design-lite@1.3.0/dist/material.cyan-pink.min.css"/>
     <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/style.css"/>
     <link rel="stylesheet" href="{{ static_url }}/css/social-likes.css">
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/awg2.css?v=4">
     <!--[if IE 8]>
     <link rel="stylesheet" href="{{ static_url }}/css/ie8.css"
           type="text/css"/><![endif]-->
@@ -700,7 +487,7 @@
     <link type="text/css" rel="stylesheet"
           href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
 
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/material-design-lite@1.3.0/material.min.js"></script>
 
 {%- endmacro %}
 
@@ -751,7 +538,7 @@
                     Policy</a>
             {% endif %}
 
-            <span>© 2013 Addicting Word Games</span>
+            <span>© 2013-2026 Addicting Word Games</span>
             <!-- <a href="http://www.facebook.com/addictingwordgames" title="Addicting Word Games on Facebook" target="_blank">
             <img src="/img/facebook.jpg" alt="Addicting Word Games on Facebook" width="144px" height="44px">
         </a> -->
@@ -783,4 +570,31 @@
             data-media="{{ url }}">Pinterest
         </li>
     </ul>
+{%- endmacro %}
+
+
+{% macro hero() -%}
+    <section class="awg-hero">
+        <h1>Free Addicting Word Games</h1>
+        <p>Word puzzles, typing games and unlimited Wordle, playable instantly in your browser. No download, no sign-up.</p>
+        <div class="awg-hero__cta">
+            <a class="awg-btn awg-btn--primary" href="/wordle">Play Infinite Wordle now</a>
+            <a class="awg-btn" href="/typing-tower-defense">Try Typing Tower Defense</a>
+            <a class="awg-btn" href="#games">Browse all games</a>
+        </div>
+    </section>
+{%- endmacro %}
+
+{% macro siblings() -%}
+    <section class="awg-siblings" aria-label="More from our studio">
+        <h2>More free games from our studio</h2>
+        <div class="awg-siblings__grid">
+            {% for n, u, d in awgutils.SIBLINGS %}<a href="{{ u }}" target="_blank" rel="noopener">{{ n }}<span>{{ d }}</span></a>{% endfor %}
+        </div>
+        <div class="awg-home-share" data-share>
+            <button type="button" onclick="(function(b){var d={title:'Addicting Word Games',text:'Free word puzzles and typing games',url:'https://addictingwordgames.com/'};if(navigator.share){navigator.share(d).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(d.url);b.textContent='Link copied'}})(this)">Share this site</button>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Faddictingwordgames.com%2F" target="_blank" rel="noopener" style="background:#1b4db3">Facebook</a>
+            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faddictingwordgames.com%2F&amp;text=Free%20addicting%20word%20games" target="_blank" rel="noopener" style="background:#000">X</a>
+        </div>
+    </section>
 {%- endmacro %}

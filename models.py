@@ -8,12 +8,24 @@ from google.cloud import ndb
 from google.cloud.ndb import Cursor
 
 
+def _require_emulator(hostport):
+    import socket
+    host, _, port = hostport.rpartition(":")
+    try:
+        socket.create_connection((host or "localhost", int(port)), timeout=0.5).close()
+    except OSError as err:
+        raise ImportError(f"datastore emulator unavailable at {hostport}: {err}")
+
+
 def _create_ndb_client():
+    if os.environ.get("DATASTORE_EMULATOR_HOST"):
+        _require_emulator(os.environ["DATASTORE_EMULATOR_HOST"])
     try:
         return ndb.Client()
     except DefaultCredentialsError:
         os.environ.setdefault("GOOGLE_CLOUD_PROJECT", "addictingwordgames-dev")
         os.environ.setdefault("DATASTORE_EMULATOR_HOST", "localhost:8081")
+        _require_emulator(os.environ["DATASTORE_EMULATOR_HOST"])
         return ndb.Client(
             project=os.environ["GOOGLE_CLOUD_PROJECT"],
             credentials=AnonymousCredentials(),

@@ -1,5 +1,6 @@
 import urllib.request, urllib.parse, urllib.error
 import re
+from game_meta import SELF_HOSTED as SELF_HOSTED_GAMES, SIBLINGS  # noqa: F401
 
 def removeNonAscii(s):
     return "".join(i for i in s if ord(i)<128)

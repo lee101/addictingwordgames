@@ -16,6 +16,7 @@ import flash_library
 import sellerinfo
 import utils
 import flash_services
+import seo_pages
 from sqlite_models import SQLiteDB
 import webapp2
 import os
@@ -59,7 +60,7 @@ if LOCAL_DEBUG or GameOnUtils.debug:
         'publishable_key': sellerinfo.STRIPE_TEST_KEY
     }
 else:
-    GCLOUD_STATIC_BUCKET_URL = "https://addictingwordgamesstatic.addictingwordgames.com/static"
+    GCLOUD_STATIC_BUCKET_URL = "/static"
     stripe_keys = {
         'secret_key': sellerinfo.STRIPE_LIVE_SECRET,
         'publishable_key': sellerinfo.STRIPE_LIVE_KEY
@@ -587,26 +588,26 @@ class GameHandler(BaseHandler):
 games = {
     'wordsmashing': {
         'title': 'Word Smashing',
-        'image': 'https://static.addictingwordgames.com/static/img/word-smashing-logo.png',
-        'image_url': 'https://static.addictingwordgames.com/static/img/word-smashing-logo.png',
+        'image': 'https://addictingwordgames.com/static/img/word-smashing-logo.png',
+        'image_url': 'https://addictingwordgames.com/static/img/word-smashing-logo.png',
         'url': 'wordsmashing.com'
     },
     'multiplication-master': {
         'title': 'Multiplication Master',
-        'image': 'https://static.addictingwordgames.com/static/img/multiplication-master-promo-256.png',
-        'image_url': 'https://static.addictingwordgames.com/static/img/multiplication-master-promo-256.png',
+        'image': 'https://addictingwordgames.com/static/img/multiplication-master-promo-256.png',
+        'image_url': 'https://addictingwordgames.com/static/img/multiplication-master-promo-256.png',
         'url': 'www.multiplicationmaster.com'
     },
     'reword-game': {
         'title': 'ReWord Game',
-        'image': 'https://static.addictingwordgames.com/static/img/reword-game-logo256.png',
-        'image_url': 'https://static.addictingwordgames.com/static/img/reword-game-logo256.png',
+        'image': 'https://addictingwordgames.com/static/img/reword-game-logo256.png',
+        'image_url': 'https://addictingwordgames.com/static/img/reword-game-logo256.png',
         'url': 'rewordgame.com'
     },
     'big-multiplayer-chess': {
         'title': 'Big Multiplayer Chess',
-        'image': 'https://static.addictingwordgames.com/static/img/big-multiplayer-chess-logo256.png',
-        'image_url': 'https://static.addictingwordgames.com/static/img/big-multiplayer-chess-logo256.png',
+        'image': 'https://addictingwordgames.com/static/img/big-multiplayer-chess-logo256.png',
+        'image_url': 'https://addictingwordgames.com/static/img/big-multiplayer-chess-logo256.png',
         'url': 'bigmultiplayerchess.com'
     },
     # '20-questions-with-ai': {
@@ -616,20 +617,20 @@ games = {
     # },
     'reading-time': {
         'title': 'Reading Time',
-        'image': 'https://static.addictingwordgames.com/static/img/reading-time-icon256.png',
-        'image_url': 'https://static.addictingwordgames.com/static/img/reading-time-icon256.png',
+        'image': 'https://addictingwordgames.com/static/img/reading-time-icon256.png',
+        'image_url': 'https://addictingwordgames.com/static/img/reading-time-icon256.png',
         'url': 'readingtime.app.nz'
     },
     'joy-drop': {
         'title': 'Joy Drop',
-        'image': 'https://static.addictingwordgames.com/static/img/joydrop-sun-logo256.png',
-        'image_url': 'https://static.addictingwordgames.com/static/img/joydrop-sun-logo256.png',
+        'image': 'https://addictingwordgames.com/static/img/joydrop-sun-logo.png',
+        'image_url': 'https://addictingwordgames.com/static/img/joydrop-sun-logo.png',
         'url': 'joydrop.app.nz'
     },
     'netwrck': {
         'title': 'Netwrck',
-        'image': 'https://static.addictingwordgames.com/static/img/netwrck-logo-colord256.png',
-        'image_url': 'https://static.addictingwordgames.com/static/img/netwrck-logo-colord256.png',
+        'image': 'https://addictingwordgames.com/static/img/netwrck-logo-colord256.png',
+        'image_url': 'https://addictingwordgames.com/static/img/netwrck-logo-colord256.png',
         'url': 'netwrck.com'
     },
 }
@@ -1197,4 +1198,6 @@ if LOCAL_DEBUG or GameOnUtils.debug:
 else:
     logger.info("Production mode - static files served from CDN")
 
-app = webapp2.WSGIApplication(routes, debug=ws.debug, config=config)
+routes.insert(0, ('/static/(.+)', seo_pages.SafeStaticHandler))
+
+app = seo_pages.wrap(webapp2.WSGIApplication(routes, debug=ws.debug, config=config))

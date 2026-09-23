@@ -5,6 +5,7 @@ import math
 from typing import Dict, Iterable, List, Optional, Sequence
 
 import flash_services
+from loguru import logger
 from flash_services import FlashGameEntity
 
 DEFAULT_PAGE_SIZE = 12
@@ -39,9 +40,14 @@ def _source_for(game: FlashGameEntity) -> str:
 
 
 def _active_flash_games() -> List[FlashGameEntity]:
+    try:
+        games = flash_services.flash_repository.list_active_games()
+    except Exception as err:
+        logger.warning(f"Flash datastore unavailable: {err}")
+        return []
     return [
         game
-        for game in flash_services.flash_repository.list_active_games()
+        for game in games
         if game.is_active and flash_services.is_flash_storage_path(game.storage_path)
     ]
 

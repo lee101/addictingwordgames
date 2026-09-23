@@ -1,5 +1,6 @@
 from urllib.parse import urlencode, quote_plus
 
+from awg.itch.dead_images import dead_images
 from awg.itch.descriptions import descriptions
 from awg.itch.images import all_images
 from awg.itch.links import links
@@ -20,9 +21,11 @@ for i, desc in enumerate(descriptions):
     game = {
         "title": current_title,
         "description": desc,
-        "image": 'https://static.addictingwordgames.com/static/saved/' + images[i].split("/")[-1],
+        "image": images[i],
         "url": links[i],
     }
+    if images[i] in dead_images:
+        continue
     if 'fit' in url_title or 'wrong' in url_title or 'bondage' in url_title:
         continue
     all_games[url_title] = game

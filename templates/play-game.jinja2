@@ -1,6 +1,6 @@
 {% import "/templates/shared/macros.jinja2" as macros with context %}
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>{{ game.title }} - Addicting Word Games</title>
@@ -10,8 +10,12 @@
     <meta name="keywords"
           content="puzzle games, addicting games, {{ game.title }}, puzzle games, addicting word games">
     <meta property="og:title" content="{{ game.title }} - Addicting Word Games">
-    <meta property="og:url" content="{{ url }}">
-    <meta property="og:image" content="{{ game.image_url }}">
+    <link rel="canonical" href="https://addictingwordgames.com/play-game/{{ urltitle|e }}">
+    <meta property="og:url" content="https://addictingwordgames.com/play-game/{{ urltitle|e }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ game.title|e }} - Addicting Word Games">
+    <meta name="twitter:image" content="{{ (game.image_url or game.image)|e }}">
+    <meta property="og:image" content="{{ (game.image_url or game.image)|e }}">
     <meta property="og:description"
           content="Play {{ game.title }} at Addicting Word Games! Only the Most Addicting Word Puzzles and Word Games! Play Addicting Online Games Free!">
     <meta property="og:type" content="game">

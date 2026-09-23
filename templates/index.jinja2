@@ -1,27 +1,38 @@
 {% import "/templates/shared/macros.jinja2" as macros with context %}
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Addicting Word Games - Addicting &amp; Fun Word Puzzle Games</title>
+    <title>Addicting Word Games - Free Word Puzzles &amp; Typing Games</title>
     <meta name="description"
-          content="Only the Most Addicting Word Puzzles and Word Games! Play Addicting New Word Puzzles Free!">
-
-    <meta name="keywords" content="puzzle games, addicting games, word games, puzzle games, addicting word games">
-    <meta property="og:title" content="Addicting Word Games - Addicting &amp; Fun Word Puzzle Games">
-    <meta property="og:url" content="http://www.addictingwordgames.com">
-    <meta property="og:image" content="http://www.addictingwordgames.com/img/addicting-word-games-icon200.png">
+          content="Play free addicting word games online: Infinite Wordle, word search, word jumble, typing games and more. Instant play in your browser, no download.">
+    <link rel="canonical" href="https://addictingwordgames.com/">
+    <meta property="og:title" content="Addicting Word Games - Free Word Puzzles &amp; Typing Games">
+    <meta property="og:url" content="https://addictingwordgames.com/">
+    <meta property="og:image" content="https://addictingwordgames.com/static/img/og/home.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:description"
-          content="Only the Most Addicting Word Puzzles and Word Games! Play Addicting New Word Puzzles Free!">
+          content="Play free addicting word games online: Infinite Wordle, word search, word jumble, typing games and more.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Addicting Word Games">
     <meta property="fb:admins" content="337972272904903">
-
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Addicting Word Games - Free Word Puzzles &amp; Typing Games">
+    <meta name="twitter:description" content="Play free addicting word games online: Infinite Wordle, word search, typing games and more.">
+    <meta name="twitter:image" content="https://addictingwordgames.com/static/img/og/home.png">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[
+      {"@type":"WebSite","name":"Addicting Word Games","url":"https://addictingwordgames.com/"},
+      {"@type":"Organization","name":"Addicting Word Games","url":"https://addictingwordgames.com/","logo":"https://addictingwordgames.com/static/img/addicting-word-games-icon200.png"},
+      {"@type":"ItemList","name":"Free word games","itemListElement":[{% for g in awgutils.SELF_HOSTED_GAMES.values() %}{"@type":"ListItem","position":{{ loop.index }},"url":"https://addictingwordgames.com{{ g.path }}","name":"{{ g.title }}"}{% if not loop.last %},{% endif %}{% endfor %}]}
+    ]}
+    </script>
 
     {{ macros.headers(ws, highscores, achievements) }}
 
 </head>
-<body>
+<body class="awg-home">
 {{ macros.templates() }}
 <div id="pagebody">
     {{ macros.topbar() }}
@@ -40,6 +51,7 @@
         </form>
 {#        <a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>#}
     </div>
+    {{ macros.hero() }}
     {{ macros.showgames() }}
 
     <div class="clear">
@@ -50,6 +62,7 @@
 
     <div class="clear">
     </div>
+    {{ macros.siblings() }}
     {{ macros.footer() }}
     <div class="clear">
     </div>
