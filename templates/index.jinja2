@@ -3,10 +3,24 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    {% if page > 1 %}
+    <title>More Free Word Games - Page {{ page }} | Addicting Word Games</title>
+    <meta name="description" content="Browse free online word games, page {{ page }} of {{ pages }}: puzzles, typing, spelling and vocabulary games you can play instantly in your browser.">
+    <link rel="canonical" href="https://addictingwordgames.com/games?page={{ page }}">
+    <link rel="prev" href="{{ '/' if page == 2 else '/games?page=' ~ (page - 1) }}">
+    {% if page < pages %}<link rel="next" href="/games?page={{ page + 1 }}">{% endif %}
+    <meta property="og:title" content="More Free Word Games - Page {{ page }}">
+    <meta property="og:url" content="https://addictingwordgames.com/games?page={{ page }}">
+    <meta property="og:image" content="https://addictingwordgames.com/static/img/og/home.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"More Free Word Games - Page {{ page }}","url":"https://addictingwordgames.com/games?page={{ page }}","isPartOf":{"@type":"WebSite","name":"Addicting Word Games","url":"https://addictingwordgames.com/"}}</script>
+    {% else %}
     <title>Addicting Word Games - Free Word Puzzles &amp; Typing Games</title>
     <meta name="description"
           content="Play free addicting word games online: Infinite Wordle, word search, word jumble, typing games and more. Instant play in your browser, no download.">
     <link rel="canonical" href="https://addictingwordgames.com/">
+    <link rel="next" href="/games?page=2">
     <meta property="og:title" content="Addicting Word Games - Free Word Puzzles &amp; Typing Games">
     <meta property="og:url" content="https://addictingwordgames.com/">
     <meta property="og:image" content="https://addictingwordgames.com/static/img/og/home.png">
@@ -29,35 +43,23 @@
     ]}
     </script>
 
-    {{ macros.headers(ws, highscores, achievements) }}
+    {% endif %}
+    {{ macros.headers_lite() }}
 
 </head>
 <body class="awg-home">
-{{ macros.templates() }}
 <div id="pagebody">
     {{ macros.topbar() }}
 
-    <div id="searchbox">
-        <form role="form" class="form-inline" style="display:none">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-8"><input type="text" class="search-box form-control"
-                                                                   id="exampleInputEmail1" placeholder="Search"></div>
-                    <div class="col-xs-6 col-sm-6 col-md-4">
-                        <button type="submit" class="btn btn-large btn-primary">Search</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-{#        <a class="btn btn-primary btn-large" href="{{ random_game_url }}">Random Addicting Word Game!</a>#}
-    </div>
-    {{ macros.hero() }}
-    {{ macros.showgames() }}
+    {% if page == 1 %}{{ macros.hero() }}{% else %}
+    <section class="awg-hero awg-hero--slim"><h1>More Free Word Games - Page {{ page }}</h1><p><a class="awg-btn awg-btn--primary" href="/">Back to top games</a></p></section>
+    {% endif %}
+    {{ macros.showgames_page(games, page) }}
 
     <div class="clear">
     </div>
     <div>
-        {{ macros.loadmorebutton() }}
+        {{ macros.pager(page, pages) }}
     </div>
 
     <div class="clear">

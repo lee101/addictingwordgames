@@ -90,6 +90,8 @@ def share_bar(m):
         + '<a href="/">All games</a></div><h2>From our other sites</h2><div class="awg-promo">'
         + ''.join(f'<a href="{u}" target="_blank" rel="noopener">{esc(n)}<span>{esc(d)}</span></a>' for n, u, d in SIBLINGS)
         + '</div></section>'
+        '<script>(function(){var b=document.currentScript.previousElementSibling,d=getComputedStyle(document.body).display;'
+        'if(/flex|grid/.test(d)){document.documentElement.appendChild(b);}})();</script>'
     )
 
 

@@ -7,11 +7,13 @@
     {{ macros.headers(ws, highscores, achievements) }}
     <script src="{{ static_url }}/js/game-audio.js"></script>
     <style>
+        html { background: #16213e; }
+        #footer a, #footer span { color: #cbd5e1; }
         * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             margin: 0;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: #16213e linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: #fff;
         }
@@ -78,7 +80,7 @@
         .volume-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
         .volume-row input { width: 70px; }
         .volume-row label { font-size: 0.75em; color: #a0aec0; width: 28px; }
-        .instructions { color: #718096; font-size: 0.8em; margin-top: 5px; }
+        .instructions { color: #a0aec0; font-size: 0.8em; margin-top: 5px; }
         .boss-indicator { color: #f687b3; font-weight: bold; animation: pulse 1s infinite; }
         @keyframes pulse { 50% { opacity: 0.6; } }
     </style>
@@ -116,8 +118,8 @@
         <button id="music-toggle">Play Music</button>
         <button id="music-next">Next</button>
         <div class="song-name" id="song-name"></div>
-        <div class="volume-row"><label>SFX</label><input type="range" id="sfx-vol" min="0" max="100" value="70"></div>
-        <div class="volume-row"><label>Music</label><input type="range" id="music-vol" min="0" max="100" value="50"></div>
+        <div class="volume-row"><label for="sfx-vol">SFX</label><input type="range" id="sfx-vol" min="0" max="100" value="70"></div>
+        <div class="volume-row"><label for="music-vol">Music</label><input type="range" id="music-vol" min="0" max="100" value="50"></div>
     </div>
     {{ macros.footer() }}
 </div>

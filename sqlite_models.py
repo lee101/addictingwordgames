@@ -1,4 +1,5 @@
 import sqlite3
+import threading
 from typing import Optional, Iterable
 
 
@@ -9,8 +10,16 @@ class SQLiteDB:
         if path is None:
             import os
             path = os.environ.get("WORDGAMES_DB", "wordgames.db")
-        self.conn = sqlite3.connect(path)
+        self.path = path
+        self._local = threading.local()
         self.create_tables()
+
+    @property
+    def conn(self):
+        conn = getattr(self._local, 'conn', None)
+        if conn is None:
+            conn = self._local.conn = sqlite3.connect(self.path)
+        return conn
 
     def create_tables(self) -> None:
         cur = self.conn.cursor()

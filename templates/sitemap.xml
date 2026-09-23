@@ -5,6 +5,13 @@
         <changefreq>weekly</changefreq>
         <priority>1</priority>
     </url>
+    {% for n in range(2, pages + 1) %}
+    <url>
+        <loc>https://addictingwordgames.com/games?page={{ n }}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    {% endfor %}
     {% for title in titles %}
     <url>
         <loc>https://addictingwordgames.com/play-game/{{ title }}</loc>

@@ -420,16 +420,47 @@ class AchievementsHandler(BaseHandler):
         self.response.out.write('success')
 
 
+HOME_PAGE_SIZE = 60
+
+
+def listing_games():
+    return [game for game in flat_games if game['urltitle'] not in original_games]
+
+
+def listing_pages():
+    return max(1, -(-len(listing_games()) // HOME_PAGE_SIZE))
+
+
 class MainHandler(BaseHandler):
     def get(self):
-        cursor = self.request.get('cursor')
-        # games, next_page_cursor = get_cursor_and_games(cursor)
-        # pop all original games: we don't want to show them again
-        flat_games_new = [game for game in flat_games if game['urltitle'] not in original_games]
-        extraParams = {'games': flat_games_new,
-                       # 'next_page_cursor': str(next_page_cursor.decode("utf-8"))
-                       }
-        self.render('/templates/index.jinja2', extraParams)
+        self.render_page(1)
+
+    def render_page(self, page):
+        listed = listing_games()
+        pages = listing_pages()
+        start = (page - 1) * HOME_PAGE_SIZE
+        self.render('/templates/index.jinja2', {'games': listed[start:start + HOME_PAGE_SIZE],
+                                                'page': page, 'pages': pages})
+
+
+class GamesPageHandler(MainHandler):
+    def get(self):
+        try:
+            page = int(self.request.get('page') or 1)
+        except ValueError:
+            page = 0
+        if page == 1:
+            return self.redirect('/', permanent=True)
+        if page < 1 or page > listing_pages():
+            return render_not_found(self.request, self.response)
+        self.render_page(page)
+
+
+def render_not_found(request, response, exception=None):
+    response.set_status(404)
+    template = JINJA_ENVIRONMENT.get_template('/templates/not-found.jinja2')
+    response.write(template.render({'awgutils': awgutils, 'static_url': GCLOUD_STATIC_BUCKET_URL,
+                                    'url': request.path_qs, 'ws': ws}))
 
 
 class FbHandler(BaseHandler):
@@ -552,7 +583,7 @@ class SitemapHandler(webapp2.RequestHandler):
         titles = list(games.keys())
         self.response.headers['Content-Type'] = 'text/xml'
         template = JINJA_ENVIRONMENT.get_template("/templates/sitemap.xml")
-        self.response.write(template.render({'titles': titles}))
+        self.response.write(template.render({'titles': titles, 'pages': listing_pages()}))
 
 
 class LoadGamesHandler(BaseHandler):
@@ -576,6 +607,10 @@ class LoadGamesHandler(BaseHandler):
 class GameHandler(BaseHandler):
     def get(self, urltitle):
         game = Game.oneByUrlTitle(urltitle)
+        if game is None:
+            if urltitle in games:
+                return self.redirect('/play-game/' + urltitle, permanent=True)
+            return render_not_found(self.request, self.response)
         current_cursor = self.request.get('cursor')
         # games, next_page_cursor = get_cursor_and_random_games(current_cursor, urltitle)
         extraParams = {'game': game,
@@ -596,7 +631,7 @@ games = {
         'title': 'Multiplication Master',
         'image': 'https://addictingwordgames.com/static/img/multiplication-master-promo-256.png',
         'image_url': 'https://addictingwordgames.com/static/img/multiplication-master-promo-256.png',
-        'url': 'www.multiplicationmaster.com'
+        'url': 'multiplicationmaster.com'
     },
     'reword-game': {
         'title': 'ReWord Game',
@@ -642,7 +677,8 @@ for game in games:
 class PlayGameHandler(BaseHandler):
     def get(self, urltitle):
         game = games.get(urltitle)
-
+        if game is None:
+            return render_not_found(self.request, self.response)
         extraParams = {'game': game,
                        'urltitle': urltitle}
         self.render('/templates/play-game.jinja2', extraParams)
@@ -1173,6 +1209,7 @@ routes = [
     ('/word-ring', WordRingHandler),
     ('/game/(.*)', GameHandler),
     ('/play-game/(.*)', PlayGameHandler),
+    ('/games', GamesPageHandler),
     ('/games/(.*)', TagHandler),
     ('/upload-user-game', UploadUserGameHandler),
     ('/my-games', MyGamesHandler),
@@ -1200,4 +1237,6 @@ else:
 
 routes.insert(0, ('/static/(.+)', seo_pages.SafeStaticHandler))
 
-app = seo_pages.wrap(webapp2.WSGIApplication(routes, debug=ws.debug, config=config))
+_wsgi_app = webapp2.WSGIApplication(routes, debug=ws.debug, config=config)
+_wsgi_app.error_handlers[404] = render_not_found
+app = seo_pages.wrap(_wsgi_app)

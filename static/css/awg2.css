@@ -62,3 +62,12 @@ a:hover, a:focus { color: #0b3466; }
 .awg-home-share { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
 .awg-home-share button, .awg-home-share a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 20px; border: 0; cursor: pointer; font: 600 14px Arial, sans-serif; color: #fff; background: #1f2937; text-decoration: none; }
 .awg-home-share a:hover, .awg-home-share a:focus { color: #fff; }
+.awg-pager { margin: 20px auto; text-align: center; }
+.awg-pager__more { display: inline-flex; align-items: center; min-height: 46px; padding: 0 26px; border-radius: 23px; background: #1d4f91; color: #fff !important; font-weight: 700; font-size: 16px; text-decoration: none; }
+.awg-pager__more:hover, .awg-pager__more:focus { background: #0b3466; text-decoration: none; }
+.awg-pager__pages { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 14px; }
+.awg-pager__pages a, .awg-pager__pages span { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; border-radius: 8px; background: #fff; color: #1d4f91; font-weight: 700; text-decoration: none; border: 1px solid #d1d5db; }
+.awg-pager__pages span { background: #1d4f91; color: #fff; border-color: #1d4f91; }
+.awg-hero--slim { padding: 18px 16px; }
+.awg-hero--slim h1 { font-size: 28px; }
+.awg-hero a.awg-btn--primary, .awg-hero a.awg-btn--primary:hover { color: #1b1b2f; }

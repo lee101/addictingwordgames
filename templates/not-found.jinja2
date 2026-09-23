@@ -1,0 +1,29 @@
+{% import "/templates/shared/macros.jinja2" as macros with context %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Page Not Found - Addicting Word Games</title>
+    <meta name="description" content="That page doesn't exist, but these free word games do. Play Infinite Wordle, word search, typing games and more.">
+    <meta name="robots" content="noindex">
+    {{ macros.headers_lite() }}
+</head>
+<body class="awg-home">
+<div id="pagebody">
+    {{ macros.topbar() }}
+    <section class="awg-hero">
+        <h1>Sorry, that game isn't here</h1>
+        <p>The page you asked for doesn't exist or has moved. Try one of these free word games instead.</p>
+        <div class="awg-hero__cta">
+            <a class="awg-btn awg-btn--primary" href="/wordle">Play Infinite Wordle</a>
+            <a class="awg-btn" href="/">See all games</a>
+        </div>
+    </section>
+    <div id="games">
+        {% for g in awgutils.SELF_HOSTED_GAMES.values() %}{% if loop.index <= 8 %}{{ macros.showselfhosted(g, loop.index) }}{% endif %}{% endfor %}
+    </div>
+    {{ macros.siblings() }}
+    {{ macros.footer() }}
+</div>
+</body>
+</html>

@@ -1,13 +1,13 @@
 {% macro showgame(game) -%}
     <div class="game mdl-shadow--4dp">
-        <a class="game-link" href="https://{{ game.url|e }}" rel="noopener"
-           title="{{ game.title|e }}"><img class="game-image"
-                src="{{ game.image|e }}"
-                alt="{{ game.title|e }}" width="270" height="214" loading="lazy" decoding="async"/></a>
-        <a href="https://{{ game.url|e }}" rel="noopener"
-           title="{{ game.title|e }}">{{ game.title|e }}</a>
+        <a class="game-link" href="https://{{ game.url|replace('"', '&quot;') }}" rel="noopener"
+           title="{{ game.title|replace('"', '&quot;') }}"><img class="game-image"
+                src="{{ game.image|replace('"', '&quot;') }}"
+                alt="{{ game.title|replace('"', '&quot;') }}" width="270" height="214" loading="lazy" decoding="async"/></a>
+        <a href="https://{{ game.url|replace('"', '&quot;') }}" rel="noopener"
+           title="{{ game.title|replace('"', '&quot;') }}">{{ game.title }}</a>
 
-        <p class="small-description-text">{{ game.description|e }}</p>
+        <p class="small-description-text">{{ game.description }}</p>
 
     </div>
 {%- endmacro %}
@@ -26,7 +26,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/wordsmashing"
            title="Word Smashing Puzzle" target="_blank"><img
-                src="{{ static_url }}/img/word-smashing-logo.png"
+                src="{{ static_url }}/img/word-smashing-logo.webp" loading="lazy" decoding="async"
                 alt="Word Smashing, Addicting Word Puzzle Game" width="250"
                 height="184"/></a>
         <a href="/play-game/wordsmashing" title="Play Word Smashing!"
@@ -42,7 +42,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="https://netwrck.com"
            title="Netwrck AI Chat" target="_blank"><img
-                src="{{ static_url }}/img/netwrck-logo-colord256.png"
+                src="{{ static_url }}/img/netwrck-logo-colord256.webp" loading="lazy" decoding="async"
                 alt="Netwrck AI Chat" width="250"
                 height="250"/></a>
         <a href="https://netwrck.com" title="Play Netwrck!"
@@ -56,7 +56,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/reword-game"
            title="reWord Game Word Puzzle" target="_blank"><img
-                src="{{ static_url }}/img/reword-game-logo256.png"
+                src="{{ static_url }}/img/reword-game-logo256.webp" loading="lazy" decoding="async"
                 alt="reWord Game, Word Swapping Puzzle Game" width="256"
                 height="256"/></a>
         <a href="/play-game/reword-game" title="Play reWord Game!"
@@ -73,7 +73,7 @@
         <a class="game-link" href="/play-game/multiplication-master"
            title="Multiplication Master Multiplication Game"
            ><img
-                src="{{ static_url }}/img/multiplication-master-promo-256.png"
+                src="{{ static_url }}/img/multiplication-master-promo-256.png" loading="lazy" decoding="async"
                 alt="Multiplication Master Maths Game" width="256"
                 height="256"/></a>
         <a href="/play-game/multiplication-master"
@@ -92,7 +92,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/big-multiplayer-chess"
            title="Big Multiplayer Chess Game"><img
-                src="{{ static_url }}/img/big-multiplayer-chess-logo256.png"
+                src="{{ static_url }}/img/big-multiplayer-chess-logo256.webp" loading="lazy" decoding="async"
                 alt="Big Multiplayer Chess Game" width="256"
                 height="256"/></a>
         <a href="/play-game/big-multiplayer-chess"
@@ -109,7 +109,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/20-questions-with-ai"
            title="20 Questions with AI"><img
-                src="{{ static_url }}/img/text-generator-brain-logo.png"
+                src="{{ static_url }}/img/text-generator-brain-logo.webp" loading="lazy" decoding="async"
                 alt="20 Questions with AI" width="256"
                 height="256"/></a>
         <a href="/play-game/20-questions-with-ai"
@@ -124,7 +124,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/reading-time"
            title="20 Questions with AI"><img
-                src="{{ static_url }}/img/reading-time-icon256.png"
+                src="{{ static_url }}/img/reading-time-icon256.webp" loading="lazy" decoding="async"
                 alt="Reading Time Stories" width="256"
                 height="256" style="padding: 25px"/></a>
         <a href="/play-game/reading-time"
@@ -138,7 +138,7 @@
     <div class="game game-featured mdl-shadow--4dp">
         <a class="game-link" href="/play-game/joy-drop"
            title="Joy Drop"><img
-                src="{{ static_url }}/img/joydrop-sun-logo.png"
+                src="{{ static_url }}/img/joydrop-sun-logo.webp" loading="lazy" decoding="async"
                 alt="Joy Drop" width="256"
                 height="256" style="padding: 25px"/></a>
         <a href="/play-game/joy-drop"
@@ -151,7 +151,7 @@
 {% macro showselfhosted(g, i) -%}
     <div class="game game-featured game-self-hosted mdl-shadow--4dp">
         <a class="game-link" href="{{ g.path }}" title="Play {{ g.title }}"><img class="game-tile"
-                src="{{ g.tile }}" alt="{{ g.title }} game" width="256" height="256"{% if i > 4 %} loading="lazy"{% endif %} decoding="async"/></a>
+                src="{{ g.tile }}" alt="{{ g.title }} game" width="256" height="256"{% if i > 4 %} loading="lazy"{% endif %}{% if i == 1 %} fetchpriority="high"{% endif %} decoding="async"/></a>
         <a class="game-title" href="{{ g.path }}">{{ g.title }}</a>
         {% if g.new %}<span class="game-badge">NEW</span>{% endif %}
         <p class="small-description-text small-description-text-featured">{{ g.tagline }}</p>
@@ -597,4 +597,116 @@
             <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Faddictingwordgames.com%2F&amp;text=Free%20addicting%20word%20games" target="_blank" rel="noopener" style="background:#000">X</a>
         </div>
     </section>
+{%- endmacro %}
+
+{% macro headers_lite() -%}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-design-lite@1.3.0/dist/material.cyan-pink.min.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ static_url }}/css/awg2.css?v=5">
+    <script>
+        (function () {
+            function load(src, cb) {
+                var s = document.createElement('script');
+                s.src = src; s.async = true;
+                if (cb) s.onload = cb;
+                document.head.appendChild(s);
+            }
+            function post(url, data, cb) {
+                var body = new URLSearchParams(data).toString();
+                fetch(url, {method: 'POST', body: body, headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                    .then(function (r) { return r.json(); }).then(cb || function () {}).catch(function () {});
+            }
+            function show(id, on) { var e = document.getElementById(id); if (e) e.style.display = on ? '' : 'none'; }
+            window.has_purchased = false;
+            function payPrompt() {
+                if (window.has_purchased) return;
+                var dialog = document.querySelector('dialog');
+                if (!dialog || !dialog.showModal) return;
+                if (!dialog.open) dialog.showModal();
+                var c = dialog.querySelector('.closes-modal');
+                if (c) c.onclick = function () { dialog.close(); };
+                window.setTimeout(payPrompt, 60 * 1000);
+            }
+            window.signout = function () {
+                if (window.firebase) firebase.auth().signOut().catch(function () {});
+            };
+            function initAuth() {
+                firebase.initializeApp({
+                    apiKey: "AIzaSyBqfxiizjd4h5z_HOJ-3aCWy2_hgghfOWo",
+                    authDomain: "addictingwordgames.firebaseapp.com",
+                    databaseURL: "https://addictingwordgames.firebaseio.com",
+                    projectId: "addictingwordgames",
+                    storageBucket: "addictingwordgames.appspot.com",
+                    messagingSenderId: "972112451973"
+                });
+                firebase.auth().onAuthStateChanged(function (user) {
+                    if (!user) { window.setTimeout(payPrompt, 60 * 1000); return; }
+                    window.firebaseUser = user;
+                    show('sign-up', false); show('log-in', false); show('log-out', true);
+                    post('/api/create-user', {email: user.email, emailVerified: user.emailVerified, uid: user.uid, photoURL: user.photoURL || '', token: ''});
+                    fetch('/api/get-user?email=' + encodeURIComponent(user.email), {cache: 'no-store'})
+                        .then(function (r) { return r.json(); })
+                        .then(function (u) {
+                            if (u && u.has_purchased) { window.has_purchased = true; show('buy', false); }
+                            else { show('buy', true); window.setTimeout(payPrompt, 60 * 1000); }
+                        }).catch(function () {});
+                }, function (err) { console.log(err); });
+            }
+            function later() {
+                load('https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js', function () {
+                    load('https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js', initAuth);
+                });
+                load('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8598649123553748');
+            }
+            window.addEventListener('load', function () {
+                (window.requestIdleCallback || function (f) { setTimeout(f, 1500); })(later, {timeout: 3000});
+            });
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest && e.target.closest('a[data-more]');
+                if (!a || !window.fetch) return;
+                e.preventDefault();
+                a.textContent = 'Loading...';
+                fetch(a.href).then(function (r) { return r.text(); }).then(function (html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    var grid = document.getElementById('games');
+                    doc.querySelectorAll('#games > .game').forEach(function (g) { grid.appendChild(document.importNode(g, true)); });
+                    var next = doc.querySelector('a[data-more]');
+                    if (next) { a.href = next.href; a.textContent = 'Load more games'; } else { a.remove(); }
+                }).catch(function () { window.location = a.href; });
+            });
+        })();
+    </script>
+{%- endmacro %}
+
+{% macro showgames_page(games, page) -%}
+    <div id="games">
+        {% if page == 1 %}
+        {% for g in awgutils.SELF_HOSTED_GAMES.values() %}{{ showselfhosted(g, loop.index) }}{% endfor %}
+        {{ shownetwrck() }}
+        {{ showwordsmashing() }}
+        {{ showmultiplicationmaster() }}
+        {{ showrewordgame() }}
+        {{ showbigmultiplayerchess() }}
+        {{ showquestionsgame() }}
+        {{ showreadingtimegame() }}
+        {{ showjoydrop() }}
+        {% endif %}
+        {% for game in games %}{{ showgame(game) }}{% endfor %}
+    </div>
+{%- endmacro %}
+
+{% macro pager(page, pages) -%}
+    <nav class="awg-pager" aria-label="More games">
+        {% if page < pages %}<a class="awg-pager__more" data-more href="/games?page={{ page + 1 }}">Load more games</a>{% endif %}
+        <div class="awg-pager__pages">
+            {% for n in range(1, pages + 1) %}
+                {% if n == page %}<span aria-current="page">{{ n }}</span>
+                {% else %}<a href="{{ '/' if n == 1 else '/games?page=' ~ n }}">{{ n }}</a>{% endif %}
+            {% endfor %}
+        </div>
+    </nav>
 {%- endmacro %}
