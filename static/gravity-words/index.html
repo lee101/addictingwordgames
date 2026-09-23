@@ -22,7 +22,7 @@
                 <span id="lives">❤️❤️❤️</span>
             </div>
             <div class="canvas-container">
-                <canvas id="game-canvas" width="600" height="400"></canvas>
+                <canvas id="game-canvas" width="600" height="400" role="img" aria-label="Gravity Words game board. Type letters to catch falling letters."></canvas>
                 <div id="current-word" class="current-word"></div>
             </div>
             <div class="word-bank">
@@ -35,7 +35,7 @@
                 <button id="start-btn">Start Game</button>
                 <button id="pause-btn" disabled>Pause</button>
                 <button id="help-btn">❓ Help</button>
-                <select id="difficulty">
+                <select id="difficulty" aria-label="Difficulty">
                     <option value="easy">Easy</option>
                     <option value="medium" selected>Medium</option>
                     <option value="hard">Hard</option>

@@ -10,7 +10,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .game-wrapper {
@@ -30,14 +31,14 @@ h1 {
     margin: 0 0 5px 0;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: #4930a0;
     background-clip: text;
     font-size: 2.5rem;
 }
 
 .subtitle {
     margin: 0 0 15px 0;
-    color: #666;
+    color: #595959;
     font-size: 0.95rem;
 }
 
@@ -50,7 +51,7 @@ h1 {
 }
 
 .stats span {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: white;
     padding: 8px 16px;
     border-radius: 20px;
@@ -78,6 +79,7 @@ h1 {
     border-radius: 12px;
     background: linear-gradient(180deg, #0c1445 0%, #1a237e 50%, #283593 100%);
     display: block;
+    touch-action: none;
 }
 
 .current-word {
@@ -108,7 +110,7 @@ h1 {
 .collected-letters {
     font-size: 1.4rem;
     font-weight: bold;
-    color: #667eea;
+    color: #4930a0;
     letter-spacing: 4px;
     min-width: 100px;
     padding: 5px 15px;
@@ -127,7 +129,7 @@ h1 {
 }
 
 #submit-word {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    background: #287a35;
     color: white;
 }
 
@@ -137,7 +139,7 @@ h1 {
 }
 
 #clear-letters {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+    background: #b42318;
     color: white;
 }
 
@@ -164,7 +166,7 @@ h1 {
 }
 
 #start-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: white;
 }
 
@@ -174,7 +176,7 @@ h1 {
 }
 
 #pause-btn {
-    background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+    background: #9a4d00;
     color: white;
 }
 
@@ -202,17 +204,17 @@ h1 {
 }
 
 .message-success {
-    color: #4CAF50;
+    color: #287a35;
     animation: pulse 0.5s ease;
 }
 
 .message-error {
-    color: #f44336;
+    color: #b42318;
     animation: shake 0.5s ease;
 }
 
 .message-info {
-    color: #2196F3;
+    color: #145ca8;
 }
 
 .valid-words-display {
@@ -226,7 +228,7 @@ h1 {
 
 .valid-words-display .word-tag {
     display: inline-block;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: white;
     padding: 4px 10px;
     margin: 3px;
@@ -276,7 +278,7 @@ h1 {
     margin-top: 20px;
     padding: 12px 30px;
     font-size: 1.1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: white;
     border: none;
     border-radius: 8px;
@@ -319,7 +321,7 @@ h1 {
 
 .music-controls .song-name {
     font-size: 0.85em;
-    color: #666;
+    color: #595959;
     margin-top: 5px;
 }
 

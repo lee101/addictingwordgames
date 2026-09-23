@@ -14,7 +14,7 @@
 
         <div id="scrambled"></div>
 
-        <input type="text" id="guess" placeholder="Type your answer..." autocomplete="off" autofocus>
+        <input type="text" id="guess" aria-label="Your word guess" placeholder="Type your answer..." autocomplete="off" autofocus>
 
         <div class="btn-row">
             <button id="check" class="btn primary">Check</button>
@@ -40,12 +40,12 @@
         </div>
 
         <div class="controls">
-            <select id="category" class="category-select">
+            <select id="category" class="category-select" aria-label="Word category">
                 <option value="general">General</option>
                 <option value="nature">Nature</option>
                 <option value="objects">Objects</option>
             </select>
-            <select id="difficulty">
+            <select id="difficulty" aria-label="Difficulty">
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>

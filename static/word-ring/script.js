@@ -105,6 +105,7 @@ function positionLetters() {
         const btn = document.createElement('button');
         btn.className = 'letter-btn';
         btn.textContent = letter;
+        btn.setAttribute('aria-label', `Select letter ${letter.toUpperCase()}`);
         btn.dataset.letter = letter;
         btn.dataset.index = index;
 
@@ -121,6 +122,7 @@ function positionLetters() {
 
     const centerEl = document.getElementById('center-letter');
     centerEl.textContent = currentPuzzle.center;
+    centerEl.setAttribute('aria-label', `Select center letter ${currentPuzzle.center.toUpperCase()}`);
     centerEl.dataset.letter = currentPuzzle.center;
     centerEl.onclick = () => selectLetter(centerEl, currentPuzzle.center, 'center');
 }

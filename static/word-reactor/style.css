@@ -9,7 +9,7 @@
     --surface: #141b2d;
     --border: #1e2a45;
     --text: #e2e8f0;
-    --muted: #64748b;
+    --muted: #a0aec0;
     --accent: #22d3ee;
     --accent-glow: rgba(34, 211, 238, 0.3);
     --success: #4ade80;
@@ -184,6 +184,11 @@ button {
 .ghost:hover {
     border-color: var(--text);
     color: var(--text);
+}
+
+button:focus-visible, .tile:focus-visible {
+    outline: 3px solid #fbbf24;
+    outline-offset: 3px;
 }
 
 .status {

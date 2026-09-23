@@ -67,6 +67,7 @@ function renderReactor() {
         const tile = document.createElement('button');
         tile.className = 'tile';
         tile.textContent = currentWord[i];
+        tile.setAttribute('aria-label', `Tile ${i + 1}: ${currentWord[i].toUpperCase()}`);
         tile.dataset.index = i;
 
         // Check if this tile matches target

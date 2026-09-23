@@ -21,7 +21,7 @@ fi
 echo -e "\n${YELLOW}Step 2: Syncing static files to R2${NC}"
 R2_ENDPOINT="https://f76d25b8b86cfa5638f43016510d8f77.r2.cloudflarestorage.com"
 
-aws s3 sync ./static s3://addictingwordgamesstatic/static --endpoint-url "$R2_ENDPOINT" --size-only
+aws s3 sync ./static s3://addictingwordgamesstatic/static --endpoint-url "$R2_ENDPOINT"
 
 echo -e "${GREEN}Static files synced to R2${NC}"
 

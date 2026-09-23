@@ -65,13 +65,13 @@ h1 {
 }
 
 .letter-btn:hover {
-    background: #667eea;
+    background: #4930a0;
     color: #fff;
     transform: scale(1.1);
 }
 
 .letter-btn.selected {
-    background: #764ba2;
+    background: #4930a0;
     color: #fff;
     transform: scale(1.15);
     border-color: #764ba2;
@@ -91,7 +91,7 @@ h1 {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: #fff;
     font-size: 2rem;
     font-weight: bold;
@@ -102,6 +102,9 @@ h1 {
     transition: all 0.2s ease;
     box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
     text-transform: uppercase;
+    border: 0;
+    padding: 0;
+    font: inherit;
 }
 
 #center-letter:hover {
@@ -109,7 +112,7 @@ h1 {
 }
 
 #center-letter.selected {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: #4930a0;
     box-shadow: 0 0 25px rgba(118, 75, 162, 0.6);
 }
 
@@ -140,7 +143,7 @@ h1 {
 }
 
 #clear-word {
-    background: #ff6b6b;
+    background: #b42318;
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -152,7 +155,7 @@ h1 {
 }
 
 #clear-word:hover {
-    background: #ee5a5a;
+    background: #8f1d14;
     transform: scale(1.1);
 }
 
@@ -175,7 +178,7 @@ h1 {
 }
 
 #submit-word {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: #fff;
 }
 
@@ -195,12 +198,12 @@ h1 {
 }
 
 #hint {
-    background: #6bcb77;
+    background: #287a35;
     color: #fff;
 }
 
 #hint:hover {
-    background: #5ab366;
+    background: #1e6329;
     transform: translateY(-2px);
 }
 
@@ -246,7 +249,7 @@ h1 {
 }
 
 .found-word {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: #fff;
     padding: 5px 12px;
     border-radius: 15px;
@@ -284,11 +287,11 @@ h1 {
 }
 
 #message.success {
-    color: #6bcb77;
+    color: #287a35;
 }
 
 #message.error {
-    color: #ff6b6b;
+    color: #b42318;
 }
 
 /* Modal */
@@ -328,7 +331,7 @@ h1 {
 }
 
 #modal-next {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #4930a0;
     color: #fff;
     border: none;
     padding: 15px 40px;
@@ -362,7 +365,7 @@ h1 {
 }
 
 .music-controls button {
-    background: #667eea;
+    background: #4930a0;
     color: #fff;
     border: none;
     padding: 8px 15px;
@@ -373,7 +376,7 @@ h1 {
 }
 
 .music-controls button:hover {
-    background: #764ba2;
+    background: #4930a0;
 }
 
 .song-name {
