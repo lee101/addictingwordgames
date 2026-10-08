@@ -72,6 +72,7 @@ function chooseWord() {
 }
 
 function pickWord() {
+    thGame('game_started');
     const cat = WORDS[category] || WORDS.general;
     const list = cat[difficulty] || cat.easy;
     currentWord = list[Math.floor(Math.random() * list.length)];
@@ -122,6 +123,7 @@ function checkGuess() {
         else if(elapsed < 4) { bonus = 3; showSpeedBonus('+3 FAST!'); }
         else if(elapsed < 7) { bonus = 1; showSpeedBonus('+1 QUICK!'); }
         score += 1 + bonus;
+        thGame('game_completed', {won: true, seconds: Math.round(elapsed)});
         streak++;
         if(streak >= 3) { score += streak; showSpeedBonus(`+${streak} STREAK!`); }
         if (streak > best) best = streak;
@@ -227,4 +229,10 @@ if (testMode) {
 
 if (typeof module !== 'undefined') {
     module.exports = { scramble, WORDS, chooseWord, setDifficulty: (d) => { difficulty = d; }, speakWord };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-phzzle', level: difficulty}, p));
 }

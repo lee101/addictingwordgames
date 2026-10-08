@@ -17,6 +17,7 @@ import sellerinfo
 import utils
 import flash_services
 import seo_pages
+import th_events
 from sqlite_models import SQLiteDB
 import webapp2
 import os
@@ -1124,6 +1125,8 @@ class ChargeForBuyHandler(BaseHandler):
         # else:
         user.has_purchased = True
         User.save(user)
+        th_events.track('purchase', user.id or email, {'revenue': 1.99, 'currency': 'USD', 'plan': 'lifetime',
+                                                      'transaction_id': charge.id, 'surface': 'buy_page'}, event_id=charge.id)
 
         # send_signup_email(email, referral_url_key)
         self.response.headers['Content-Type'] = 'application/json'

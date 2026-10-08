@@ -32,6 +32,7 @@ function shiftLetter(letter, amount) {
 
 function generatePuzzle() {
     targetWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+    thGame('game_started');
     currentWord = [];
 
     // Generate starting letters that are different from target
@@ -109,6 +110,7 @@ function handleTileClick(index) {
 function checkWin() {
     if (currentWord.join('') === targetWord) {
         streak++;
+        thGame('game_completed', {won: true, moves: moves});
         streakEl.textContent = streak;
 
         // Add win animation
@@ -145,6 +147,7 @@ function resetPuzzle() {
 }
 
 function revealSolution() {
+    thGame('game_completed', {won: false, revealed: true});
     currentWord = targetWord.split('');
     moves = 0;
     movesEl.textContent = '---';
@@ -160,3 +163,9 @@ revealBtn.addEventListener('click', revealSolution);
 
 // Start game
 generatePuzzle();
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-reactor', level: targetWord.length}, p));
+}

@@ -335,6 +335,7 @@ function resetForNextWord() {
 
 // Play the current word
 function playCurrentWord() {
+    thGame('game_started');
     if (!currentWord) {
         newWord();
     }
@@ -456,6 +457,7 @@ function calculatePoints(typingTime) {
 
 // Game over
 function gameOver() {
+    thGame('game_completed', {score: score, words: wordsTyped});
     playGameOverSound();
 
     showMessage(`Game Over! Final Score: ${score}`, 'error');
@@ -583,4 +585,10 @@ if (typeof module !== 'undefined') {
         calculatePoints,
         wordDatabase
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'speed-speller', level: difficulty}, p));
 }

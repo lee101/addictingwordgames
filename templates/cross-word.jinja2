@@ -726,6 +726,7 @@
             if(solvedWords.size === placedWords.length) {
                 clearInterval(timerInterval);
                 showMessage('Congratulations! Puzzle complete!', 'success');
+                thGame('game_completed', {won: true, seconds: seconds});
                 audio.victory();
             } else {
                 nextWord();
@@ -805,6 +806,12 @@
         document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2, '0')}`;
     }
 
+    function thGame(e, p) {
+        if ((e === 'game_started') === !!thGame.on) return;
+        thGame.on = e === 'game_started';
+        if (window.th) th('track', e, Object.assign({game: 'cross-word', level: difficulty}, p));
+    }
+
     function newGame() {
         difficulty = document.getElementById('difficulty').value;
         gridSize = GRID_SIZES[difficulty];
@@ -812,6 +819,7 @@
         currentClue = null;
         solvedWords.clear();
         seconds = 0;
+        thGame('game_started');
 
         clearInterval(timerInterval);
         generateCrossword();

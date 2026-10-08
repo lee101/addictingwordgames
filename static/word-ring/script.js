@@ -243,6 +243,7 @@ function showHint() {
 }
 
 function showCompletionModal() {
+    thGame('game_completed', {won: true, score: score, words: foundWords.length});
     playComplete();
     document.getElementById('modal-words').textContent = foundWords.length;
     document.getElementById('modal-score').textContent = score;
@@ -262,6 +263,7 @@ function nextPuzzle() {
 }
 
 function loadPuzzle() {
+    thGame('game_started');
     currentPuzzle = JSON.parse(JSON.stringify(puzzles[currentPuzzleIndex]));
     foundWords = [];
     currentWord = '';
@@ -368,4 +370,10 @@ if (typeof module !== 'undefined') {
         loadProgress,
         saveProgress
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-ring', level: currentPuzzleIndex + 1}, p));
 }

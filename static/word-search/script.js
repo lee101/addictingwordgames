@@ -422,6 +422,7 @@ function showMessage(text) {
 }
 
 function gameComplete() {
+    thGame('game_completed', {won: true, score: score, seconds: timeElapsed});
     clearInterval(timer);
 
     // Time bonus
@@ -468,6 +469,7 @@ function showHint() {
 }
 
 function newGame() {
+    thGame('game_started');
     clearInterval(timer);
     score = 0;
     document.getElementById('score').textContent = score;
@@ -518,3 +520,9 @@ document.getElementById('music-next').addEventListener('click', function() {
 // Initialize
 loadHighScore();
 newGame();
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-search', level: difficulty}, p));
+}

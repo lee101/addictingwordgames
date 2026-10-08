@@ -153,7 +153,7 @@ function shuffleArray(array) {
 
 // Update display
 function updateDisplay() {
-    const currentWord = gameState.words[gameState.currentWordIndex];
+    const currentWord = gameState.words[gameState.currentWordIndex] || '';
     const inputValue = inputField.value;
 
     // Render current word with character highlighting
@@ -202,6 +202,7 @@ function updateDisplay() {
 
 // Start game
 function startGame() {
+    thGame('game_started');
     gameState.difficulty = difficultySelect.value;
     gameState.duration = parseInt(durationSelect.value);
     gameState.timeRemaining = gameState.duration;
@@ -246,6 +247,7 @@ function startTimer() {
 // End game
 function endGame() {
     gameState.isPlaying = false;
+    thGame('game_completed', {score: gameState.score, words: gameState.wordsTyped, duration: gameState.duration});
     clearInterval(gameState.timerInterval);
     inputField.disabled = true;
 
@@ -419,4 +421,10 @@ if (typeof module !== 'undefined') {
         getWordList,
         gameState
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'typing-race', level: gameState.difficulty}, p));
 }

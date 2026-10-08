@@ -110,6 +110,7 @@
             if (window.user && window.user.email) {
                 email = window.user.email
             }
+            th('track', 'begin_checkout', {plan: 'lifetime', value: 1.99, currency: 'USD', surface: 'buy_page'});
             handler.open({
                 name: 'Addicting Word Games',
                 description: 'Buy All Games for $1.99',

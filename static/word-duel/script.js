@@ -242,6 +242,7 @@ function updateDisplay() {
 
 // Add a letter to the current word
 function addLetter(letter) {
+    thGame('game_started');
     if (!gameActive) return;
 
     letter = letter.toLowerCase();
@@ -427,6 +428,7 @@ function checkGameOver() {
     if (player1Score >= winScore) {
         gameActive = false;
         showMessage('Player 1 WINS THE GAME!', 'success');
+        thGame('game_completed', {won: true, score: player1Score + '-' + player2Score});
         document.getElementById('new-round-btn').style.display = 'inline-block';
         document.getElementById('new-round-btn').textContent = 'New Game';
         return;
@@ -435,6 +437,7 @@ function checkGameOver() {
     if (player2Score >= winScore) {
         gameActive = false;
         const winner = gameMode === 'ai' ? 'Computer' : 'Player 2';
+        thGame('game_completed', {won: gameMode !== 'ai', score: player1Score + '-' + player2Score});
         showMessage(`${winner} WINS THE GAME!`, gameMode === 'ai' ? 'error' : 'success');
         document.getElementById('new-round-btn').style.display = 'inline-block';
         document.getElementById('new-round-btn').textContent = 'New Game';
@@ -581,4 +584,10 @@ if (typeof module !== 'undefined') {
         getPossibleWords,
         validWords
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-duel', level: gameMode === 'ai' ? aiDifficulty : gameMode}, p));
 }

@@ -399,7 +399,7 @@
                     enemies.splice(i, 1);
                     lives -= e.isBoss ? 5 : 1;
                     shake(e.isBoss ? 10 : 3); audio.loseLife();
-                    if(lives <= 0) { gameOver = true; audio.gameOver(); }
+                    if(lives <= 0) { gameOver = true; audio.gameOver(); thGame('game_completed', {wave: wave}); }
                 }
             }
 
@@ -423,6 +423,12 @@
         requestAnimationFrame(loop);
     }
 
+    function thGame(e, p) {
+        if ((e === 'game_started') === !!thGame.on) return;
+        thGame.on = e === 'game_started';
+        if (window.th) th('track', e, Object.assign({game: 'typing-tower-defense', level: wave}, p));
+    }
+
     function reset() {
         enemies=[]; towers=[]; projectiles=[]; particles=[];
         gold=100; lives=20; wave=1;
@@ -432,6 +438,7 @@
 
     document.addEventListener('keydown', e => {
         if(gameOver) { if(e.code === 'Space') reset(); return; }
+        thGame('game_started');
         if(e.key === 'Escape') { placing = null; document.querySelectorAll('.tower-btn').forEach(b=>b.classList.remove('selected')); return; }
         const key = e.key.toUpperCase();
         if(key.length !== 1 || key < 'A' || key > 'Z') return;

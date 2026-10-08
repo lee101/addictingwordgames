@@ -150,6 +150,7 @@ function loseLife() {
 }
 
 function gameOver() {
+    thGame('game_completed', {score: score});
     clearInterval(timer);
     audio.gameOver();
     scores.push(score);
@@ -187,6 +188,7 @@ function updateProgress() {
 }
 
 function checkGuess() {
+    thGame('game_started');
     const guess = document.getElementById('guess').value.trim().toLowerCase();
     if (guess === currentWord) {
         const elapsed = (Date.now() - wordStartTime) / 1000;
@@ -355,4 +357,10 @@ if (typeof module !== 'undefined') {
         mediumWords,
         hardWords
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-jumble', level: difficulty}, p));
 }

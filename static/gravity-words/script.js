@@ -507,6 +507,7 @@ function loseLife() {
 }
 
 function gameOver() {
+    thGame('game_completed', {score: score, words: wordsFormed});
     gameRunning = false;
     cancelAnimationFrame(animationId);
     playGameOver();
@@ -771,6 +772,7 @@ function init() {
 }
 
 function startGame() {
+    thGame('game_started');
     initAudio();
 
     // Reset state
@@ -818,4 +820,10 @@ function togglePause() {
 // Start when DOM is ready
 if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', init);
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'gravity-words', level: difficulty}, p));
 }

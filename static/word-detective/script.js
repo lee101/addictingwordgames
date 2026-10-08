@@ -199,6 +199,7 @@ function getRandomWord() {
 
 // Setup a new word
 function newWord() {
+    thGame('game_started');
     const wordData = getRandomWord();
     currentWord = wordData.word.toLowerCase();
     currentDefinition = wordData.definition;
@@ -314,6 +315,7 @@ function checkGuess() {
     if (guess === currentWord) {
         // Correct guess!
         const pointsEarned = calculatePoints();
+        thGame('game_completed', {won: true, attempts: attempts});
         score += pointsEarned;
         streak++;
 
@@ -347,6 +349,7 @@ function checkGuess() {
 
         if (attempts >= maxAttempts) {
             // Game over for this word
+            thGame('game_completed', {won: false, attempts: attempts});
             streak = 0;
             showMessage(`Out of attempts! The word was "${currentWord.toUpperCase()}"`, 'error');
             revealAllLetters();
@@ -379,6 +382,7 @@ function calculatePoints() {
 
 // Skip current word
 function skipWord() {
+    thGame('game_completed', {won: false, skipped: true});
     streak = 0;
     showMessage(`Skipped! The word was "${currentWord.toUpperCase()}"`, 'info');
     revealAllLetters();
@@ -469,4 +473,10 @@ if (typeof module !== 'undefined') {
         calculatePoints,
         wordDatabase
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-detective', level: difficulty}, p));
 }

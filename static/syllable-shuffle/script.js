@@ -414,6 +414,7 @@ function updateDropZoneHighlight() {
 
 // Setup new word
 function newWord() {
+    thGame('game_started');
     // Clear any existing timer
     if (timerInterval) {
         clearInterval(timerInterval);
@@ -499,6 +500,7 @@ function updateTimerBar() {
 }
 
 function handleTimeOut() {
+    thGame('game_completed', {won: false});
     streak = 0;
     showMessage(`Time's up! The word was "${currentWord.word}"`, 'error');
     revealCorrectOrder();
@@ -551,6 +553,7 @@ function checkAnswer() {
 }
 
 function handleCorrectAnswer() {
+    thGame('game_completed', {won: true});
     if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
@@ -624,6 +627,7 @@ function clearDropZone() {
 
 // Skip word
 function skipWord() {
+    thGame('game_completed', {won: false, skipped: true});
     if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
@@ -746,4 +750,10 @@ if (typeof module !== 'undefined') {
         shuffleArray,
         getWordsForDifficulty
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'syllable-shuffle', level: difficulty}, p));
 }

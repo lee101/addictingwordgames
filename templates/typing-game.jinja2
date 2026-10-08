@@ -196,6 +196,12 @@
         document.getElementById('wpm').textContent = wpm;
     }
 
+    function thGame(e, p) {
+        if ((e === 'game_started') === !!thGame.on) return;
+        thGame.on = e === 'game_started';
+        if (window.th) th('track', e, Object.assign({game: 'typing-game', level: level}, p));
+    }
+
     function reset() {
         items = []; particles = []; powerups = [];
         health = 5; score = 0; combo = 0; level = 1;
@@ -261,7 +267,7 @@
                 if(!shieldActive) { health--; shake(5); audio.loseLife(); }
                 combo = 0; currentWord = '';
                 updateHud();
-                if(health <= 0 && !gameOver) { gameOver = true; audio.gameOver(); }
+                if(health <= 0 && !gameOver) { gameOver = true; audio.gameOver(); thGame('game_completed', {score: score, mode: mode}); }
             }
         }
 
@@ -289,6 +295,7 @@
 
     document.addEventListener('keydown', e => {
         if(gameOver) { if(e.code === 'Space') reset(); return; }
+        thGame('game_started');
         const key = e.key.toUpperCase();
         if(key.length !== 1 || key < 'A' || key > 'Z') return;
 

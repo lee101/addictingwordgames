@@ -40,6 +40,14 @@
                         // FirebaseUI config.
                         var uiConfig = {
                             signInSuccessUrl: '/',
+                            callbacks: {
+                                signInSuccessWithAuthResult: function (authResult) {
+                                    var info = authResult.additionalUserInfo || {}, method = (info.providerId || 'password').replace('.com', '');
+                                    th('identify', authResult.user.uid);
+                                    th('track', info.isNewUser ? 'sign_up_completed' : 'sign_in_completed', {method: method, surface: 'login_page'});
+                                    return true;
+                                }
+                            },
                             signInOptions: [
                                 // Leave the lines as is for the providers you want to offer your users.
                                 {

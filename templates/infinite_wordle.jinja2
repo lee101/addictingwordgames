@@ -224,6 +224,12 @@
         return WORDS[seed % WORDS.length].toUpperCase();
     }
 
+    function thGame(e, p) {
+        if ((e === 'game_started') === !!thGame.on) return;
+        thGame.on = e === 'game_started';
+        if (window.th) th('track', e, Object.assign({game: 'wordle', level: mode}, p));
+    }
+
     function init() {
         if(mode === 'daily') {
             secret = getDailyWord();
@@ -237,6 +243,7 @@
             secret = WORDS[Math.floor(Math.random() * WORDS.length)].toUpperCase();
         }
         attempts = 0; currentGuess = ''; gameOver = false; guessHistory = [];
+        thGame('game_started');
         revealedGreen.length = 0; revealedGold.length = 0;
         Object.keys(keyState).forEach(k => delete keyState[k]);
         board.innerHTML = '';
@@ -354,6 +361,7 @@
             updateStats();
             if(guess === secret) {
                 gameOver = true; streak++;
+                thGame('game_completed', {won: true, attempts: attempts});
                 if(streak > best) { best = streak; localStorage.setItem('wordleBest', best); }
                 stats.played++; stats.won++; stats.streak++; stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
                 stats.dist[attempts-1]++; localStorage.setItem('wordleStats', JSON.stringify(stats));
@@ -364,6 +372,7 @@
                 audio.victory();
             } else if(attempts >= 6) {
                 gameOver = true; streak = 0;
+                thGame('game_completed', {won: false, attempts: attempts});
                 stats.played++; stats.streak = 0; localStorage.setItem('wordleStats', JSON.stringify(stats));
                 updateStats();
                 document.getElementById('message').textContent = `The word was ${secret}`;

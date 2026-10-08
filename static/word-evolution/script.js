@@ -815,6 +815,7 @@ function getRandomPair() {
 
 // Start a new puzzle
 function newPuzzle() {
+    thGame('game_started');
     currentPair = getRandomPair();
     usedPairs.push(currentPair);
 
@@ -914,6 +915,7 @@ function submitWord() {
         const points = calculateScore(ladderSteps.length, currentPair.optimal, hintsUsed);
         score += points;
         puzzlesSolved++;
+        thGame('game_completed', {won: true, steps: ladderSteps.length, optimal: currentPair.optimal, hints: hintsUsed});
 
         if (score > highScore) {
             highScore = score;
@@ -1073,4 +1075,10 @@ if (typeof module !== 'undefined') {
         wordLists,
         wordPairs
     };
+}
+
+function thGame(e, p) {
+    if ((e === 'game_started') === !!thGame.on) return;
+    thGame.on = e === 'game_started';
+    if (window.th) th('track', e, Object.assign({game: 'word-evolution', level: difficulty}, p));
 }

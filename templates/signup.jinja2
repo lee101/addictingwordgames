@@ -41,6 +41,8 @@
                     var phoneNumber = user.phoneNumber;
                     var providerData = user.providerData;
                     //TODO err handler ?
+                    th('identify', user.uid);
+                    th('track', 'sign_up_completed', {method: 'email', surface: 'signup_page'});
                     newUser(user, '', function (data) {
                         location.href = '/buy'
 
@@ -55,6 +57,7 @@
         }
 
         function signup() {
+            th('track', 'sign_up_started', {method: 'email', surface: 'signup_page'});
             var email = $('#username').val();
             var password = $('#userpass').val();
             var isSuccessful = true

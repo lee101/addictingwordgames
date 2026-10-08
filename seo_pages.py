@@ -7,6 +7,7 @@ import re
 import webapp2
 
 from game_meta import SITE, SELF_HOSTED, BY_PATH, SIBLINGS
+from th_events import add_th
 
 STATIC_ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__), 'static'))
 
@@ -110,9 +111,9 @@ def enhance(body, m):
 
 def wrap(app):
     def middleware(environ, start_response):
-        m = BY_PATH.get(environ.get('PATH_INFO', '').rstrip('/') or '/')
-        if not m or environ.get('REQUEST_METHOD') != 'GET':
+        if environ.get('REQUEST_METHOD') != 'GET':
             return app(environ, start_response)
+        m = BY_PATH.get(environ.get('PATH_INFO', '').rstrip('/') or '/')
         captured = {}
 
         def sr(status, headers, exc_info=None):
@@ -120,17 +121,26 @@ def wrap(app):
             return lambda b: None
 
         chunks = app(environ, sr)
+        status, headers = captured['s'], captured['h']
+        ctype = next((v for k, v in headers if k.lower() == 'content-type'), '')
+        if 'html' not in ctype or not status.startswith(('200', '404')):
+            start_response(status, headers)
+            return chunks
         try:
             raw = b''.join(chunks)
         finally:
             if hasattr(chunks, 'close'):
                 chunks.close()
-        headers = captured['h']
-        ctype = next((v for k, v in headers if k.lower() == 'content-type'), '')
-        if captured['s'].startswith('200') and 'html' in ctype:
-            raw = enhance(raw.decode('utf-8'), m).encode('utf-8')
-            headers = [(k, v) for k, v in headers if k.lower() != 'content-length']
-            headers.append(('Content-Length', str(len(raw))))
-        start_response(captured['s'], headers)
+        try:
+            body = raw.decode('utf-8')
+        except UnicodeDecodeError:
+            start_response(status, headers)
+            return [raw]
+        if m and status.startswith('200'):
+            body = enhance(body, m)
+        raw = add_th(body).encode('utf-8')
+        headers = [(k, v) for k, v in headers if k.lower() != 'content-length']
+        headers.append(('Content-Length', str(len(raw))))
+        start_response(status, headers)
         return [raw]
     return middleware

@@ -286,11 +286,10 @@
 
     <script type="text/javascript"
             src="{{ static_url }}/js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript"
-            src="{{ static_url }}/js/masonry.pkgd.min.js"></script>
+    <script defer src="{{ static_url }}/js/masonry.pkgd.min.js"></script>
 
-    <script src="{{ static_url }}/js/dialog-polyfill.js"></script>
-    <script src="{{ static_url }}/js/social-likes.min.js"></script>
+    <script defer src="{{ static_url }}/js/dialog-polyfill.js"></script>
+    <script defer src="{{ static_url }}/js/social-likes.min.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8598649123553748"
      crossorigin="anonymous"></script>
     <script>
@@ -399,23 +398,6 @@
             return false;
         }
     </script>
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-        ga('create', 'UA-43904545-1', 'addictingwordgames.com');
-        ga('send', 'pageview');
-
-    </script>
 
 
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
@@ -437,6 +419,7 @@
             if (user) {
                 // User is signed in.
                 window.firebaseUser = user
+                th('identify', user.uid);
                 $('#sign-up').hide();
                 $('#log-in').hide();
                 $('#log-out').show();
@@ -475,6 +458,7 @@
                 dialogPolyfill.registerDialog(dialog);
             }
             dialog.showModal();
+            th('track', 'paywall_open', {surface: 'timed_prompt', plan: 'lifetime'});
             dialog.querySelector('.closes-modal').addEventListener('click', function () {
                 dialog.close();
             });
@@ -626,7 +610,10 @@
                 if (window.has_purchased) return;
                 var dialog = document.querySelector('dialog');
                 if (!dialog || !dialog.showModal) return;
-                if (!dialog.open) dialog.showModal();
+                if (!dialog.open) {
+                    dialog.showModal();
+                    th('track', 'paywall_open', {surface: 'timed_prompt', plan: 'lifetime'});
+                }
                 var c = dialog.querySelector('.closes-modal');
                 if (c) c.onclick = function () { dialog.close(); };
                 window.setTimeout(payPrompt, 60 * 1000);
@@ -646,6 +633,7 @@
                 firebase.auth().onAuthStateChanged(function (user) {
                     if (!user) { window.setTimeout(payPrompt, 60 * 1000); return; }
                     window.firebaseUser = user;
+                    th('identify', user.uid);
                     show('sign-up', false); show('log-in', false); show('log-out', true);
                     post('/api/create-user', {email: user.email, emailVerified: user.emailVerified, uid: user.uid, photoURL: user.photoURL || '', token: ''});
                     fetch('/api/get-user?email=' + encodeURIComponent(user.email), {cache: 'no-store'})
