@@ -8,6 +8,7 @@ import webapp2
 
 from game_meta import SITE, SELF_HOSTED, BY_PATH, SIBLINGS
 from th_events import add_th
+import blog_pages
 
 STATIC_ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__), 'static'))
 
@@ -113,7 +114,13 @@ def wrap(app):
     def middleware(environ, start_response):
         if environ.get('REQUEST_METHOD') != 'GET':
             return app(environ, start_response)
-        m = BY_PATH.get(environ.get('PATH_INFO', '').rstrip('/') or '/')
+        pth = environ.get('PATH_INFO', '')
+        blog = blog_pages.lookup(pth)
+        if blog is not None:
+            raw = blog.encode('utf-8')
+            start_response('200 OK', [('Content-Type', 'text/html; charset=utf-8'), ('Content-Length', str(len(raw))), ('Cache-Control', 'public, max-age=300')])
+            return [raw]
+        m = BY_PATH.get(pth.rstrip('/') or '/')
         captured = {}
 
         def sr(status, headers, exc_info=None):
@@ -123,6 +130,11 @@ def wrap(app):
         chunks = app(environ, sr)
         status, headers = captured['s'], captured['h']
         ctype = next((v for k, v in headers if k.lower() == 'content-type'), '')
+        if pth == '/sitemap.xml' and status.startswith('200'):
+            sx = b''.join(chunks).decode('utf-8').replace('</urlset>', blog_pages.sitemap_extra() + '</urlset>').encode('utf-8')
+            headers = [(k, v) for k, v in headers if k.lower() != 'content-length'] + [('Content-Length', str(len(sx)))]
+            start_response(status, headers)
+            return [sx]
         if 'html' not in ctype or not status.startswith(('200', '404')):
             start_response(status, headers)
             return chunks
@@ -138,6 +150,8 @@ def wrap(app):
             return [raw]
         if m and status.startswith('200'):
             body = enhance(body, m)
+        if status.startswith('200'):
+            body = blog_pages.inject_links(body)
         raw = add_th(body).encode('utf-8')
         headers = [(k, v) for k, v in headers if k.lower() != 'content-length']
         headers.append(('Content-Length', str(len(raw))))
