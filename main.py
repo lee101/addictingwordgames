@@ -1157,9 +1157,9 @@ class ChargeForBuyHandler(BaseHandler):
 class StaticFileHandler(webapp2.RequestHandler):
     def get(self, path):
         import mimetypes
-        static_path = os.path.join(os.path.dirname(__file__), 'static', path)
+        static_path = seo_pages.safe_static_path(path)
         logger.info(f"Serving static file: {static_path}")
-        if os.path.exists(static_path) and os.path.isfile(static_path):
+        if static_path:
             content_type, _ = mimetypes.guess_type(static_path)
             if content_type:
                 self.response.headers['Content-Type'] = content_type

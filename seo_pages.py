@@ -13,10 +13,19 @@ import blog_pages
 STATIC_ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__), 'static'))
 
 
+def safe_static_path(path):
+    if not path or '\0' in path or '\\' in path:
+        return None
+    full = os.path.realpath(os.path.join(STATIC_ROOT, path))
+    if not full.startswith(STATIC_ROOT + os.sep) or '/.' in full or not os.path.isfile(full):
+        return None
+    return full
+
+
 class SafeStaticHandler(webapp2.RequestHandler):
     def get(self, path):
-        full = os.path.realpath(os.path.join(STATIC_ROOT, path))
-        if not full.startswith(STATIC_ROOT + os.sep) or '/.' in full or not os.path.isfile(full):
+        full = safe_static_path(path)
+        if full is None:
             self.error(404)
             return
         ctype, _ = mimetypes.guess_type(full)
