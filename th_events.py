@@ -8,7 +8,9 @@ from loguru import logger
 
 TH_WRITE_KEY = 'thw_RHqqRAsE1-ZrCi7_xif1ZFfYPBF-8XQb'
 TH_SNIPPET = ('<script>window.th=window.th||function(){(th.q=th.q||[]).push(arguments)};'
-              "window.__thConfig={siteId:'" + TH_WRITE_KEY + "'};</script>"
+              "window.__thConfig={siteId:'" + TH_WRITE_KEY + "'};"
+              "window.thFI=function(p){if(thFI.d)return;thFI.d=1;th('track','first_interaction',p||{})};"
+              "['pointerdown','keydown'].forEach(function(e){addEventListener(e,function(){thFI()},true)});</script>"
               '<script async src="https://twohelixes.com/static/th.js"></script>')
 
 

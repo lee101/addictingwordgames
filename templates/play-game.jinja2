@@ -49,7 +49,7 @@
         function go() {
             if (s || !window.th) return;
             s = 1;
-            th('track', 'first_interaction', {game: gameUrl});
+            window.thFI && thFI({game: gameUrl});
             th('track', 'game_started', {game: gameUrl, mode: 'embed'});
         }
         window.addEventListener('blur', function () {
