@@ -13,7 +13,17 @@ import awgutils
 import flash_library
 # from sellerinfo import SELLER_ID
 # from sellerinfo import SELLER_SECRET
-import sellerinfo
+try:
+    import sellerinfo  # gitignored; holds the Stripe keys on deployed hosts
+except ImportError:
+    # Fresh checkouts/CI have no sellerinfo.py: read the same names from the
+    # environment (see .env.example) so the app and tests can still import.
+    import os
+    import types
+    sellerinfo = types.SimpleNamespace(**{
+        name: os.environ.get(name, '')
+        for name in ('STRIPE_TEST_SECRET', 'STRIPE_TEST_KEY', 'STRIPE_LIVE_SECRET', 'STRIPE_LIVE_KEY')
+    })
 import utils
 import flash_services
 import seo_pages
